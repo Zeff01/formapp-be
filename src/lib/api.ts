@@ -28,6 +28,7 @@ abstract class Api {
       logger.info(JSON.stringify(data, null, 2));
     }
 
+    console.log('statusCode', statusCode);
     return res.status(statusCode).json({
       message,
       data,

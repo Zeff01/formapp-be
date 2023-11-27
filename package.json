@@ -8,7 +8,7 @@
     "prebuild": "npm run clean:build",
     "build": "npm run prisma:generate && tsc --build --verbose tsconfig.build.json && tsc-alias -p tsconfig.json",
     "start": "FORCE_COLOR=2 node ./dist/index.js",
-    "dev": "npm run prisma:generate && set NODE_ENV=development&& ts-node-dev --project tsconfig.dev.json -r tsconfig-paths/register --transpile-only --respawn --exit-child src/index.ts",
+    "dev": "npm run prisma:generate && npx prisma db push && set NODE_ENV=development&& ts-node-dev --project tsconfig.dev.json -r tsconfig-paths/register --transpile-only --respawn --exit-child src/index.ts",
     "prod": "npm run build && npm run start",
     "clean": "rm -rf node_modules coverage dist .nyc_output",
     "clean:build": "rm -rf dist",

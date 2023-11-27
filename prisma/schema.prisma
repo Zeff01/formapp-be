@@ -11,8 +11,61 @@ datasource db {
 }
 
 model users {
-  id    String  @id @default(uuid()) @map("_id")
-  email String
-  name  String
-  phone String?
+  id         String       @id @default(uuid()) @map("_id")
+  firstName  String
+  lastName   String
+  email      String
+  phone      String
+  profilePic String?
+  link       String?
+  age        Int?
+  addres     String?
+  type       UserTypeEnum
+  clubs      clubs[]
+  sessions   sessions[]
+  payments   payments[]
+
+  @@unique([email])
+}
+
+model clubs {
+  id        String @id @default(uuid()) @map("_id")
+  clubName  String
+  package   String
+  founderId String
+  Founder   users  @relation(fields: [founderId], references: [id])
+}
+
+model sessions {
+  id        String     @id @default(uuid()) @map("_id")
+  name      String
+  teams     String[]
+  maxMember String
+  price     Float
+  founderId String
+  Founder   users      @relation(fields: [founderId], references: [id])
+  payments  payments[]
+}
+
+model payments {
+  id                String            @id @default(uuid()) @map("_id")
+  userId            String
+  sessionId         String
+  amount            String
+  xenditReferenceId String
+  status            PaymentStatusEnum
+  session           sessions          @relation(fields: [sessionId], references: [id])
+  user              users             @relation(fields: [userId], references: [id])
+}
+
+enum UserTypeEnum {
+  ADMIN
+  USER
+}
+
+enum PaymentStatusEnum {
+  SUCCESS
+  FAILED
+  REFUND
+  CANCELLED
 }
