@@ -20,4 +20,17 @@ export default class UserController extends Api {
       next(e);
     }
   };
+
+  public updateUser = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const user = await this.userService.updateUser(req.body);
+      this.send(res, user, HttpStatusCode.Created, 'updateUser');
+    } catch (e) {
+      next(e);
+    }
+  };
 }

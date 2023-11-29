@@ -7,6 +7,7 @@ declare global {
       PORT: string;
       APP_BASE_URL: string;
       DATABASE_URL: string;
+      JWT_SECRET: string;
     }
   }
 }

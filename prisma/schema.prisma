@@ -15,6 +15,7 @@ model users {
   firstName  String
   lastName   String
   email      String
+  passwords  String
   phone      String
   profilePic String?
   link       String?

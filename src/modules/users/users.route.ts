@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Controller from './users.controller';
-import { CreateUserDto } from '@/dto/user.dto';
+import { CreateUserDto, UpdateUserDto } from '@/dto/user.dto';
 import RequestValidator from '@/middlewares/request-validator';
 import { verifyAuthToken } from '@/middlewares/auth';
 
@@ -24,17 +24,38 @@ const controller = new Controller();
  * @property {string} phone - phone number
  */
 /**
- * POST /users/create
+ * POST /users
  * @summary Create user
  * @tags users
- * @param {CreateUserBody} request.body.required
+ * @param {CreateUserDto} request.body.required
  * @return {User} 201 - user created
  */
-users.post(
-  '/create',
+users.post('', RequestValidator.validate(CreateUserDto), controller.createUser);
+
+/**
+ * Update user body
+ * @typedef {object} UpdateUserDto
+ * @property {string} name - name of user
+ * @property {string} phone - phone number
+ */
+/**
+ * User
+ * @typedef {object} User
+ * @property {string} name - name of user
+ * @property {string} phone - phone number
+ */
+/**
+ * PATCH /users
+ * @summary Create user
+ * @tags users
+ * @param {UpdateUserDto} request.body.required
+ * @return {User} 201 - user created
+ */
+users.patch(
+  '',
   verifyAuthToken,
-  RequestValidator.validate(CreateUserDto),
-  controller.createUser
+  RequestValidator.validate(UpdateUserDto),
+  controller.updateUser
 );
 
 export default users;

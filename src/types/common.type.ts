@@ -8,3 +8,9 @@ type Send<ResBody = any, T = Response<ResBody>> = (body?: {
 export interface CustomResponse<T> extends Response {
   json: Send<T, this>;
 }
+
+export interface JwtPayload {
+  id: string;
+  email: string;
+  role: string;
+}

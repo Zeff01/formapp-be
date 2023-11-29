@@ -1,7 +1,7 @@
 {
-  "name": "expressjs-typescript-prisma-boilerplate",
+  "name": "form-app-be",
   "version": "2.0.4",
-  "description": "expressjs typescript boilerplate with prisma",
+  "description": "form-app expressjs typescript boilerplate with prisma",
   "main": "index.ts",
   "scripts": {
     "prepare": "is-ci || husky install",
@@ -64,6 +64,7 @@
     "morgan": "^1.10.0",
     "nocache": "^4.0.0",
     "nodemon": "^3.0.1",
+    "tsoa": "^5.1.1",
     "winston": "^3.10.0"
   },
   "devDependencies": {
