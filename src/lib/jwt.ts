@@ -12,12 +12,8 @@ export class JwtUtil {
    * @param expiresIn - The expiration time for the token in seconds.
    * @returns - The generated JWT token.
    */
-  public static generateToken(
-    payload: Record<string, any>,
-    secret: string,
-    expiresIn: string | number
-  ): string {
-    return jwt.sign(payload, secret, { expiresIn });
+  public static generateToken(payload: Record<string, any>): string {
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
   }
 
   /**

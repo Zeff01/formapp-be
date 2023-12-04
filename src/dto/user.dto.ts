@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  IsUrl,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -12,10 +13,18 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @IsString()
   firstName: string;
 
   @IsString()
   lastName: string;
+
+  @IsString()
+  @IsUrl()
+  profilePic: string;
 
   @IsString()
   @IsMobilePhone()
@@ -45,4 +54,19 @@ export class LoginFounderDto {
 
   @IsNotEmpty()
   password: string;
+}
+
+export class ICreateMemberDto {
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  firstName: string;
+
+  @IsString()
+  lastName: string;
+
+  @IsString()
+  @IsUrl()
+  profilePic: string;
 }

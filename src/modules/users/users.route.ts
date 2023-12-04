@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import Controller from './users.controller';
-import { CreateUserDto, UpdateUserDto } from '@/dto/user.dto';
+import {
+  CreateUserDto,
+  ICreateMemberDto,
+  LoginFounderDto,
+  UpdateUserDto,
+} from '@/dto/user.dto';
 import RequestValidator from '@/middlewares/request-validator';
 import { verifyAuthToken } from '@/middlewares/auth';
 
@@ -30,7 +35,10 @@ const controller = new Controller();
  * @param {CreateUserDto} request.body.required
  * @return {User} 201 - user created
  */
-users.post('', RequestValidator.validate(CreateUserDto), controller.createUser);
+users
+  .route('')
+  .post(RequestValidator.validate(CreateUserDto), controller.createUser)
+  .get(verifyAuthToken, controller.getFounderInfo);
 
 /**
  * Update user body
@@ -57,5 +65,16 @@ users.patch(
   RequestValidator.validate(UpdateUserDto),
   controller.updateUser
 );
+
+users.post(
+  '/login',
+  RequestValidator.validate(LoginFounderDto),
+  controller.login
+);
+
+users
+  .route('/member')
+  .post(RequestValidator.validate(ICreateMemberDto), controller.createMember)
+  .get(controller.getMemberInfo);
 
 export default users;

@@ -8,6 +8,8 @@ declare global {
       APP_BASE_URL: string;
       DATABASE_URL: string;
       JWT_SECRET: string;
+      XENDIT_API_KEY: string;
+      FE_BASE_URL: string;
     }
   }
 }

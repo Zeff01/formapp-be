@@ -12,5 +12,5 @@ export interface CustomResponse<T> extends Response {
 export interface JwtPayload {
   id: string;
   email: string;
-  role: string;
+  type: string;
 }

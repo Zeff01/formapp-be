@@ -14,13 +14,15 @@ model users {
   id         String       @id @default(uuid()) @map("_id")
   firstName  String
   lastName   String
-  email      String
-  passwords  String
+  email      String?
+  password   String?
   phone      String
   profilePic String?
   link       String?
   age        Int?
   addres     String?
+  createdAt  DateTime?    @default(now()) @map("created_at")
+  updatedAt  DateTime?    @default(now()) @map("updated_at")
   type       UserTypeEnum
   clubs      clubs[]
   sessions   sessions[]
@@ -30,37 +32,46 @@ model users {
 }
 
 model clubs {
-  id        String @id @default(uuid()) @map("_id")
+  id        String    @id @default(uuid()) @map("_id")
   clubName  String
   package   String
   founderId String
-  Founder   users  @relation(fields: [founderId], references: [id])
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @map("updated_at")
+  founder   users     @relation(fields: [founderId], references: [id])
 }
 
 model sessions {
   id        String     @id @default(uuid()) @map("_id")
   name      String
   teams     String[]
-  maxMember String
+  maxMember Int
   price     Float
   founderId String
-  Founder   users      @relation(fields: [founderId], references: [id])
+  code      String     @unique
+  createdAt DateTime?  @default(now()) @map("created_at")
+  updatedAt DateTime?  @default(now()) @map("updated_at")
+  founder   users      @relation(fields: [founderId], references: [id])
   payments  payments[]
 }
 
 model payments {
   id                String            @id @default(uuid()) @map("_id")
-  userId            String
+  email             String
   sessionId         String
-  amount            String
+  amount            Float
   xenditReferenceId String
+  xenditPayoutId    String
+  createdAt         DateTime?         @default(now()) @map("created_at")
+  updatedAt         DateTime?         @default(now()) @map("updated_at")
   status            PaymentStatusEnum
   session           sessions          @relation(fields: [sessionId], references: [id])
-  user              users             @relation(fields: [userId], references: [id])
+  user              users             @relation(fields: [email], references: [email])
 }
 
 enum UserTypeEnum {
   ADMIN
+  FOUNDER
   USER
 }
 
@@ -69,4 +80,5 @@ enum PaymentStatusEnum {
   FAILED
   REFUND
   CANCELLED
+  PENDING
 }
