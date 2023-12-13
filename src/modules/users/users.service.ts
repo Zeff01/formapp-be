@@ -36,35 +36,40 @@ export default class UserService {
   }
 
   public async login(data: LoginFounderDto) {
-    const isExist = await prisma.users.findFirst({
-      where: {
-        email: data.email,
-      },
-    });
+    try {
+      const isExist = await prisma.users.findFirst({
+        where: {
+          email: data.email,
+        },
+      });
 
-    if (!isExist) {
-      throw new HttpNotFoundError('Invalid login');
+      if (!isExist) {
+        throw new HttpNotFoundError('Invalid login');
+      }
+
+      const matchPassword = GeneratorProvider.validateHash(
+        data.password,
+        isExist.password!
+      );
+
+      if (!matchPassword) {
+        throw new HttpNotFoundError('Invalid login');
+      }
+
+      const payload: JwtPayload = {
+        id: isExist.id,
+        email: isExist.email!,
+        type: isExist.type,
+      };
+
+      return {
+        user: isExist,
+        token: JwtUtil.generateToken(payload),
+      };
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
-
-    const matchPassword = GeneratorProvider.validateHash(
-      data.password,
-      isExist.password!
-    );
-
-    if (!matchPassword) {
-      throw new HttpNotFoundError('Invalid login');
-    }
-
-    const payload: JwtPayload = {
-      id: isExist.id,
-      email: isExist.email!,
-      type: isExist.type,
-    };
-
-    return {
-      user: isExist,
-      token: JwtUtil.generateToken(payload),
-    };
   }
 
   public async getUser(
@@ -90,12 +95,13 @@ export default class UserService {
 
   @LogMessage<[users]>({ message: 'User Updated' })
   public async updateUser(data: users) {
+    const { id, ...updateData } = data;
     return await prisma.users.update({
       where: {
-        id: data.id,
+        id,
       },
       data: {
-        ...data,
+        ...updateData,
         type: UserTypeEnum.FOUNDER,
       },
     });
@@ -104,7 +110,7 @@ export default class UserService {
   @LogMessage<[users]>({ message: 'User Updated' })
   public async createMember(data: users) {
     console.log(data);
-    return prisma.users.create({
+    return await prisma.users.create({
       data: {
         ...data,
         phone: '',
