@@ -118,4 +118,20 @@ export default class UserService {
       },
     });
   }
+
+  @LogMessage<[users]>({ message: 'User Deleted' })
+  public async deleteUser(data: users) {
+    const { email } = data;
+    if (email === null) {
+      throw new Error(`"Email cannot be null"`);
+    }
+    return await prisma.users.delete({
+      where: {
+        email,
+      },
+      select: {
+        email: true,
+      },
+    });
+  }
 }

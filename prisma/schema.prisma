@@ -44,7 +44,7 @@ model clubs {
 model sessions {
   id        String     @id @default(uuid()) @map("_id")
   name      String
-  teams     String[]
+  teams     String[]   @default(["Red Team", "Orange Team", "Yellow Team", "Green Team", "Blue Team", "White Team", "Violet Team"])
   maxMember Int
   price     Float
   founderId String

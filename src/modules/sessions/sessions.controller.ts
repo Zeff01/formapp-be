@@ -65,4 +65,17 @@ export default class SessionsController extends Api {
       next(e);
     }
   };
+
+  public deleteSession = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.sessionsService.deleteSession(req.body);
+      this.send(res, result, HttpStatusCode.Ok, 'deleteSession');
+    } catch (e) {
+      next(e);
+    }
+  };
 }

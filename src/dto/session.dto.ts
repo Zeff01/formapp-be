@@ -40,3 +40,9 @@ export class ICreateSessionDto {
   @ArrayUnique()
   teams: string[];
 }
+
+export class DeleteSessionDto {
+  @IsString()
+  @IsNotEmpty()
+  code: string;
+}

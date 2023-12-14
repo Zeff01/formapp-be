@@ -2,6 +2,7 @@ import { Router } from 'express';
 import Controller from './users.controller';
 import {
   CreateUserDto,
+  DeleteUserDto,
   ICreateMemberDto,
   LoginFounderDto,
   UpdateUserDto,
@@ -76,5 +77,12 @@ users
   .route('/member')
   .post(RequestValidator.validate(ICreateMemberDto), controller.createMember)
   .get(controller.getMemberInfo);
+
+users.delete(
+  '/',
+  verifyAuthToken,
+  RequestValidator.validate(DeleteUserDto),
+  controller.deleteUser
+);
 
 export default users;
