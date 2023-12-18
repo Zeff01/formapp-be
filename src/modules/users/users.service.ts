@@ -1,7 +1,7 @@
 import { type Prisma, UserTypeEnum, type users } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import LogMessage from '@/decorators/log-message.decorator';
-import { LoginFounderDto } from '@/dto/user.dto';
+import { CreateUserDto, LoginFounderDto } from '@/dto/user.dto';
 import { HttpNotFoundError } from '@/lib/errors';
 import { GeneratorProvider } from '@/lib/bcrypt';
 import JwtUtil from '@/lib/jwt';
@@ -83,12 +83,19 @@ export default class UserService {
   }
 
   @LogMessage<[users]>({ message: 'User Created' })
-  public async createUser(data: users) {
+  public async createUser(data: CreateUserDto) {
+    if (!data.password) {
+      throw new Error('Password is required');
+    }
     return await prisma.users.create({
       data: {
-        ...data,
-        type: UserTypeEnum.FOUNDER,
-        password: GeneratorProvider.generateHash(data.password!),
+        email: data.email,
+        password: GeneratorProvider.generateHash(data.password),
+        firstName: data.firstName,
+        lastName: data.lastName,
+        profilePic: data.profilePic,
+        phone: data.phone,
+        type: UserTypeEnum.ADMIN,
       },
     });
   }
@@ -115,6 +122,22 @@ export default class UserService {
         ...data,
         phone: '',
         type: UserTypeEnum.USER,
+      },
+    });
+  }
+
+  @LogMessage<[users]>({ message: 'User Deleted' })
+  public async deleteUser(data: users) {
+    const { email } = data;
+    if (email === null) {
+      throw new Error(`"Email cannot be null"`);
+    }
+    return await prisma.users.delete({
+      where: {
+        email,
+      },
+      select: {
+        email: true,
       },
     });
   }

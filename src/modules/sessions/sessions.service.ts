@@ -10,6 +10,7 @@ import { IInvoiceTransactionOutput } from '@/dto/xendit.dto';
 import { JwtPayload } from '@/types/common.type';
 import { UserTypeEnum } from '.prisma/client';
 import prisma from '@/lib/prisma';
+import { sessions } from '@prisma/client';
 
 export default class SessionsService {
   private readonly xenditService = new XenditService();
@@ -135,5 +136,21 @@ export default class SessionsService {
     } catch (error) {
       throw new HttpUnAuthorizedError('Error');
     }
+  }
+
+  @LogMessage<[sessions]>({ message: 'Session Deleted' })
+  public async deleteSession(data: sessions) {
+    const { code } = data;
+    if (code === null) {
+      throw new Error(`"Session Code cannot be null"`);
+    }
+    return await prisma.sessions.delete({
+      where: {
+        code,
+      },
+      select: {
+        code: true,
+      },
+    });
   }
 }

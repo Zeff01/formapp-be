@@ -70,3 +70,8 @@ export class ICreateMemberDto {
   @IsUrl()
   profilePic: string;
 }
+
+export class DeleteUserDto {
+  @IsEmail()
+  email: string;
+}
