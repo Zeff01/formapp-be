@@ -60,7 +60,7 @@ users
  * @return {User} 201 - user created
  */
 users.patch(
-  '',
+  '/',
   verifyAuthToken,
   RequestValidator.validate(UpdateUserDto),
   controller.updateUser
