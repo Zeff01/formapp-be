@@ -18,7 +18,7 @@ export default class SessionsController extends Api {
         req.query?.code as string,
         req.user as JwtPayload
       );
-      this.send(res, result, HttpStatusCode.Created, 'getSessions');
+      this.send(res, result, HttpStatusCode.Ok, 'getSessions');
     } catch (e) {
       next(e);
     }
@@ -34,7 +34,7 @@ export default class SessionsController extends Api {
         req.body,
         req.user as JwtPayload
       );
-      this.send(res, result, HttpStatusCode.Created, 'createSession');
+      this.send(res, result, HttpStatusCode.Created, 'Session Created');
     } catch (e) {
       next(e);
     }
@@ -73,7 +73,7 @@ export default class SessionsController extends Api {
   ) => {
     try {
       const result = await this.sessionsService.deleteSession(req.body);
-      this.send(res, result, HttpStatusCode.Ok, 'deleteSession');
+      this.send(res, result, HttpStatusCode.Ok, 'Session Successfully Deleted');
     } catch (e) {
       next(e);
     }
