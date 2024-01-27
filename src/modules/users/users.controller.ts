@@ -15,7 +15,7 @@ export default class UserController extends Api {
   ) => {
     try {
       const user = await this.userService.createUser(req.body);
-      this.send(res, user, HttpStatusCode.Created, 'createUser');
+      this.send(res, user, HttpStatusCode.Created, 'User Created');
     } catch (e) {
       next(e);
     }
@@ -41,7 +41,7 @@ export default class UserController extends Api {
   ) => {
     try {
       const user = await this.userService.updateUser(req.body);
-      this.send(res, user, HttpStatusCode.Created, 'updateUser');
+      this.send(res, user, HttpStatusCode.Created, 'User Updated');
     } catch (e) {
       next(e);
     }
@@ -54,7 +54,12 @@ export default class UserController extends Api {
   ) => {
     try {
       const user = await this.userService.createMember(req.body);
-      this.send(res, user, HttpStatusCode.Created, 'createMember');
+      this.send(
+        res,
+        user,
+        HttpStatusCode.Created,
+        'Member Successfully Created'
+      );
     } catch (e) {
       next(e);
     }
@@ -97,7 +102,7 @@ export default class UserController extends Api {
   ) => {
     try {
       const user = await this.userService.deleteUser(req.body);
-      this.send(res, user, HttpStatusCode.Ok, 'deleteUser');
+      this.send(res, user, HttpStatusCode.Ok, 'User Deleted Successfully');
     } catch (e) {
       next(e);
     }
