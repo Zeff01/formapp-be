@@ -82,3 +82,11 @@ enum PaymentStatusEnum {
   CANCELLED
   PENDING
 }
+
+model Faq {
+  id        String   @id @default(uuid()) @map("_id")
+  question  String
+  answer    String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+}
