@@ -52,16 +52,17 @@ const controller = new SessionsController();
  */
 
 /**
- * GET /
+ * GET /sessions/
  * @summary Get Sessions
  * @tags sessions
+ * @security BearerAuth
  * @return {Sessions} 200 - getSessions
  */
 sessionRouter.get('/', verifyAuthToken, controller.getSessions);
 /**
- * POST /
+ * POST /sessions/
  * @typedef {object} ICreateSessionDto
- * @tags users
+ * @tags sessions
  * @summary Create Session
  * @security BearerAuth
  * @property {string} name.required
@@ -70,6 +71,7 @@ sessionRouter.get('/', verifyAuthToken, controller.getSessions);
  * @property {integer} maxMember.required
  * @property {string[]} teams
  * @property {string} name
+ * @security BearerAuth
  * @param {ICreateSessionDto} request.body.required
  * @return {Session} 201 - Session Created
  */
@@ -81,7 +83,7 @@ sessionRouter.post(
   controller.createSession
 );
 /**
- * POST /payment
+ * POST sessions/payment
  * @typedef {object} IPaySessionDto
  * @summary Sessions Payment
  * @tags sessions
@@ -97,7 +99,7 @@ sessionRouter.post(
   controller.paySession
 );
 /**
- * POST /payment/callback
+ * POST sessions/payment/callback
  * @summary Payment Callback
  * @tags sessions
  * @return {Payments} 201 - paySession
@@ -105,14 +107,14 @@ sessionRouter.post(
 sessionRouter.post('/payment/callback', controller.paymentCallback);
 
 /**
- * POST /payout/callback
+ * POST sessions/payout/callback
  * @summary Payout Callback
  * @tags sessions
  * @return {Payments} 201 - paymentCallback
  */
 sessionRouter.post('/payout/callback', controller.paymentCallback);
 /**
- * DELETE /
+ * DELETE sessions/
  * @typedef {object} DeleteSessionDto
  * @summary Delete Session
  * @tags sessions

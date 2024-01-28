@@ -26,25 +26,24 @@ const controller = new Controller();
  */
 
 /**
- * POST /
+ * POST /users
  * @typedef {object} CreateUserDto
  * @summary Create user
  * @tags users
- * @property {string} email.required - User Email
- * @property {string} password.required - User Password
  * @property {string} firstName.required - User Firstname
  * @property {string} lastName.required - User LastName
- * @property {string} profilePic - Profile pic URL
- * @property {string} phone - Phone Number
+ * @property {string} phone.required - Phone Number
+ * @property {string} email.required - User Email
+ * @property {string} password.required - User Password
  * @param {CreateUserDto} request.body.required
- * @return {User} 201 - User Created
+ * @return {User} 201 - Admin Successfully Created
  */
 users
   .route('')
   .post(RequestValidator.validate(CreateUserDto), controller.createUser)
   .get(verifyAuthToken, controller.getFounderInfo);
 /**
- * PATCH /
+ * PATCH /users/
  * @typedef {object} UpdateUserDto
  * @summary Update User
  * @tags users
@@ -63,7 +62,7 @@ users.patch(
 );
 
 /**
- * POST /login
+ * POST /users/login
  * @typedef {object} LoginFounderDto
  * @summary Login
  * @tags users
@@ -78,14 +77,17 @@ users.post(
   controller.login
 );
 /**
- * POST /member
+ * POST /users/member
  * @typedef {object} ICreateMemberDto
  * @summary Create Member
  * @tags users
  * @property {string} email.required - The email address
  * @property {string} firstName.required - The Firstname
  * @property {string} lastName.required - The Lastname
- * @property {string} profilePic - The Profile Picture
+ * @property {string} profilePic.required - The Profile Picture
+ * @property {string} dateofbirth.required - Date of Birth (1998-01-01 00:00:00Z)
+ * @property {string} address.required - address
+ * @property {string} phone.required - Phone Number
  * @param {ICreateMemberDto} request.body.required
  * @return {User} 201 - Member Successfully Created
  */
@@ -94,7 +96,7 @@ users
   .post(RequestValidator.validate(ICreateMemberDto), controller.createMember)
   .get(controller.getMemberInfo);
 /**
- * DELETE /
+ * DELETE /users/
  * @typedef {object} DeleteUserDto
  * @summary Delete User
  * @tags users
