@@ -1,4 +1,5 @@
 import {
+  IsDateString,
   IsEmail,
   IsMobilePhone,
   IsNotEmpty,
@@ -9,26 +10,22 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
-  @IsEmail()
-  email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-
   @IsString()
   firstName: string;
 
   @IsString()
   lastName: string;
 
-  @IsString()
-  @IsUrl()
-  profilePic: string;
+  @IsEmail()
+  email: string;
 
   @IsString()
   @IsMobilePhone()
-  phone?: string;
+  phone: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
 
 export class UpdateUserDto {
@@ -57,8 +54,9 @@ export class LoginFounderDto {
 }
 
 export class ICreateMemberDto {
-  @IsEmail()
-  email: string;
+  @IsString()
+  @IsUrl()
+  profilePic: string;
 
   @IsString()
   firstName: string;
@@ -67,8 +65,17 @@ export class ICreateMemberDto {
   lastName: string;
 
   @IsString()
-  @IsUrl()
-  profilePic: string;
+  @IsMobilePhone()
+  phone: string;
+
+  @IsDateString()
+  dateofbirth: Date;
+
+  @IsString()
+  address: string;
+
+  @IsEmail()
+  email: string;
 }
 
 export class DeleteUserDto {

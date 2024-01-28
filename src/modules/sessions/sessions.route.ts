@@ -61,7 +61,7 @@ sessionRouter.get('/', verifyAuthToken, controller.getSessions);
 /**
  * POST /
  * @typedef {object} ICreateSessionDto
- * @tags users
+ * @tags sessions
  * @summary Create Session
  * @security BearerAuth
  * @property {string} name.required

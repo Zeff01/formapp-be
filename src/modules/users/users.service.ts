@@ -93,7 +93,6 @@ export default class UserService {
         password: GeneratorProvider.generateHash(data.password),
         firstName: data.firstName,
         lastName: data.lastName,
-        profilePic: data.profilePic,
         phone: data.phone,
         type: UserTypeEnum.ADMIN,
       },
@@ -120,7 +119,6 @@ export default class UserService {
     return await prisma.users.create({
       data: {
         ...data,
-        phone: '',
         type: UserTypeEnum.USER,
       },
     });
