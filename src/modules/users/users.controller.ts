@@ -53,6 +53,7 @@ export default class UserController extends Api {
     next: NextFunction
   ) => {
     try {
+      console.log(req.body);
       const user = await this.userService.createMember(req.body);
       this.send(
         res,

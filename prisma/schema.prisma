@@ -82,3 +82,28 @@ enum PaymentStatusEnum {
   CANCELLED
   PENDING
 }
+
+model Faq {
+  id        String   @id @default(uuid()) @map("_id")
+  question  String
+  answer    String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+}
+
+model Feedbacks {
+  id               String   @id @default(uuid()) @map("_id")
+  experience       String?
+  difficultProcess String?
+  rating           Rating
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @default(now()) @map("updated_at")
+}
+
+enum Rating {
+  TERRIBLE
+  BAD
+  OKAY
+  GOOD
+  GREAT
+}
