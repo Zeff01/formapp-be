@@ -96,7 +96,7 @@ users
   .post(RequestValidator.validate(ICreateMemberDto), controller.createMember)
   .get(controller.getMemberInfo);
 /**
- * DELETE /users/delete
+ * DELETE /users/
  * @typedef {object} DeleteUserDto
  * @summary Delete User
  * @tags users

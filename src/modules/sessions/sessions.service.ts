@@ -34,6 +34,7 @@ export default class SessionsService {
   }
 
   public async createSession(data: ICreateSessionDto, user: JwtPayload) {
+    console.log(user);
     if (user?.type !== UserTypeEnum.FOUNDER) {
       throw new HttpUnAuthorizedError('Forbidden');
     }
