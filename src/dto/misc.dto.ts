@@ -9,3 +9,16 @@ export class CreateFaqDto {
   @IsNotEmpty()
   answer: string;
 }
+
+export class addFeedbackDto {
+  @IsString()
+  @IsNotEmpty()
+  experience: string;
+
+  @IsString()
+  @IsNotEmpty()
+  difficultProcess: string;
+
+  @IsString()
+  rating: string;
+}
