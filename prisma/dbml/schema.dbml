@@ -1,0 +1,108 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table users {
+  id String [pk]
+  firstName String [not null]
+  lastName String [not null]
+  email String [unique, not null]
+  password String
+  phone String [not null]
+  profilePic String
+  link String
+  age Int
+  address String
+  dateofbirth DateTime
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  type UserTypeEnum [not null]
+  clubs clubs [not null]
+  sessions sessions [not null]
+  payments payments [not null]
+}
+
+Table clubs {
+  id String [pk]
+  clubName String [not null]
+  package String [not null]
+  founderId String [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  founder users [not null]
+}
+
+Table sessions {
+  id String [pk]
+  name String [not null]
+  teams String[] [not null]
+  maxMember Int [not null]
+  price Float [not null]
+  founderId String [not null]
+  code String [unique, not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  founder users [not null]
+  payments payments [not null]
+}
+
+Table payments {
+  id String [pk]
+  email String [not null]
+  sessionId String [not null]
+  amount Float [not null]
+  xenditReferenceId String [not null]
+  xenditPayoutId String [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  status PaymentStatusEnum [not null]
+  session sessions [not null]
+  user users [not null]
+}
+
+Table Faq {
+  id String [pk]
+  question String [not null]
+  answer String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Feedbacks {
+  id String [pk]
+  experience String
+  difficultProcess String
+  rating Rating [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Enum UserTypeEnum {
+  ADMIN
+  FOUNDER
+  USER
+}
+
+Enum PaymentStatusEnum {
+  SUCCESS
+  FAILED
+  REFUND
+  CANCELLED
+  PENDING
+}
+
+Enum Rating {
+  TERRIBLE
+  BAD
+  OKAY
+  GOOD
+  GREAT
+}
+
+Ref: clubs.founderId > users.id
+
+Ref: sessions.founderId > users.id
+
+Ref: payments.sessionId > sessions.id
+
+Ref: payments.email > users.email
