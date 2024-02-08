@@ -1,4 +1,3 @@
-import LogMessage from '@/decorators/log-message.decorator';
 import prisma from '@/lib/prisma';
 import { CreateFaqDto, addFeedbackDto } from '@/dto/misc.dto';
 import { Rating } from '@prisma/client';
