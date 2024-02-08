@@ -15,7 +15,12 @@ export default class UserController extends Api {
   ) => {
     try {
       const user = await this.userService.createUser(req.body);
-      this.send(res, user, HttpStatusCode.Created, 'Admin Created');
+      this.send(
+        res,
+        user,
+        HttpStatusCode.Created,
+        'Player Successfully Created'
+      );
     } catch (e) {
       next(e);
     }
@@ -47,19 +52,19 @@ export default class UserController extends Api {
     }
   };
 
-  public createMember = async (
+  public createStaff = async (
     req: Request,
     res: CustomResponse<users>,
     next: NextFunction
   ) => {
     try {
       console.log(req.body);
-      const user = await this.userService.createMember(req.body);
+      const user = await this.userService.createStaff(req.body);
       this.send(
         res,
         user,
         HttpStatusCode.Created,
-        'Member Successfully Created'
+        'Staff Successfully Created'
       );
     } catch (e) {
       next(e);

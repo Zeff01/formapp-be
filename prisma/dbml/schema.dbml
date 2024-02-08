@@ -16,6 +16,7 @@ Table users {
   dateofbirth DateTime
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
+  gender Gender
   type UserTypeEnum [not null]
   clubs clubs [not null]
   sessions sessions [not null]
@@ -81,6 +82,7 @@ Enum UserTypeEnum {
   ADMIN
   FOUNDER
   USER
+  STAFF
 }
 
 Enum PaymentStatusEnum {
@@ -97,6 +99,11 @@ Enum Rating {
   OKAY
   GOOD
   GREAT
+}
+
+Enum Gender {
+  MALE
+  FEMALE
 }
 
 Ref: clubs.founderId > users.id

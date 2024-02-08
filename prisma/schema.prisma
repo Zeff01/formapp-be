@@ -28,6 +28,7 @@ model users {
   dateofbirth DateTime?
   createdAt   DateTime?    @default(now()) @map("created_at")
   updatedAt   DateTime?    @default(now()) @map("updated_at")
+  gender      Gender?
   type        UserTypeEnum
   clubs       clubs[]
   sessions    sessions[]
@@ -78,6 +79,7 @@ enum UserTypeEnum {
   ADMIN
   FOUNDER
   USER
+  STAFF
 }
 
 enum PaymentStatusEnum {
@@ -111,4 +113,9 @@ enum Rating {
   OKAY
   GOOD
   GREAT
+}
+
+enum Gender {
+  MALE
+  FEMALE
 }

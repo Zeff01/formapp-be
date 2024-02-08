@@ -1,4 +1,4 @@
-import { type Prisma, UserTypeEnum, type users } from '@prisma/client';
+import { type Prisma, UserTypeEnum, type users, Gender } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import LogMessage from '@/decorators/log-message.decorator';
 import { CreateUserDto, LoginFounderDto } from '@/dto/user.dto';
@@ -82,7 +82,7 @@ export default class UserService {
     });
   }
 
-  // @LogMessage<[users]>({ message: 'User Created' })
+  // @LogMessage<[CreateUserDto]>({ message: 'User Created' })
   public async createUser(data: CreateUserDto) {
     if (!data.password) {
       throw new Error('Password is required');
@@ -94,7 +94,11 @@ export default class UserService {
         firstName: data.firstName,
         lastName: data.lastName,
         phone: data.phone,
-        type: UserTypeEnum.ADMIN,
+        dateofbirth: data.dateofbirth,
+        address: data.address,
+        gender: Gender[data.gender],
+        profilePic: data.profilePic,
+        type: UserTypeEnum.USER,
       },
     });
   }
@@ -108,18 +112,25 @@ export default class UserService {
       },
       data: {
         ...updateData,
-        type: UserTypeEnum.FOUNDER,
       },
     });
   }
 
-  @LogMessage<[users]>({ message: 'User Updated' })
-  public async createMember(data: users) {
+  // @LogMessage<[CreateUserDto]>({ message: 'User Updated' })
+  public async createStaff(data: CreateUserDto) {
     console.log(data);
     return await prisma.users.create({
       data: {
-        ...data,
-        type: UserTypeEnum.USER,
+        email: data.email,
+        password: GeneratorProvider.generateHash(data.password),
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phone: data.phone,
+        dateofbirth: data.dateofbirth,
+        address: data.address,
+        gender: Gender[data.gender],
+        profilePic: data.profilePic,
+        type: UserTypeEnum.STAFF,
       },
     });
   }
