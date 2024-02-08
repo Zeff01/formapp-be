@@ -82,7 +82,7 @@ export default class UserService {
     });
   }
 
-  @LogMessage<[users]>({ message: 'User Created' })
+  // @LogMessage<[users]>({ message: 'User Created' })
   public async createUser(data: CreateUserDto) {
     if (!data.password) {
       throw new Error('Password is required');

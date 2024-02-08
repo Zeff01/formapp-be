@@ -2,7 +2,6 @@ import { Router } from 'express';
 import MiscController from './misc.controller';
 import RequestValidator from '@/middlewares/request-validator';
 import { CreateFaqDto, addFeedbackDto } from '@/dto/misc.dto';
-import { Feedbacks } from '@prisma/client';
 const miscRouter: Router = Router();
 const controller = new MiscController();
 
