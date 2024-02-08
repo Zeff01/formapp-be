@@ -1,6 +1,7 @@
 import {
   IsDateString,
   IsEmail,
+  IsEnum,
   IsMobilePhone,
   IsNotEmpty,
   IsOptional,
@@ -8,6 +9,8 @@ import {
   IsUUID,
   IsUrl,
 } from 'class-validator';
+
+import { Gender } from '@prisma/client';
 
 export class CreateUserDto {
   @IsString()
@@ -22,6 +25,18 @@ export class CreateUserDto {
   @IsString()
   @IsMobilePhone()
   phone: string;
+
+  @IsDateString()
+  dateofbirth: Date;
+
+  @IsString()
+  address: string;
+
+  @IsEnum(Gender)
+  gender: string;
+
+  @IsUrl()
+  profilePic?: string;
 
   @IsString()
   @IsNotEmpty()
