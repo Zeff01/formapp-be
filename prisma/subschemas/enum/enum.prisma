@@ -1,0 +1,28 @@
+enum UserTypeEnum {
+  ADMIN
+  FOUNDER
+  USER
+  STAFF
+}
+
+enum PaymentStatusEnum {
+  SUCCESS
+  FAILED
+  REFUND
+  CANCELLED
+  PENDING
+}
+
+
+enum Rating {
+  TERRIBLE
+  BAD
+  OKAY
+  GOOD
+  GREAT
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}

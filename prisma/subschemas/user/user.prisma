@@ -1,0 +1,26 @@
+import { Gender,UserTypeEnum } from "..\enum\enum"
+import {clubs} from "..\clubs\clubs"
+import {sessions} from "..\session\session"
+import {payments} from "..\payments\payments"
+model users {
+  id          String       @id @default(uuid()) @map("_id")
+  firstName   String
+  lastName    String
+  email       String
+  password    String?
+  phone       String
+  profilePic  String?
+  link        String?
+  age         Int?
+  address     String?
+  dateofbirth DateTime?
+  createdAt   DateTime?    @default(now()) @map("created_at")
+  updatedAt   DateTime?    @default(now()) @map("updated_at")
+  gender      Gender?
+  type        UserTypeEnum
+  clubs       clubs[]
+  sessions    sessions[]
+  payments    payments[]
+
+  @@unique([email])
+}

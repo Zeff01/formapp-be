@@ -1,0 +1,15 @@
+import { users } from "..\user\user"
+import { payments } from "..\payments\payments"
+model sessions {
+  id        String     @id @default(uuid()) @map("_id")
+  name      String
+  teams     String[]   @default(["Red Team", "Orange Team", "Yellow Team", "Green Team", "Blue Team", "White Team", "Violet Team"])
+  maxMember Int
+  price     Float
+  founderId String
+  code      String     @unique
+  createdAt DateTime?  @default(now()) @map("created_at")
+  updatedAt DateTime?  @default(now()) @map("updated_at")
+  founder   users      @relation(fields: [founderId], references: [id])
+  payments  payments[]
+}

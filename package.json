@@ -15,7 +15,7 @@
     "lint": "eslint --ignore-path .eslintignore ./ --ext .ts,.js",
     "lint:fix": "eslint --ignore-path .eslintignore ./ --fix --ext .ts,.js",
     "format": "prettier --ignore-path .prettierignore --write \"**/*.+(ts|js)\"",
-    "prisma:generate": "npx prisma generate",
+    "prisma:generate": "npx prisma-multischema",
     "prisma:migrate": "npx prisma migrate dev --name init",
     "prisma:seed": "npx prisma db seed",
     "prisma:studio": "npx prisma studio",
@@ -66,6 +66,7 @@
     "morgan": "^1.10.0",
     "nocache": "^4.0.0",
     "nodemon": "^3.0.1",
+    "prisma-multischema": "^1.1.4",
     "tsoa": "^5.1.1",
     "winston": "^3.10.0"
   },
