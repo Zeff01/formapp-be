@@ -1,5 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+//🧩Don't Edit this file.✨Generated in Sat Feb 10 2024 02:40:47 GMT+0800 (Philippine Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -12,6 +11,89 @@ generator dbml {
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model clubs {
+  id        String    @id @default(uuid()) @map("_id")
+  clubName  String
+  package   String
+  founderId String
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @map("updated_at")
+  founder   users     @relation(fields: [founderId], references: [id])
+}
+
+enum UserTypeEnum {
+  ADMIN
+  FOUNDER
+  USER
+  STAFF
+}
+
+enum PaymentStatusEnum {
+  SUCCESS
+  FAILED
+  REFUND
+  CANCELLED
+  PENDING
+}
+
+enum Rating {
+  TERRIBLE
+  BAD
+  OKAY
+  GOOD
+  GREAT
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model Faq {
+  id        String   @id @default(uuid()) @map("_id")
+  question  String
+  answer    String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+}
+
+model Feedbacks {
+  id               String   @id @default(uuid()) @map("_id")
+  experience       String?
+  difficultProcess String?
+  rating           Rating
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @default(now()) @map("updated_at")
+}
+
+model payments {
+  id                String            @id @default(uuid()) @map("_id")
+  email             String
+  sessionId         String
+  amount            Float
+  xenditReferenceId String
+  xenditPayoutId    String
+  createdAt         DateTime?         @default(now()) @map("created_at")
+  updatedAt         DateTime?         @default(now()) @map("updated_at")
+  status            PaymentStatusEnum
+  session           sessions          @relation(fields: [sessionId], references: [id])
+  user              users             @relation(fields: [email], references: [email])
+}
+
+model sessions {
+  id        String     @id @default(uuid()) @map("_id")
+  name      String
+  teams     String[]   @default(["Red Team", "Orange Team", "Yellow Team", "Green Team", "Blue Team", "White Team", "Violet Team"])
+  maxMember Int
+  price     Float
+  founderId String
+  code      String     @unique
+  createdAt DateTime?  @default(now()) @map("created_at")
+  updatedAt DateTime?  @default(now()) @map("updated_at")
+  founder   users      @relation(fields: [founderId], references: [id])
+  payments  payments[]
 }
 
 model users {
@@ -35,87 +117,4 @@ model users {
   payments    payments[]
 
   @@unique([email])
-}
-
-model clubs {
-  id        String    @id @default(uuid()) @map("_id")
-  clubName  String
-  package   String
-  founderId String
-  createdAt DateTime? @default(now()) @map("created_at")
-  updatedAt DateTime? @default(now()) @map("updated_at")
-  founder   users     @relation(fields: [founderId], references: [id])
-}
-
-model sessions {
-  id        String     @id @default(uuid()) @map("_id")
-  name      String
-  teams     String[]   @default(["Red Team", "Orange Team", "Yellow Team", "Green Team", "Blue Team", "White Team", "Violet Team"])
-  maxMember Int
-  price     Float
-  founderId String
-  code      String     @unique
-  createdAt DateTime?  @default(now()) @map("created_at")
-  updatedAt DateTime?  @default(now()) @map("updated_at")
-  founder   users      @relation(fields: [founderId], references: [id])
-  payments  payments[]
-}
-
-model payments {
-  id                String            @id @default(uuid()) @map("_id")
-  email             String
-  sessionId         String
-  amount            Float
-  xenditReferenceId String
-  xenditPayoutId    String
-  createdAt         DateTime?         @default(now()) @map("created_at")
-  updatedAt         DateTime?         @default(now()) @map("updated_at")
-  status            PaymentStatusEnum
-  session           sessions          @relation(fields: [sessionId], references: [id])
-  user              users             @relation(fields: [email], references: [email])
-}
-
-enum UserTypeEnum {
-  ADMIN
-  FOUNDER
-  USER
-  STAFF
-}
-
-enum PaymentStatusEnum {
-  SUCCESS
-  FAILED
-  REFUND
-  CANCELLED
-  PENDING
-}
-
-model Faq {
-  id        String   @id @default(uuid()) @map("_id")
-  question  String
-  answer    String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
-}
-
-model Feedbacks {
-  id               String   @id @default(uuid()) @map("_id")
-  experience       String?
-  difficultProcess String?
-  rating           Rating
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @default(now()) @map("updated_at")
-}
-
-enum Rating {
-  TERRIBLE
-  BAD
-  OKAY
-  GOOD
-  GREAT
-}
-
-enum Gender {
-  MALE
-  FEMALE
 }
