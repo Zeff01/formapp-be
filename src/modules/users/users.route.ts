@@ -26,6 +26,17 @@ const controller = new Controller();
  */
 
 /**
+ * GET /users
+ * @summary Get All Players
+ * @tags users
+ * @security BearerAuth
+ * @return {User} 200 - getPlayers
+ */
+users.get('/', verifyAuthToken);
+
+
+
+/**
  * POST /users
  * @typedef {object} CreateUserDto
  * @summary Create Player
