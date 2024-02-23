@@ -7,6 +7,28 @@ import Api from '@/lib/api';
 
 export default class UserController extends Api {
   private readonly userService = new UserService();
+// this need to get password too
+  public getPlayer = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      
+    } catch (error) {
+      
+    }
+    // try {
+    //   const result = await this.userService.getUser({
+    //     where: {
+    //       id: req.params.id,
+    //     },
+    //   });
+    //   this.send(res, result, HttpStatusCode.Created, 'getPlayer');
+    // } catch (e) {
+    //   next(e);
+    // }
+  };
 
   public createUser = async (
     req: Request,

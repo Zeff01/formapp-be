@@ -8,6 +8,14 @@ import JwtUtil from '@/lib/jwt';
 import { JwtPayload } from '@/types/common.type';
 
 export default class UserService {
+  public async getAllPlayers(): Promise<users[]> {
+    return prisma.users.findMany({
+      where: {
+        type: UserTypeEnum.USER,
+      },
+    });
+  }
+
   public async getFounderInfo(id: string) {
     return prisma.users.findFirst({
       where: {
