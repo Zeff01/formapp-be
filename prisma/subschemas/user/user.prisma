@@ -1,7 +1,7 @@
 import { Gender,UserTypeEnum } from "..\enum\enum"
 import {clubs} from "..\clubs\clubs"
-import {sessions} from "..\session\session"
 import {payments} from "..\payments\payments"
+import { subSession } from "..\session\session"
 model users {
   id          String       @id @default(uuid()) @map("_id")
   firstName   String
@@ -19,7 +19,7 @@ model users {
   gender      Gender?
   type        UserTypeEnum
   clubs       clubs[]
-  sessions    sessions[]
+  subSession  subSession[]
   payments    payments[]
 
   @@unique([email])
