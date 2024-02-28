@@ -86,6 +86,24 @@ export default class UserController extends Api {
     }
   };
 
+  public createFounder = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const user = await this.userService.createFounder(req.body);
+      this.send(
+        res,
+        user,
+        HttpStatusCode.Created,
+        'Founder Successfully Created'
+      );
+    } catch (e) {
+      next(e);
+    }
+  };
+
   public getFounderInfo = async (
     req: Request,
     res: CustomResponse<users>,
