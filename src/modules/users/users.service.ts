@@ -1,7 +1,11 @@
 import { type Prisma, UserTypeEnum, type users, Gender } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import LogMessage from '@/decorators/log-message.decorator';
-import { CreateUserDto, LoginFounderDto } from '@/dto/user.dto';
+import {
+  CreateFounderDto,
+  CreateUserDto,
+  LoginFounderDto,
+} from '@/dto/user.dto';
 import { HttpNotFoundError } from '@/lib/errors';
 import { GeneratorProvider } from '@/lib/bcrypt';
 import JwtUtil from '@/lib/jwt';
@@ -131,6 +135,23 @@ export default class UserService {
         gender: Gender[data.gender],
         profilePic: data.profilePic,
         type: UserTypeEnum.STAFF,
+      },
+    });
+  }
+
+  // @LogMessage<[CreateUserDto]>({ message: 'Founder Updated' })
+  public async createFounder(data: CreateFounderDto) {
+    if (!data.password) {
+      throw new Error('Password is required');
+    }
+    return await prisma.users.create({
+      data: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        password: GeneratorProvider.generateHash(data.password),
+        type: UserTypeEnum.FOUNDER,
       },
     });
   }

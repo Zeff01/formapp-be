@@ -43,6 +43,25 @@ export class CreateUserDto {
   password: string;
 }
 
+export class CreateFounderDto {
+  @IsString()
+  firstName: string;
+
+  @IsString()
+  lastName: string;
+
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @IsMobilePhone()
+  phone: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
+
 export class UpdateUserDto {
   @IsUUID()
   id: string;

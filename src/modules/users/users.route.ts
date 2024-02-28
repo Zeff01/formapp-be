@@ -3,7 +3,7 @@ import Controller from './users.controller';
 import {
   CreateUserDto,
   DeleteUserDto,
-  ICreateMemberDto,
+  CreateFounderDto,
   LoginFounderDto,
   UpdateUserDto,
 } from '@/dto/user.dto';
@@ -67,6 +67,25 @@ users
   .route('/staff')
   .post(RequestValidator.validate(CreateUserDto), controller.createStaff)
   .get(controller.getMemberInfo);
+
+/**
+ * POST /users/Founder
+ * @typedef {object} CreateFounderDto
+ * @summary Create Founder
+ * @tags users
+ * @property {string} firstName.required - Founder FirstName
+ * @property {string} lastName.required - Founder LastName
+ * @property {string} phone.required - Phone Number
+ * @property {string} email.required - Founder Email
+ * @property {string} password.required - Founder Password
+ * @param {CreateFounderDto} request.body.required
+ * @return {User} 201 - Staff Successfully Created
+ */
+users
+  .route('/founder')
+  .post(RequestValidator.validate(CreateFounderDto), controller.createFounder)
+  .get(controller.getFounderInfo);
+
 /**
  * PATCH /users/
  * @typedef {object} UpdateUserDto
