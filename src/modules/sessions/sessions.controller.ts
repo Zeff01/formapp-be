@@ -34,6 +34,7 @@ export default class SessionsController extends Api {
         req.body,
         req.user as JwtPayload
       );
+
       this.send(res, result, HttpStatusCode.Created, 'Session Created');
     } catch (e) {
       next(e);

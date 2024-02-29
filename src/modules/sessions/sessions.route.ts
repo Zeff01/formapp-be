@@ -3,8 +3,8 @@ import SessionsController from './sessions.controller';
 import RequestValidator from '@/middlewares/request-validator';
 import { verifyAuthToken } from '@/middlewares/auth';
 import {
+  CreateSessionDto,
   DeleteSessionDto,
-  ICreateSessionDto,
   IPaySessionDto,
 } from '@/dto/session.dto';
 
@@ -59,27 +59,27 @@ const controller = new SessionsController();
  * @return {Sessions} 200 - getSessions
  */
 sessionRouter.get('/', verifyAuthToken, controller.getSessions);
-/**
- * POST /sessions/
- * @typedef {object} ICreateSessionDto
- * @tags sessions
- * @summary Create Session
- * @security BearerAuth
- * @property {string} name.required
- * @property {string} code.required
- * @property {string} price.required
- * @property {integer} maxMember.required
- * @property {string[]} teams
- * @property {string} name
- * @security BearerAuth
- * @param {ICreateSessionDto} request.body.required
- * @return {Session} 201 - Session Created
- */
+// /**
+//  * POST /sessions/
+//  * @typedef {object} ICreateSessionDto
+//  * @tags sessions
+//  * @summary Create Session
+//  * @security BearerAuth
+//  * @property {string} name.required
+//  * @property {string} code.required
+//  * @property {string} price.required
+//  * @property {integer} maxMember.required
+//  * @property {string[]} teams
+//  * @property {string} name
+//  * @security BearerAuth
+//  * @param {ICreateSessionDto} request.body.required
+//  * @return {Session} 201 - Session Created
+//  */
 
 sessionRouter.post(
   '/',
   verifyAuthToken,
-  RequestValidator.validate(ICreateSessionDto),
+  RequestValidator.validate(CreateSessionDto),
   controller.createSession
 );
 /**

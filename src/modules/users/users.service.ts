@@ -20,7 +20,7 @@ export default class UserService {
       },
       include: {
         clubs: true,
-        sessions: true,
+        subSession: true,
       },
     });
   }
@@ -33,7 +33,7 @@ export default class UserService {
         type: UserTypeEnum.USER,
       },
       include: {
-        sessions: true,
+        subSession: true,
         payments: true,
       },
     });
