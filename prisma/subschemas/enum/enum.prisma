@@ -31,8 +31,3 @@ enum SesssionType {
   TRAINING
   TOURNAMENT
 }
-
-enum PackageType {
-  PLAYER
-  PACKAGE
-}

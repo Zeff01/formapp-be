@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Feb 29 2024 00:08:29 GMT+0800 (Philippine Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Fri Mar 01 2024 01:36:32 GMT+0800 (Philippine Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -57,11 +57,6 @@ enum SesssionType {
   TOURNAMENT
 }
 
-enum PackageType {
-  PLAYER
-  PACKAGE
-}
-
 model Faq {
   id        String   @id @default(uuid()) @map("_id")
   question  String
@@ -93,29 +88,16 @@ model payments {
   user              users             @relation(fields: [email], references: [email])
 }
 
-// model sessions {
-//   id        String     @id @default(uuid()) @map("_id")
-//   name      String
-//   teams     String[]   @default(["Red Team", "Orange Team", "Yellow Team", "Green Team", "Blue Team", "White Team", "Violet Team"])
-//   maxMember Int
-//   price     Float
-//   founderId String
-//   code      String     @unique
-//   createdAt DateTime?  @default(now()) @map("created_at")
-//   updatedAt DateTime?  @default(now()) @map("updated_at")
-//   founder   users      @relation(fields: [founderId], references: [id])
-//   payments  payments[]
-// }
 model sessions {
-  id         String       @id @default(uuid()) @map("_id")
-  name       String
-  location   String
-  date       String
-  time       String
-  createdAt  DateTime?    @default(now()) @map("created_at")
-  updatedAt  DateTime?    @default(now()) @map("updated_at")
-  payments   payments[]
-  subSession subSession[]
+  id          String       @id @default(uuid()) @map("_id")
+  name        String
+  location    String
+  sessionDate String
+  sessionTime String
+  createdAt   DateTime?    @default(now()) @map("created_at")
+  updatedAt   DateTime?    @default(now()) @map("updated_at")
+  payments    payments[]
+  subSession  subSession[]
 }
 
 model subSession {
@@ -124,7 +106,7 @@ model subSession {
   coach       String
   noofTeams   Int
   maxPlayers  Int
-  maxTeams    Int
+  maxperTeam  Int
   createdAt   DateTime?    @default(now()) @map("created_at")
   updatedAt   DateTime?    @default(now()) @map("updated_at")
   sessionId   String
@@ -137,7 +119,7 @@ model subSession {
 
 model teams {
   id           String     @id @default(uuid()) @map("_id")
-  name         String
+  teamName     String
   color        String
   subSessionId String
   subSession   subSession @relation(fields: [subSessionId], references: [id])
@@ -146,15 +128,15 @@ model teams {
 }
 
 model rates {
-  id           String      @id @default(uuid()) @map("_id")
-  package      String
+  id           String     @id @default(uuid()) @map("_id")
+  packageName  String
   cashRate     Float
   onlineRate   Float
-  packageType  PackageType
-  createdAt    DateTime?   @default(now()) @map("created_at")
-  updatedAt    DateTime?   @default(now()) @map("updated_at")
+  sessionCount Int
+  createdAt    DateTime?  @default(now()) @map("created_at")
+  updatedAt    DateTime?  @default(now()) @map("updated_at")
   subSessionId String
-  subSession   subSession  @relation(fields: [subSessionId], references: [id])
+  subSession   subSession @relation(fields: [subSessionId], references: [id])
 }
 
 model users {

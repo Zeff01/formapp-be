@@ -1,29 +1,17 @@
 import { users } from "..\user\user"
 import { payments } from "..\payments\payments"
-import { SesssionType, PackageType } from "..\enum\enum"
-// model sessions {
-//   id        String     @id @default(uuid()) @map("_id")
-//   name      String
-//   teams     String[]   @default(["Red Team", "Orange Team", "Yellow Team", "Green Team", "Blue Team", "White Team", "Violet Team"])
-//   maxMember Int
-//   price     Float
-//   founderId String
-//   code      String     @unique
-//   createdAt DateTime?  @default(now()) @map("created_at")
-//   updatedAt DateTime?  @default(now()) @map("updated_at")
-//   founder   users      @relation(fields: [founderId], references: [id])
-//   payments  payments[]
-// }
+import { SesssionType } from "..\enum\enum"
+
 model sessions {
-  id         String       @id @default(uuid()) @map("_id")
-  name       String
-  location   String
-  date       String
-  time       String
-  createdAt  DateTime?    @default(now()) @map("created_at")
-  updatedAt  DateTime?    @default(now()) @map("updated_at")
-  payments   payments[]
-  subSession subSession[]
+  id          String       @id @default(uuid()) @map("_id")
+  name        String
+  location    String
+  sessionDate String
+  sessionTime String
+  createdAt   DateTime?    @default(now()) @map("created_at")
+  updatedAt   DateTime?    @default(now()) @map("updated_at")
+  payments    payments[]
+  subSession  subSession[]
 }
 
 model subSession {
@@ -32,7 +20,7 @@ model subSession {
   coach       String
   noofTeams   Int
   maxPlayers  Int
-  maxTeams    Int
+  maxperTeam  Int
   createdAt   DateTime?    @default(now()) @map("created_at")
   updatedAt   DateTime?    @default(now()) @map("updated_at")
   sessionId   String
@@ -45,7 +33,7 @@ model subSession {
 
 model teams {
   id           String     @id @default(uuid()) @map("_id")
-  name         String
+  teamName     String
   color        String
   subSessionId String
   subSession   subSession @relation(fields: [subSessionId], references: [id])
@@ -54,13 +42,13 @@ model teams {
 }
 
 model rates {
-  id           String      @id @default(uuid()) @map("_id")
-  package      String
+  id           String     @id @default(uuid()) @map("_id")
+  packageName  String
   cashRate     Float
   onlineRate   Float
-  packageType  PackageType
-  createdAt    DateTime?   @default(now()) @map("created_at")
-  updatedAt    DateTime?   @default(now()) @map("updated_at")
+  sessionCount Int
+  createdAt    DateTime?  @default(now()) @map("created_at")
+  updatedAt    DateTime?  @default(now()) @map("updated_at")
   subSessionId String
-  subSession   subSession  @relation(fields: [subSessionId], references: [id])
+  subSession   subSession @relation(fields: [subSessionId], references: [id])
 }

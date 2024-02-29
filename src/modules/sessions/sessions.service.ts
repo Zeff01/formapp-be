@@ -1,5 +1,9 @@
 import LogMessage from '@/decorators/log-message.decorator';
-import { ICreateSessionDto, IPaySessionDto } from '@/dto/session.dto';
+import {
+  CreateSessionDto,
+  ICreateSessionDto,
+  IPaySessionDto,
+} from '@/dto/session.dto';
 import XenditService from './xendit.service';
 import {
   HttpBadRequestError,
@@ -10,7 +14,8 @@ import { IInvoiceTransactionOutput } from '@/dto/xendit.dto';
 import { JwtPayload } from '@/types/common.type';
 import { UserTypeEnum } from '.prisma/client';
 import prisma from '@/lib/prisma';
-import { sessions } from '@prisma/client';
+import { sessions, SesssionType } from '@prisma/client';
+import { AsyncLocalStorage } from 'async_hooks';
 
 export default class SessionsService {
   private readonly xenditService = new XenditService();
@@ -25,7 +30,7 @@ export default class SessionsService {
       where.code = code;
     }
 
-    return prisma.sessions.findMany({
+    return prisma.users.findMany({
       where: where,
       include: {
         payments: true,
@@ -33,16 +38,46 @@ export default class SessionsService {
     });
   }
 
-  public async createSession(data: ICreateSessionDto, user: JwtPayload) {
-    console.log(user);
-    if (user?.type !== UserTypeEnum.FOUNDER) {
-      throw new HttpUnAuthorizedError('Forbidden');
-    }
+  public async createSession(data: CreateSessionDto, user: JwtPayload) {
+    // if (user?.type !== UserTypeEnum.FOUNDER) {
+    //   throw new HttpUnAuthorizedError('Forbidden');
+    // }
 
     return prisma.sessions.create({
       data: {
-        ...data,
-        founderId: user.id,
+        name: data.name,
+        location: data.location,
+        sessionDate: data.sessionDate,
+        sessionTime: data.sessionTime,
+        subSession: {
+          create: [
+            {
+              sessionType: SesssionType[data.sessionType],
+              coach: data.coach,
+              noofTeams: data.noofTeams,
+              maxPlayers: data.maxPlayers,
+              maxperTeam: data.maxperTeam,
+              teams: {
+                createMany: {
+                  data: data.teams,
+                },
+              },
+              rates: {
+                createMany: {
+                  data: data.packages,
+                },
+              },
+            },
+          ],
+        },
+      },
+      include: {
+        subSession: {
+          include: {
+            teams: true,
+            rates: true,
+          },
+        },
       },
     });
   }

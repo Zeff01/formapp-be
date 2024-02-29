@@ -47,8 +47,8 @@ Table sessions {
   id String [pk]
   name String [not null]
   location String [not null]
-  date String [not null]
-  time String [not null]
+  sessionDate String [not null]
+  sessionTime String [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
   payments payments [not null]
@@ -61,7 +61,7 @@ Table subSession {
   coach String [not null]
   noofTeams Int [not null]
   maxPlayers Int [not null]
-  maxTeams Int [not null]
+  maxperTeam Int [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
   sessionId String [not null]
@@ -74,7 +74,7 @@ Table subSession {
 
 Table teams {
   id String [pk]
-  name String [not null]
+  teamName String [not null]
   color String [not null]
   subSessionId String [not null]
   subSession subSession [not null]
@@ -84,10 +84,10 @@ Table teams {
 
 Table rates {
   id String [pk]
-  package String [not null]
+  packageName String [not null]
   cashRate Float [not null]
   onlineRate Float [not null]
-  packageType PackageType [not null]
+  sessionCount Int [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
   subSessionId String [not null]
@@ -147,11 +147,6 @@ Enum SesssionType {
   OPENPLAY
   TRAINING
   TOURNAMENT
-}
-
-Enum PackageType {
-  PLAYER
-  PACKAGE
 }
 
 Ref: clubs.founderId > users.id
