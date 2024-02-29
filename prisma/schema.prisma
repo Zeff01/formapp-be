@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Feb 28 2024 09:53:10 GMT+0800 (Singapore Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Feb 29 2024 15:59:43 GMT+0800 (Singapore Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -13,16 +13,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model clubs {
+model Clubs {
   id        String    @id @default(uuid()) @map("_id")
   clubName  String
-  package   String?
+  packages  Package[]
   password  String
-  clublink  String?
   founderId String
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @default(now()) @map("updated_at")
-  founder   users?    @relation(fields: [founderId], references: [id])
+  founder   users     @relation(fields: [founderId], references: [id])
+}
+
+model Package {
+  id          String   @id @default(uuid()) @map("_id")
+  packageName String
+  features    String[]
+  monthlyRate String
+  yearlyRate  String
+  Clubs       Clubs?   @relation(fields: [clubsId], references: [id])
+  clubsId     String?
 }
 
 enum UserTypeEnum {
@@ -114,7 +123,7 @@ model users {
   updatedAt   DateTime?    @default(now()) @map("updated_at")
   gender      Gender?
   type        UserTypeEnum
-  clubs       clubs[]
+  clubs       Clubs[]
   sessions    sessions[]
   payments    payments[]
 

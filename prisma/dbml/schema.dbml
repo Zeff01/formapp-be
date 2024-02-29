@@ -2,16 +2,25 @@
 //// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 //// ------------------------------------------------------
 
-Table clubs {
+Table Clubs {
   id String [pk]
   clubName String [not null]
-  package String
+  packages Package [not null]
   password String [not null]
-  clublink String
   founderId String [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
-  founder users
+  founder users [not null]
+}
+
+Table Package {
+  id String [pk]
+  packageName String [not null]
+  features String[] [not null]
+  monthlyRate String [not null]
+  yearlyRate String [not null]
+  Clubs Clubs
+  clubsId String
 }
 
 Table Faq {
@@ -75,7 +84,7 @@ Table users {
   updatedAt DateTime [default: `now()`]
   gender Gender
   type UserTypeEnum [not null]
-  clubs clubs [not null]
+  clubs Clubs [not null]
   sessions sessions [not null]
   payments payments [not null]
 }
@@ -108,7 +117,9 @@ Enum Gender {
   FEMALE
 }
 
-Ref: clubs.founderId > users.id
+Ref: Clubs.founderId > users.id
+
+Ref: Package.clubsId > Clubs.id
 
 Ref: payments.sessionId > sessions.id
 

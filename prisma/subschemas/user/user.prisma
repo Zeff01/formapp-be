@@ -18,7 +18,7 @@ model users {
   updatedAt   DateTime?    @default(now()) @map("updated_at")
   gender      Gender?
   type        UserTypeEnum
-  clubs       clubs[]
+  clubs       Clubs[]
   sessions    sessions[]
   payments    payments[]
 
