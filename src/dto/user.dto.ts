@@ -1,4 +1,6 @@
 import {
+  ArrayNotEmpty,
+  IsArray,
   IsDateString,
   IsEmail,
   IsEnum,
@@ -71,8 +73,27 @@ export class CreateClubDto {
   @IsNotEmpty()
   password: string;
 
-  @IsUrl()
-  clublink?: string;
+  @IsArray()
+  @IsNotEmpty()
+  packages: PackageDto[];
+}
+
+export class PackageDto {
+  @IsString()
+  @IsNotEmpty()
+  packageName: string;
+
+  @IsArray()
+  @ArrayNotEmpty()
+  features: string[];
+
+  @IsString()
+  @IsNotEmpty()
+  monthlyRate: string;
+
+  @IsString()
+  @IsNotEmpty()
+  yearlyRate: string;
 }
 
 export class UpdateUserDto {
