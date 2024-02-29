@@ -5,11 +5,13 @@
 Table clubs {
   id String [pk]
   clubName String [not null]
-  package String [not null]
+  package String
+  password String [not null]
+  clublink String
   founderId String [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
-  founder users [not null]
+  founder users
 }
 
 Table Faq {

@@ -62,6 +62,19 @@ export class CreateFounderDto {
   password: string;
 }
 
+export class CreateClubDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @IsUrl()
+  clublink?: string;
+}
+
 export class UpdateUserDto {
   @IsUUID()
   id: string;

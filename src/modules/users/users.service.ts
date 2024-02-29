@@ -2,11 +2,12 @@ import { type Prisma, UserTypeEnum, type users, Gender } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import LogMessage from '@/decorators/log-message.decorator';
 import {
+  CreateClubDto,
   CreateFounderDto,
   CreateUserDto,
   LoginFounderDto,
 } from '@/dto/user.dto';
-import { HttpNotFoundError } from '@/lib/errors';
+import { HttpNotFoundError, HttpUnAuthorizedError } from '@/lib/errors';
 import { GeneratorProvider } from '@/lib/bcrypt';
 import JwtUtil from '@/lib/jwt';
 import { JwtPayload } from '@/types/common.type';
@@ -152,6 +153,20 @@ export default class UserService {
         phone: data.phone,
         password: GeneratorProvider.generateHash(data.password),
         type: UserTypeEnum.FOUNDER,
+      },
+    });
+  }
+
+  public async createClub(data: CreateClubDto, user: JwtPayload) {
+    if (user?.type !== UserTypeEnum.FOUNDER) {
+      throw new HttpUnAuthorizedError('Forbidden');
+    }
+
+    return prisma.clubs.create({
+      data: {
+        clubName: data.name,
+        password: GeneratorProvider.generateHash(data.password),
+        clublink: data.clublink,
       },
     });
   }

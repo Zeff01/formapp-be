@@ -4,6 +4,7 @@ import {
   CreateUserDto,
   DeleteUserDto,
   CreateFounderDto,
+  CreateClubDto,
   LoginFounderDto,
   UpdateUserDto,
 } from '@/dto/user.dto';
@@ -63,10 +64,29 @@ users
  * @param {CreateUserDto} request.body.required
  * @return {User} 201 - Staff Successfully Created
  */
+
 users
   .route('/staff')
   .post(RequestValidator.validate(CreateUserDto), controller.createStaff)
   .get(controller.getMemberInfo);
+
+
+/**
+ * POST /clubs/
+ * @typedef {object} CreateClubDto
+ * @summary Create Club
+ * @tags users
+ * @property {string} name.required
+ * @property {string} password.required
+ * @property {string} clublink
+ * @param {ICreateClubDto} request.body.required
+ * @return {User} 201 - Club Created
+ */
+
+users
+.route('/club');
+// .post(RequestValidator.validate(CreateClubDto));
+
 
 /**
  * POST /users/Founder
