@@ -40,9 +40,9 @@ export default class SessionsService {
   }
 
   public async createSession(data: CreateSessionDto, user: JwtPayload) {
-    // if (user?.type !== UserTypeEnum.FOUNDER) {
-    //   throw new HttpUnAuthorizedError('Forbidden');
-    // }
+    if (user?.type !== UserTypeEnum.FOUNDER) {
+      throw new HttpUnAuthorizedError('Forbidden');
+    }
 
     return prisma.sessions.create({
       data: {
