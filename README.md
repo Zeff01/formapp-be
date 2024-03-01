@@ -63,7 +63,8 @@ This repo is created as a template repo so that [creating new repo from this tem
 Clone the project
 
 ```bash
-  git clone https://github.com/vintagegnome/expressjs-typescript-prisma-boilerplate.git
+  git clone https://github.com/Zeff01/formapp-be.git
+
 ```
 
 Go to the project directory
