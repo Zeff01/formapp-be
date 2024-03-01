@@ -62,7 +62,13 @@ const controller = new SessionsController();
  * @security BearerAuth
  * @return {Sessions} 200 - getSessions
  */
-sessionRouter.get('/', verifyAuthToken, controller.getSessions);
+sessionRouter.get('/', controller.getSessions);
+
+sessionRouter.get(
+  '/players',
+  verifyAuthToken,
+  controller.getPlayersPerSubSession
+);
 // /**
 //  * POST /sessions/
 //  * @typedef {object} ICreateSessionDto
@@ -156,21 +162,5 @@ sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
 //  * @return {Payments} 201 - paymentCallback
 //  */
 // sessionRouter.post('/payout/callback', controller.paymentCallback);
-// /**
-//  * DELETE sessions/
-//  * @typedef {object} DeleteSessionDto
-//  * @summary Delete Session
-//  * @tags sessions
-//  * @property {string} code.required - Session Code
-//  * @param {DeleteSessionDto} request.body.required
-//  * @security BearerAuth
-//  * @return {Payments} 200 - Session Successfully Deleted
-//  */
-// sessionRouter.delete(
-//   '/',
-//   verifyAuthToken,
-//   RequestValidator.validate(DeleteSessionDto),
-//   controller.deleteSession
-// );
 
 export default sessionRouter;

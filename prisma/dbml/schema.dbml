@@ -55,6 +55,7 @@ Table sessions {
   subSession subSession [not null]
   rates rates [not null]
   status RecordStatus [not null, default: 'ACTIVE']
+  createdBy String
 }
 
 Table subSession {
@@ -71,6 +72,7 @@ Table subSession {
   teams teams [not null]
   users users [not null]
   status RecordStatus [not null, default: 'ACTIVE']
+  createdBy String
 }
 
 Table teams {
