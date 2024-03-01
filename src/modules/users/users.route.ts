@@ -27,6 +27,14 @@ const controller = new Controller();
  */
 
 /**
+ * Club
+ * @typedef {object} Club
+ * @property {string} name - Club Name
+ * @property {string} password - Password of Club
+ * @property {String} {}
+ */
+
+/**
  * POST /users
  * @typedef {object} CreateUserDto
  * @summary Create Player
@@ -70,24 +78,6 @@ users
   .post(RequestValidator.validate(CreateUserDto), controller.createStaff)
   .get(controller.getMemberInfo);
 
-
-/**
- * POST /clubs/
- * @typedef {object} CreateClubDto
- * @summary Create Club
- * @tags users
- * @property {string} name.required
- * @property {string} password.required
- * @property {string} clublink
- * @param {ICreateClubDto} request.body.required
- * @return {User} 201 - Club Created
- */
-
-users
-.route('/club');
-// .post(RequestValidator.validate(CreateClubDto));
-
-
 /**
  * POST /users/Founder
  * @typedef {object} CreateFounderDto
@@ -105,6 +95,23 @@ users
   .route('/founder')
   .post(RequestValidator.validate(CreateFounderDto), controller.createFounder)
   .get(controller.getFounderInfo);
+
+/**
+ * POST /clubs/
+ * @typedef {object} CreateClubDto
+ * @summary Create Club
+ * @tags users
+ * @property {string} name.required
+ * @property {string} password.required
+ * @property {string} clublink
+ * @property {string} package.required
+ * @param {CreateClubDto} request.body.required
+ * @return {User} 201 - Club Created
+ */
+
+users
+  .route('/club')
+  .post(RequestValidator.validate(CreateClubDto), controller.createClub);
 
 /**
  * PATCH /users/

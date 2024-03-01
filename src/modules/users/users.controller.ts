@@ -1,8 +1,8 @@
 import { type NextFunction, type Request } from 'express';
-import { type users } from '@prisma/client';
+import { Clubs, type users } from '@prisma/client';
 import { HttpStatusCode } from 'axios';
 import UserService from './users.service';
-import { type CustomResponse } from '@/types/common.type';
+import { JwtPayload, type CustomResponse } from '@/types/common.type';
 import Api from '@/lib/api';
 
 export default class UserController extends Api {
@@ -99,6 +99,22 @@ export default class UserController extends Api {
         HttpStatusCode.Created,
         'Founder Successfully Created'
       );
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public createClub = async (
+    req: Request,
+    res: CustomResponse<Clubs>,
+    next: NextFunction
+  ) => {
+    try {
+      const club = await this.userService.createClub(
+        req.body,
+        req.user as JwtPayload
+      );
+      this.send(res, club, HttpStatusCode.Created, 'Club Created');
     } catch (e) {
       next(e);
     }

@@ -5,6 +5,7 @@ import {
   CreateClubDto,
   CreateFounderDto,
   CreateUserDto,
+  PackageDto,
   LoginFounderDto,
 } from '@/dto/user.dto';
 import { HttpNotFoundError, HttpUnAuthorizedError } from '@/lib/errors';
@@ -161,15 +162,38 @@ export default class UserService {
     if (user?.type !== UserTypeEnum.FOUNDER) {
       throw new HttpUnAuthorizedError('Forbidden');
     }
-
     return prisma.clubs.create({
       data: {
         clubName: data.name,
         password: GeneratorProvider.generateHash(data.password),
-        clublink: data.clublink,
+        packages: {
+          create: data.packages.map((packageData) => {
+            return {
+              packageName: packageData.packageName,
+              features: { set: packageData.features },
+              monthlyRate: packageData.monthlyRate,
+              yearlyRate: packageData.yearlyRate,
+            };
+          }),
+        },
+        founderId: user.id,
       },
     });
   }
+
+  // public async getClub(data: GetClubDto, user: JwtPayload) {
+  //   if (user?.type!== UserTypeEnum.FOUNDER) {
+  //     throw new HttpUnAuthorizedError('Forbidden');
+  //   }
+  //   return prisma.clubs.findFirst({
+  //     where: {
+  //       clubName: data.name,
+  //     },
+  //     include: {
+  //       packages: true,
+  //     },
+  //   });
+  // }
 
   @LogMessage<[users]>({ message: 'User Deleted' })
   public async deleteUser(data: users) {
