@@ -4,8 +4,12 @@ import RequestValidator from '@/middlewares/request-validator';
 import { verifyAuthToken } from '@/middlewares/auth';
 import {
   CreateSessionDto,
+  CreateSubSessionDto,
   DeleteSessionDto,
+  DeleteSubSessionDto,
   IPaySessionDto,
+  UpdateMainSession,
+  UpdateSubSession,
 } from '@/dto/session.dto';
 
 const sessionRouter: Router = Router();
@@ -83,6 +87,41 @@ sessionRouter.post(
   controller.createSession
 );
 
+sessionRouter.patch(
+  '/',
+  verifyAuthToken,
+  RequestValidator.validate(UpdateMainSession),
+  controller.updateMainSession
+);
+
+sessionRouter.patch(
+  '/rm',
+  verifyAuthToken,
+  RequestValidator.validate(DeleteSessionDto),
+  controller.deleteMainSession
+);
+
+sessionRouter.patch(
+  '/sub',
+  verifyAuthToken,
+  RequestValidator.validate(UpdateSubSession),
+  controller.updateSubSession
+);
+
+sessionRouter.patch(
+  '/sub/rm',
+  verifyAuthToken,
+  RequestValidator.validate(DeleteSubSessionDto),
+  controller.deleteSubSession
+);
+
+sessionRouter.post(
+  '/sub',
+  verifyAuthToken,
+  RequestValidator.validate(CreateSubSessionDto),
+  controller.createSubSession
+);
+
 sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
 /**
  * POST sessions/payment
@@ -95,43 +134,43 @@ sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
  * @return {Xendit} 201 - paySession
  */
 
-sessionRouter.patch('/join', verifyAuthToken, controller.joinGame);
+// sessionRouter.patch('/join', verifyAuthToken, controller.joinGame);
 
-sessionRouter.post(
-  '/payment',
-  RequestValidator.validate(IPaySessionDto),
-  controller.paySession
-);
-/**
- * POST sessions/payment/callback
- * @summary Payment Callback
- * @tags sessions
- * @return {Payments} 201 - paySession
- */
-sessionRouter.post('/payment/callback', controller.paymentCallback);
+// sessionRouter.post(
+//   '/payment',
+//   RequestValidator.validate(IPaySessionDto),
+//   controller.paySession
+// );
+// /**
+//  * POST sessions/payment/callback
+//  * @summary Payment Callback
+//  * @tags sessions
+//  * @return {Payments} 201 - paySession
+//  */
+// sessionRouter.post('/payment/callback', controller.paymentCallback);
 
-/**
- * POST sessions/payout/callback
- * @summary Payout Callback
- * @tags sessions
- * @return {Payments} 201 - paymentCallback
- */
-sessionRouter.post('/payout/callback', controller.paymentCallback);
-/**
- * DELETE sessions/
- * @typedef {object} DeleteSessionDto
- * @summary Delete Session
- * @tags sessions
- * @property {string} code.required - Session Code
- * @param {DeleteSessionDto} request.body.required
- * @security BearerAuth
- * @return {Payments} 200 - Session Successfully Deleted
- */
-sessionRouter.delete(
-  '/',
-  verifyAuthToken,
-  RequestValidator.validate(DeleteSessionDto),
-  controller.deleteSession
-);
+// /**
+//  * POST sessions/payout/callback
+//  * @summary Payout Callback
+//  * @tags sessions
+//  * @return {Payments} 201 - paymentCallback
+//  */
+// sessionRouter.post('/payout/callback', controller.paymentCallback);
+// /**
+//  * DELETE sessions/
+//  * @typedef {object} DeleteSessionDto
+//  * @summary Delete Session
+//  * @tags sessions
+//  * @property {string} code.required - Session Code
+//  * @param {DeleteSessionDto} request.body.required
+//  * @security BearerAuth
+//  * @return {Payments} 200 - Session Successfully Deleted
+//  */
+// sessionRouter.delete(
+//   '/',
+//   verifyAuthToken,
+//   RequestValidator.validate(DeleteSessionDto),
+//   controller.deleteSession
+// );
 
 export default sessionRouter;

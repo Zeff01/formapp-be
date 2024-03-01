@@ -40,18 +40,99 @@ export default class SessionsController extends Api {
       next(e);
     }
   };
-  public joinGame = async (
+
+  public createSubSession = async (
     req: Request,
     res: CustomResponse<users>,
     next: NextFunction
   ) => {
     try {
-      const result = await this.sessionsService.joinGame(req.body);
-      this.send(res, result, HttpStatusCode.Created, 'Join Successfully');
+      const result = await this.sessionsService.createSubSession(
+        req.body,
+        req.user as JwtPayload
+      );
+
+      this.send(res, result, HttpStatusCode.Created, 'Sub Session Created');
     } catch (e) {
       next(e);
     }
   };
+
+  public updateMainSession = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.sessionsService.updateMainSession(
+        req.body,
+        req.user as JwtPayload
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Session Updated');
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public deleteMainSession = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.sessionsService.deleteMainSession(
+        req.body,
+        req.user as JwtPayload
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Session Deleted');
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public updateSubSession = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.sessionsService.updateSubSession(
+        req.body,
+        req.user as JwtPayload
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Sub Session Updated');
+    } catch (e) {
+      next(e);
+    }
+  };
+  public deleteSubSession = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.sessionsService.deleteSubSession(
+        req.body,
+        req.user as JwtPayload
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Sub Session Deleted');
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  // public joinGame = async (
+  //   req: Request,
+  //   res: CustomResponse<users>,
+  //   next: NextFunction
+  // ) => {
+  //   try {
+  //     const result = await this.sessionsService.joinGame(req.body);
+  //     this.send(res, result, HttpStatusCode.Created, 'Join Successfully');
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // };
   public getGamePerSubId = async (
     req: Request,
     res: CustomResponse<users>,
@@ -65,42 +146,42 @@ export default class SessionsController extends Api {
     }
   };
 
-  public paySession = async (
-    req: Request,
-    res: CustomResponse<users>,
-    next: NextFunction
-  ) => {
-    try {
-      const result = await this.sessionsService.paySession(req.body);
-      this.send(res, result, HttpStatusCode.Created, 'paySession');
-    } catch (e) {
-      next(e);
-    }
-  };
+  // public paySession = async (
+  //   req: Request,
+  //   res: CustomResponse<users>,
+  //   next: NextFunction
+  // ) => {
+  //   try {
+  //     const result = await this.sessionsService.paySession(req.body);
+  //     this.send(res, result, HttpStatusCode.Created, 'paySession');
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // };
 
-  public paymentCallback = async (
-    req: Request,
-    res: CustomResponse<users>,
-    next: NextFunction
-  ) => {
-    try {
-      const result = await this.sessionsService.paymentCallback(req.body);
-      this.send(res, result, HttpStatusCode.Created, 'paymentCallback');
-    } catch (e) {
-      next(e);
-    }
-  };
+  // public paymentCallback = async (
+  //   req: Request,
+  //   res: CustomResponse<users>,
+  //   next: NextFunction
+  // ) => {
+  //   try {
+  //     const result = await this.sessionsService.paymentCallback(req.body);
+  //     this.send(res, result, HttpStatusCode.Created, 'paymentCallback');
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // };
 
-  public deleteSession = async (
-    req: Request,
-    res: CustomResponse<users>,
-    next: NextFunction
-  ) => {
-    try {
-      const result = await this.sessionsService.deleteSession(req.body);
-      this.send(res, result, HttpStatusCode.Ok, 'Session Successfully Deleted');
-    } catch (e) {
-      next(e);
-    }
-  };
+  // public deleteSession = async (
+  //   req: Request,
+  //   res: CustomResponse<users>,
+  //   next: NextFunction
+  // ) => {
+  //   try {
+  //     const result = await this.sessionsService.deleteSession(req.body);
+  //     this.send(res, result, HttpStatusCode.Ok, 'Session Successfully Deleted');
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // };
 }

@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Fri Mar 01 2024 20:15:28 GMT+0800 (Philippine Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Fri Mar 01 2024 23:17:59 GMT+0800 (Philippine Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -57,6 +57,11 @@ enum SesssionType {
   TOURNAMENT
 }
 
+enum RecordStatus {
+  DELETED
+  ACTIVE
+}
+
 model Faq {
   id        String   @id @default(uuid()) @map("_id")
   question  String
@@ -99,6 +104,7 @@ model sessions {
   payments    payments[]
   subSession  subSession[]
   rates       rates[]
+  status      RecordStatus @default(ACTIVE)
 }
 
 model subSession {
@@ -113,32 +119,34 @@ model subSession {
   sessionId   String
   sessions    sessions     @relation(fields: [sessionId], references: [id])
   teams       teams[]
-
-  users users[]
+  users       users[]
+  status      RecordStatus @default(ACTIVE)
 }
 
 model teams {
-  id           String     @id @default(uuid()) @map("_id")
+  id           String       @id @default(uuid()) @map("_id")
   teamName     String
   color        String
   subSessionId String
-  subSession   subSession @relation(fields: [subSessionId], references: [id])
-  createdAt    DateTime?  @default(now()) @map("created_at")
-  updatedAt    DateTime?  @default(now()) @map("updated_at")
+  subSession   subSession   @relation(fields: [subSessionId], references: [id])
+  createdAt    DateTime?    @default(now()) @map("created_at")
+  updatedAt    DateTime?    @default(now()) @map("updated_at")
   players      String[]
-  users        users[]    @relation(fields: [players], references: [id])
+  users        users[]      @relation(fields: [players], references: [id])
+  status       RecordStatus @default(ACTIVE)
 }
 
 model rates {
-  id           String    @id @default(uuid()) @map("_id")
+  id           String       @id @default(uuid()) @map("_id")
   packageName  String
   cashRate     Float
   onlineRate   Float
   sessionCount Int
-  createdAt    DateTime? @default(now()) @map("created_at")
-  updatedAt    DateTime? @default(now()) @map("updated_at")
+  createdAt    DateTime?    @default(now()) @map("created_at")
+  updatedAt    DateTime?    @default(now()) @map("updated_at")
   sessionId    String
-  sessions     sessions  @relation(fields: [sessionId], references: [id])
+  sessions     sessions     @relation(fields: [sessionId], references: [id])
+  status       RecordStatus @default(ACTIVE)
 }
 
 model users {

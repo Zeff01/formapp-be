@@ -54,6 +54,7 @@ Table sessions {
   payments payments [not null]
   subSession subSession [not null]
   rates rates [not null]
+  status RecordStatus [not null, default: 'ACTIVE']
 }
 
 Table subSession {
@@ -69,6 +70,7 @@ Table subSession {
   sessions sessions [not null]
   teams teams [not null]
   users users [not null]
+  status RecordStatus [not null, default: 'ACTIVE']
 }
 
 Table teams {
@@ -81,6 +83,7 @@ Table teams {
   updatedAt DateTime [default: `now()`]
   players String[] [not null]
   users users [not null]
+  status RecordStatus [not null, default: 'ACTIVE']
 }
 
 Table rates {
@@ -93,6 +96,7 @@ Table rates {
   updatedAt DateTime [default: `now()`]
   sessionId String [not null]
   sessions sessions [not null]
+  status RecordStatus [not null, default: 'ACTIVE']
 }
 
 Table users {
@@ -151,6 +155,11 @@ Enum SesssionType {
   OPENPLAY
   TRAINING
   TOURNAMENT
+}
+
+Enum RecordStatus {
+  DELETED
+  ACTIVE
 }
 
 Ref: clubs.founderId > users.id

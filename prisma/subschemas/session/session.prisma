@@ -1,6 +1,6 @@
 import { users } from "..\user\user"
 import { payments } from "..\payments\payments"
-import { SesssionType } from "..\enum\enum"
+import { SesssionType, RecordStatus } from "..\enum\enum"
 import { sessions, users, users } from "..\..\schema"
 
 model sessions {
@@ -14,6 +14,7 @@ model sessions {
   payments    payments[]
   subSession  subSession[]
   rates       rates[]
+  status      RecordStatus @default(ACTIVE)
 }
 
 model subSession {
@@ -28,30 +29,32 @@ model subSession {
   sessionId   String
   sessions    sessions     @relation(fields: [sessionId], references: [id])
   teams       teams[]
-
-  users users[]
+  users       users[]
+  status      RecordStatus @default(ACTIVE)
 }
 
 model teams {
-  id           String     @id @default(uuid()) @map("_id")
+  id           String       @id @default(uuid()) @map("_id")
   teamName     String
   color        String
   subSessionId String
-  subSession   subSession @relation(fields: [subSessionId], references: [id])
-  createdAt    DateTime?  @default(now()) @map("created_at")
-  updatedAt    DateTime?  @default(now()) @map("updated_at")
+  subSession   subSession   @relation(fields: [subSessionId], references: [id])
+  createdAt    DateTime?    @default(now()) @map("created_at")
+  updatedAt    DateTime?    @default(now()) @map("updated_at")
   players      String[]
-  users        users[]    @relation(fields: [players], references: [id])
+  users        users[]      @relation(fields: [players], references: [id])
+  status       RecordStatus @default(ACTIVE)
 }
 
 model rates {
-  id           String    @id @default(uuid()) @map("_id")
+  id           String       @id @default(uuid()) @map("_id")
   packageName  String
   cashRate     Float
   onlineRate   Float
   sessionCount Int
-  createdAt    DateTime? @default(now()) @map("created_at")
-  updatedAt    DateTime? @default(now()) @map("updated_at")
+  createdAt    DateTime?    @default(now()) @map("created_at")
+  updatedAt    DateTime?    @default(now()) @map("updated_at")
   sessionId    String
-  sessions     sessions  @relation(fields: [sessionId], references: [id])
+  sessions     sessions     @relation(fields: [sessionId], references: [id])
+  status       RecordStatus @default(ACTIVE)
 }
