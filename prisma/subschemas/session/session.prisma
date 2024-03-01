@@ -1,6 +1,7 @@
 import { users } from "..\user\user"
 import { payments } from "..\payments\payments"
 import { SesssionType } from "..\enum\enum"
+import { sessions, users, users } from "..\..\schema"
 
 model sessions {
   id          String       @id @default(uuid()) @map("_id")
@@ -12,6 +13,7 @@ model sessions {
   updatedAt   DateTime?    @default(now()) @map("updated_at")
   payments    payments[]
   subSession  subSession[]
+  rates       rates[]
 }
 
 model subSession {
@@ -26,9 +28,8 @@ model subSession {
   sessionId   String
   sessions    sessions     @relation(fields: [sessionId], references: [id])
   teams       teams[]
-  rates       rates[]
-  users       users?       @relation(fields: [usersId], references: [id])
-  usersId     String?
+
+  users users[]
 }
 
 model teams {
@@ -39,16 +40,18 @@ model teams {
   subSession   subSession @relation(fields: [subSessionId], references: [id])
   createdAt    DateTime?  @default(now()) @map("created_at")
   updatedAt    DateTime?  @default(now()) @map("updated_at")
+  players      String[]
+  users        users[]    @relation(fields: [players], references: [id])
 }
 
 model rates {
-  id           String     @id @default(uuid()) @map("_id")
+  id           String    @id @default(uuid()) @map("_id")
   packageName  String
   cashRate     Float
   onlineRate   Float
   sessionCount Int
-  createdAt    DateTime?  @default(now()) @map("created_at")
-  updatedAt    DateTime?  @default(now()) @map("updated_at")
-  subSessionId String
-  subSession   subSession @relation(fields: [subSessionId], references: [id])
+  createdAt    DateTime? @default(now()) @map("created_at")
+  updatedAt    DateTime? @default(now()) @map("updated_at")
+  sessionId    String
+  sessions     sessions  @relation(fields: [sessionId], references: [id])
 }

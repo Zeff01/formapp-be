@@ -82,6 +82,8 @@ sessionRouter.post(
   RequestValidator.validate(CreateSessionDto),
   controller.createSession
 );
+
+sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
 /**
  * POST sessions/payment
  * @typedef {object} IPaySessionDto
@@ -92,6 +94,8 @@ sessionRouter.post(
  * @param {IPaySessionDto} request.body.required
  * @return {Xendit} 201 - paySession
  */
+
+sessionRouter.patch('/join', verifyAuthToken, controller.joinGame);
 
 sessionRouter.post(
   '/payment',

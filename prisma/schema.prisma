@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Fri Mar 01 2024 01:36:32 GMT+0800 (Philippine Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Fri Mar 01 2024 20:15:28 GMT+0800 (Philippine Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -98,6 +98,7 @@ model sessions {
   updatedAt   DateTime?    @default(now()) @map("updated_at")
   payments    payments[]
   subSession  subSession[]
+  rates       rates[]
 }
 
 model subSession {
@@ -112,9 +113,8 @@ model subSession {
   sessionId   String
   sessions    sessions     @relation(fields: [sessionId], references: [id])
   teams       teams[]
-  rates       rates[]
-  users       users?       @relation(fields: [usersId], references: [id])
-  usersId     String?
+
+  users users[]
 }
 
 model teams {
@@ -125,39 +125,44 @@ model teams {
   subSession   subSession @relation(fields: [subSessionId], references: [id])
   createdAt    DateTime?  @default(now()) @map("created_at")
   updatedAt    DateTime?  @default(now()) @map("updated_at")
+  players      String[]
+  users        users[]    @relation(fields: [players], references: [id])
 }
 
 model rates {
-  id           String     @id @default(uuid()) @map("_id")
+  id           String    @id @default(uuid()) @map("_id")
   packageName  String
   cashRate     Float
   onlineRate   Float
   sessionCount Int
-  createdAt    DateTime?  @default(now()) @map("created_at")
-  updatedAt    DateTime?  @default(now()) @map("updated_at")
-  subSessionId String
-  subSession   subSession @relation(fields: [subSessionId], references: [id])
+  createdAt    DateTime? @default(now()) @map("created_at")
+  updatedAt    DateTime? @default(now()) @map("updated_at")
+  sessionId    String
+  sessions     sessions  @relation(fields: [sessionId], references: [id])
 }
 
 model users {
-  id          String       @id @default(uuid()) @map("_id")
-  firstName   String
-  lastName    String
-  email       String
-  password    String?
-  phone       String
-  profilePic  String?
-  link        String?
-  age         Int?
-  address     String?
-  dateofbirth DateTime?
-  createdAt   DateTime?    @default(now()) @map("created_at")
-  updatedAt   DateTime?    @default(now()) @map("updated_at")
-  gender      Gender?
-  type        UserTypeEnum
-  clubs       clubs[]
-  subSession  subSession[]
-  payments    payments[]
+  id           String       @id @default(uuid()) @map("_id")
+  firstName    String
+  lastName     String
+  email        String
+  password     String?
+  phone        String
+  profilePic   String?
+  link         String?
+  age          Int?
+  address      String?
+  dateofbirth  DateTime?
+  createdAt    DateTime?    @default(now()) @map("created_at")
+  updatedAt    DateTime?    @default(now()) @map("updated_at")
+  gender       Gender?
+  type         UserTypeEnum
+  clubs        clubs[]
+  subSessionId String?
+  subSession   subSession?  @relation(fields: [subSessionId], references: [id])
+  payments     payments[]
+  teamId       String[]
+  teams        teams[]      @relation(fields: [teamId], references: [id])
 
   @@unique([email])
 }

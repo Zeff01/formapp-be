@@ -91,6 +91,7 @@ export default class UserService {
     if (!data.password) {
       throw new Error('Password is required');
     }
+    console.log('--------------', data.password);
     return await prisma.users.create({
       data: {
         email: data.email,

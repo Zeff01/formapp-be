@@ -53,6 +53,7 @@ Table sessions {
   updatedAt DateTime [default: `now()`]
   payments payments [not null]
   subSession subSession [not null]
+  rates rates [not null]
 }
 
 Table subSession {
@@ -67,9 +68,7 @@ Table subSession {
   sessionId String [not null]
   sessions sessions [not null]
   teams teams [not null]
-  rates rates [not null]
-  users users
-  usersId String
+  users users [not null]
 }
 
 Table teams {
@@ -80,6 +79,8 @@ Table teams {
   subSession subSession [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
+  players String[] [not null]
+  users users [not null]
 }
 
 Table rates {
@@ -90,8 +91,8 @@ Table rates {
   sessionCount Int [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
-  subSessionId String [not null]
-  subSession subSession [not null]
+  sessionId String [not null]
+  sessions sessions [not null]
 }
 
 Table users {
@@ -111,8 +112,11 @@ Table users {
   gender Gender
   type UserTypeEnum [not null]
   clubs clubs [not null]
-  subSession subSession [not null]
+  subSessionId String
+  subSession subSession
   payments payments [not null]
+  teamId String[] [not null]
+  teams teams [not null]
 }
 
 Enum UserTypeEnum {
@@ -157,8 +161,12 @@ Ref: payments.email > users.email
 
 Ref: subSession.sessionId > sessions.id
 
-Ref: subSession.usersId > users.id
-
 Ref: teams.subSessionId > subSession.id
 
-Ref: rates.subSessionId > subSession.id
+Ref: teams.players > users.id
+
+Ref: rates.sessionId > sessions.id
+
+Ref: users.subSessionId > subSession.id
+
+Ref: users.teamId > teams.id

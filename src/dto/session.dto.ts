@@ -119,3 +119,8 @@ export class CreateSessionDto {
   // @Type(() => PackagesDto)
   // packages: PackagesDto[];
 }
+
+export class IGameDto {
+  @IsString()
+  subSessionId: string;
+}
