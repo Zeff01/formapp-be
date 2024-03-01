@@ -1,6 +1,7 @@
 import LogMessage from '@/decorators/log-message.decorator';
 import {
   CreateSessionDto,
+  CreateSubSessionDto,
   ICreateSessionDto,
   IGameDto,
   IPaySessionDto,
@@ -15,7 +16,12 @@ import { IInvoiceTransactionOutput } from '@/dto/xendit.dto';
 import { JwtPayload } from '@/types/common.type';
 import { UserTypeEnum } from '.prisma/client';
 import prisma from '@/lib/prisma';
-import { sessions, SesssionType } from '@prisma/client';
+import {
+  sessions,
+  SesssionType,
+  RecordStatus,
+  subSession,
+} from '@prisma/client';
 import { AsyncLocalStorage } from 'async_hooks';
 
 export default class SessionsService {
@@ -83,6 +89,95 @@ export default class SessionsService {
       },
     });
   }
+
+  public async createSubSession(data: CreateSubSessionDto, user: JwtPayload) {
+    if (user?.type !== UserTypeEnum.FOUNDER) {
+      throw new HttpUnAuthorizedError('Forbidden');
+    }
+
+    return prisma.subSession.create({
+      data: {
+        sessionId: data.sessionId,
+        coach: data.coach,
+        noofTeams: data.noofTeams,
+        maxperTeam: data.maxperTeam,
+        maxPlayers: data.maxPlayers,
+        sessionType: SesssionType[data.sessionType],
+        teams: {
+          createMany: {
+            data: data.teams,
+          },
+        },
+      },
+      include: {
+        teams: true,
+      },
+    });
+  }
+
+  public async updateMainSession(data: sessions, user: JwtPayload) {
+    if (user?.type !== UserTypeEnum.FOUNDER) {
+      throw new HttpUnAuthorizedError('Forbidden');
+    }
+
+    const { id, ...updatedData } = data;
+    return prisma.sessions.update({
+      where: {
+        id,
+      },
+      data: {
+        ...updatedData,
+        updatedAt: new Date(),
+      },
+    });
+  }
+  public async deleteMainSession(data: sessions, user: JwtPayload) {
+    if (user?.type !== UserTypeEnum.FOUNDER) {
+      throw new HttpUnAuthorizedError('Forbidden');
+    }
+
+    const { id } = data;
+    return prisma.sessions.update({
+      where: {
+        id,
+      },
+      data: {
+        status: RecordStatus.DELETED,
+      },
+    });
+  }
+  public async deleteSubSession(data: subSession, user: JwtPayload) {
+    if (user?.type !== UserTypeEnum.FOUNDER) {
+      throw new HttpUnAuthorizedError('Forbidden');
+    }
+
+    const { id } = data;
+    return prisma.subSession.update({
+      where: {
+        id,
+      },
+      data: {
+        status: RecordStatus.DELETED,
+      },
+    });
+  }
+
+  public async updateSubSession(data: subSession, user: JwtPayload) {
+    if (user?.type !== UserTypeEnum.FOUNDER) {
+      throw new HttpUnAuthorizedError('Forbidden');
+    }
+
+    const { id, ...updatedData } = data;
+    return prisma.subSession.update({
+      where: {
+        id,
+      },
+      data: {
+        ...updatedData,
+        status: RecordStatus.ACTIVE,
+      },
+    });
+  }
   public async getGamePerSubId(data: IGameDto) {
     return prisma.subSession.findFirst({
       where: {
@@ -134,111 +229,111 @@ export default class SessionsService {
 
   //   })
   // }
-  @LogMessage<[IPaySessionDto]>({ message: 'User Updated' })
-  public async paySession(data: IPaySessionDto) {
-    const isPaymentExist = await prisma.payments.findFirst({
-      where: {
-        sessionId: data.sessionId,
-        email: data.email,
-      },
-    });
+  // @LogMessage<[IPaySessionDto]>({ message: 'User Updated' })
+  // public async paySession(data: IPaySessionDto) {
+  //   const isPaymentExist = await prisma.payments.findFirst({
+  //     where: {
+  //       sessionId: data.sessionId,
+  //       email: data.email,
+  //     },
+  //   });
 
-    if (isPaymentExist) {
-      throw new HttpNotFoundError('Payment', ['Already paid.']);
-    }
+  //   if (isPaymentExist) {
+  //     throw new HttpNotFoundError('Payment', ['Already paid.']);
+  //   }
 
-    const session = await prisma.sessions.findFirstOrThrow({
-      where: {
-        id: data.sessionId,
-      },
-    });
+  //   const session = await prisma.sessions.findFirstOrThrow({
+  //     where: {
+  //       id: data.sessionId,
+  //     },
+  //   });
 
-    return this.xenditService.createInvoice({
-      amount: session.price,
-      currency: 'PHP',
-      description: `Paying membership for ${session.name} with amount of ${session.price}`,
-      external_id: `${data.sessionId}||${data.email}`,
-      success_redirect_url: `${process.env.FE_BASE_URL}/sucess-payment`,
-      failure_redirect_url: `${process.env.FE_BASE_URL}/failed-payment`,
-      payer_email: data.email,
-    });
-  }
+  //   return this.xenditService.createInvoice({
+  //     amount: session.price,
+  //     currency: 'PHP',
+  //     description: `Paying membership for ${session.name} with amount of ${session.price}`,
+  //     external_id: `${data.sessionId}||${data.email}`,
+  //     success_redirect_url: `${process.env.FE_BASE_URL}/sucess-payment`,
+  //     failure_redirect_url: `${process.env.FE_BASE_URL}/failed-payment`,
+  //     payer_email: data.email,
+  //   });
+  // }
 
-  @LogMessage<[IInvoiceTransactionOutput]>({
-    message: 'New member paid.',
-  })
-  public async paymentCallback(data: IInvoiceTransactionOutput) {
-    console.log(data);
-    try {
-      if (data.status === 'PAID') {
-        const sessionId = data.external_id.split('||')[0];
-        const email = data.external_id.split('||')[1];
+  // @LogMessage<[IInvoiceTransactionOutput]>({
+  //   message: 'New member paid.',
+  // })
+  // public async paymentCallback(data: IInvoiceTransactionOutput) {
+  //   console.log(data);
+  //   try {
+  //     if (data.status === 'PAID') {
+  //       const sessionId = data.external_id.split('||')[0];
+  //       const email = data.external_id.split('||')[1];
 
-        const session = await prisma.sessions.findFirstOrThrow({
-          where: {
-            id: sessionId,
-          },
-          include: {
-            founder: {
-              select: {
-                email: true,
-                phone: true,
-              },
-            },
-          },
-        });
+  //       const session = await prisma.sessions.findFirstOrThrow({
+  //         where: {
+  //           id: sessionId,
+  //         },
+  //         include: {
+  //           founder: {
+  //             select: {
+  //               email: true,
+  //               phone: true,
+  //             },
+  //           },
+  //         },
+  //       });
 
-        const payoutRes = await this.xenditService.createPayout({
-          amount: session?.price,
-          description: `Receiving ${data.amount} from ${email}`,
-          reference_id: `${sessionId}-${email}`,
-          channel_properties: {
-            account_holder_name: session.founder.email!,
-            account_number: session.founder.phone!,
-          },
-          receipt_notification: {
-            email_to: [session.founder.email!],
-            email_cc: [
-              'marktomarse@gmail.com', // and other staff
-            ],
-          },
-        });
+  //       const payoutRes = await this.xenditService.createPayout({
+  //         amount: session?.price,
+  //         description: `Receiving ${data.amount} from ${email}`,
+  //         reference_id: `${sessionId}-${email}`,
+  //         channel_properties: {
+  //           account_holder_name: session.founder.email!,
+  //           account_number: session.founder.phone!,
+  //         },
+  //         receipt_notification: {
+  //           email_to: [session.founder.email!],
+  //           email_cc: [
+  //             'marktomarse@gmail.com', // and other staff
+  //           ],
+  //         },
+  //       });
 
-        if (payoutRes.status !== 'ACCEPTED') {
-          throw new HttpBadRequestError('Xendit payout error', [
-            'Payout for founder error.',
-          ]);
-        }
+  //       if (payoutRes.status !== 'ACCEPTED') {
+  //         throw new HttpBadRequestError('Xendit payout error', [
+  //           'Payout for founder error.',
+  //         ]);
+  //       }
 
-        return prisma.payments.create({
-          data: {
-            amount: data.amount as number,
-            status: 'SUCCESS',
-            xenditReferenceId: data.id,
-            sessionId: sessionId,
-            email: email,
-            xenditPayoutId: payoutRes.id,
-          },
-        });
-      }
-    } catch (error) {
-      throw new HttpUnAuthorizedError('Error');
-    }
-  }
+  //       return prisma.payments.create({
+  //         data: {
+  //           amount: data.amount as number,
+  //           status: 'SUCCESS',
+  //           xenditReferenceId: data.id,
+  //           sessionId: sessionId,
+  //           email: email,
+  //           xenditPayoutId: payoutRes.id,
+  //         },
+  //       });
+  //     }
+  //   } catch (error) {
+  //     throw new HttpUnAuthorizedError('Error');
+  //   }
+  // }
 
-  @LogMessage<[sessions]>({ message: 'Session Deleted' })
-  public async deleteSession(data: sessions) {
-    const { code } = data;
-    if (code === null) {
-      throw new Error(`"Session Code cannot be null"`);
-    }
-    return await prisma.sessions.delete({
-      where: {
-        code,
-      },
-      select: {
-        code: true,
-      },
-    });
-  }
+  // @LogMessage<[sessions]>({ message: 'Session Deleted' })
+  // public async deleteSession(data: sessions) {
+  //   const { code } = data;
+  //   if (code === null) {
+  //     throw new Error(`"Session Code cannot be null"`);
+  //   }
+  //   return await prisma.sessions.delete({
+  //     where: {
+  //       code,
+  //     },
+  //     select: {
+  //       code: true,
+  //     },
+  //   });
+  // }
 }

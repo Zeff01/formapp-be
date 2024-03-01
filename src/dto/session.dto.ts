@@ -50,7 +50,7 @@ export class ICreateSessionDto {
 export class DeleteSessionDto {
   @IsString()
   @IsNotEmpty()
-  code: string;
+  id: string;
 }
 
 export class TeamsDto {
@@ -111,6 +111,7 @@ export class CreateSessionDto {
   @IsArray()
   packages: PackagesDto[];
 
+  //TODO Validate Nested
   // @ValidateNested({ each: true })
   // @Type(() => teamsDto)
   // teams: teamsDto[];
@@ -123,4 +124,64 @@ export class CreateSessionDto {
 export class IGameDto {
   @IsString()
   subSessionId: string;
+}
+
+export class UpdateMainSession {
+  @IsString()
+  name: string;
+
+  @IsString()
+  location: string;
+
+  @IsString()
+  sessionDate: string;
+
+  @IsString()
+  sessionTime: string;
+}
+
+export class UpdateSubSession {
+  @IsString()
+  coach: string;
+
+  @IsInt()
+  noofTeams: number;
+
+  @IsInt()
+  maxPlayers: number;
+
+  @IsInt()
+  maxperTeam: number;
+
+  @IsString()
+  sessionType: string;
+}
+export class DeleteSubSessionDto {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+}
+
+export class CreateSubSessionDto {
+  @IsString()
+  @IsNotEmpty()
+  sessionId: string;
+
+  @IsString()
+  coach: string;
+
+  @IsInt()
+  noofTeams: number;
+
+  @IsInt()
+  maxPlayers: number;
+
+  @IsInt()
+  maxperTeam: number;
+
+  @IsString()
+  sessionType: string;
+  //TODO Validate Nested
+  @IsArray()
+  teams: TeamsDto[];
 }

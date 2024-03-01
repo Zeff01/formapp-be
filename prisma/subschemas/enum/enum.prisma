@@ -31,3 +31,8 @@ enum SesssionType {
   TRAINING
   TOURNAMENT
 }
+
+enum RecordStatus {
+  DELETED
+  ACTIVE
+}
