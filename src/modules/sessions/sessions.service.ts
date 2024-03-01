@@ -2,6 +2,7 @@ import LogMessage from '@/decorators/log-message.decorator';
 import {
   CreateSessionDto,
   ICreateSessionDto,
+  IGameDto,
   IPaySessionDto,
 } from '@/dto/session.dto';
 import XenditService from './xendit.service';
@@ -57,31 +58,82 @@ export default class SessionsService {
               noofTeams: data.noofTeams,
               maxPlayers: data.maxPlayers,
               maxperTeam: data.maxperTeam,
+
               teams: {
                 createMany: {
                   data: data.teams,
                 },
               },
-              rates: {
-                createMany: {
-                  data: data.packages,
-                },
-              },
             },
           ],
+        },
+        rates: {
+          createMany: {
+            data: data.packages,
+          },
         },
       },
       include: {
         subSession: {
           include: {
             teams: true,
-            rates: true,
+          },
+        },
+        rates: true,
+      },
+    });
+  }
+  public async getGamePerSubId(data: IGameDto) {
+    return prisma.subSession.findFirst({
+      where: {
+        id: data.subSessionId,
+      },
+      include: {
+        sessions: {
+          select: {
+            id: true,
+            name: true,
+            location: true,
+            sessionDate: true,
+            sessionTime: true,
+          },
+        },
+        teams: {
+          select: {
+            id: true,
+            teamName: true,
+            color: true,
+            subSessionId: true,
+            users: {
+              select: {
+                id: true,
+                profilePic: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+            _count: {
+              select: { users: true },
+            },
+          },
+        },
+        users: {
+          select: {
+            id: true,
+            profilePic: true,
+            firstName: true,
+            lastName: true,
           },
         },
       },
     });
   }
 
+  // public async joinGame(data:IGameDto){
+  //   return prisma.subSession.update({
+
+  //   })
+  // }
   @LogMessage<[IPaySessionDto]>({ message: 'User Updated' })
   public async paySession(data: IPaySessionDto) {
     const isPaymentExist = await prisma.payments.findFirst({
