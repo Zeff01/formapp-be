@@ -9,7 +9,7 @@ const controller = new Controller();
 dashboardRouter.get(
   '/gender/dist',
   verifyAuthToken,
-  controller.getGenderDistribution
+  controller.getGenderAgeDist
 );
 
 export default dashboardRouter;

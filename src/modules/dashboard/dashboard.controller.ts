@@ -9,13 +9,13 @@ import DashboardService from './dashboard.service';
 export default class DashboardController extends Api {
   private readonly dashboardService = new DashboardService();
 
-  public getGenderDistribution = async (
+  public getGenderAgeDist = async (
     req: Request,
     res: CustomResponse<users>,
     next: NextFunction
   ) => {
     try {
-      const result = await this.dashboardService.getGenderDistribution(
+      const result = await this.dashboardService.getGenderAgeDist(
         req.user as JwtPayload
       );
       this.send(res, result, HttpStatusCode.Ok, 'Gender Distribution');
