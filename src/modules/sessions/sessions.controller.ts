@@ -14,11 +14,29 @@ export default class SessionsController extends Api {
     next: NextFunction
   ) => {
     try {
+      const { id, from, to } = req.query;
       const result = await this.sessionsService.getSessions(
-        req.query?.code as string,
+        id as string,
+        from as string,
+        to as string,
         req.user as JwtPayload
       );
-      this.send(res, result, HttpStatusCode.Ok, 'getSessions');
+      this.send(res, result, HttpStatusCode.Ok, 'Session List');
+    } catch (e) {
+      next(e);
+    }
+  };
+  public getPlayersPerSubSession = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.sessionsService.getPlayersPerSubSession(
+        req.query?.id as string,
+        req.user as JwtPayload
+      );
+      this.send(res, result, HttpStatusCode.Ok, 'Player Game Details');
     } catch (e) {
       next(e);
     }
@@ -139,7 +157,9 @@ export default class SessionsController extends Api {
     next: NextFunction
   ) => {
     try {
-      const result = await this.sessionsService.getGamePerSubId(req.body);
+      const result = await this.sessionsService.getGamePerSubId(
+        req.query?.id as string
+      );
       this.send(res, result, HttpStatusCode.Ok, 'Game Screen Details');
     } catch (e) {
       next(e);

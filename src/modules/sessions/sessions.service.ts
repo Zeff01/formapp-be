@@ -27,20 +27,55 @@ import { AsyncLocalStorage } from 'async_hooks';
 export default class SessionsService {
   private readonly xenditService = new XenditService();
 
-  public async getSessions(code?: string, user?: JwtPayload) {
+  public async getSessions(
+    id: string,
+    from: string,
+    to: string,
+    user?: JwtPayload
+  ) {
     let where: any = {};
     if (user?.id && user?.type === UserTypeEnum.FOUNDER) {
-      where.founderId = user.id;
+      where.createdBy = user.id;
     }
-
-    if (code) {
-      where.code = code;
-    }
-
-    return prisma.users.findMany({
+    if (from && to) where.sessionDate = { gte: from, lte: to };
+    console.log(where);
+    return await prisma.sessions.findMany({
       where: where,
       include: {
-        payments: true,
+        subSession: {
+          select: {
+            sessionType: true,
+            coach: true,
+            noofTeams: true,
+            maxPlayers: true,
+            maxperTeam: true,
+            status: true,
+            _count: {
+              select: { users: true },
+            },
+          },
+        },
+      },
+    });
+  }
+  public async getPlayersPerSubSession(
+    subSessionId?: string,
+    user?: JwtPayload
+  ) {
+    if (!subSessionId) {
+      throw new HttpUnAuthorizedError('Forbidden');
+    }
+    return await prisma.users.findMany({
+      where: {
+        subSessionId,
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        profilePic: true,
+        address: true,
+        //TODO include payment column
       },
     });
   }
@@ -50,12 +85,13 @@ export default class SessionsService {
       throw new HttpUnAuthorizedError('Forbidden');
     }
 
-    return prisma.sessions.create({
+    return await prisma.sessions.create({
       data: {
         name: data.name,
         location: data.location,
         sessionDate: data.sessionDate,
         sessionTime: data.sessionTime,
+        createdBy: user.id,
         subSession: {
           create: [
             {
@@ -64,7 +100,7 @@ export default class SessionsService {
               noofTeams: data.noofTeams,
               maxPlayers: data.maxPlayers,
               maxperTeam: data.maxperTeam,
-
+              createdBy: user.id,
               teams: {
                 createMany: {
                   data: data.teams,
@@ -95,7 +131,7 @@ export default class SessionsService {
       throw new HttpUnAuthorizedError('Forbidden');
     }
 
-    return prisma.subSession.create({
+    return await prisma.subSession.create({
       data: {
         sessionId: data.sessionId,
         coach: data.coach,
@@ -103,6 +139,7 @@ export default class SessionsService {
         maxperTeam: data.maxperTeam,
         maxPlayers: data.maxPlayers,
         sessionType: SesssionType[data.sessionType],
+        createdBy: user.id,
         teams: {
           createMany: {
             data: data.teams,
@@ -121,7 +158,7 @@ export default class SessionsService {
     }
 
     const { id, ...updatedData } = data;
-    return prisma.sessions.update({
+    return await prisma.sessions.update({
       where: {
         id,
       },
@@ -137,7 +174,7 @@ export default class SessionsService {
     }
 
     const { id } = data;
-    return prisma.sessions.update({
+    return await prisma.sessions.update({
       where: {
         id,
       },
@@ -152,7 +189,7 @@ export default class SessionsService {
     }
 
     const { id } = data;
-    return prisma.subSession.update({
+    return await prisma.subSession.update({
       where: {
         id,
       },
@@ -168,7 +205,7 @@ export default class SessionsService {
     }
 
     const { id, ...updatedData } = data;
-    return prisma.subSession.update({
+    return await prisma.subSession.update({
       where: {
         id,
       },
@@ -178,10 +215,10 @@ export default class SessionsService {
       },
     });
   }
-  public async getGamePerSubId(data: IGameDto) {
-    return prisma.subSession.findFirst({
+  public async getGamePerSubId(subSessionId?: string) {
+    return await prisma.subSession.findFirst({
       where: {
-        id: data.subSessionId,
+        id: subSessionId,
       },
       include: {
         sessions: {

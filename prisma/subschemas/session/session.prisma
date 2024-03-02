@@ -15,6 +15,7 @@ model sessions {
   subSession  subSession[]
   rates       rates[]
   status      RecordStatus @default(ACTIVE)
+  createdBy   String?
 }
 
 model subSession {
@@ -31,6 +32,7 @@ model subSession {
   teams       teams[]
   users       users[]
   status      RecordStatus @default(ACTIVE)
+  createdBy   String?
 }
 
 model teams {
