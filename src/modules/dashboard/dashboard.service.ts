@@ -1,4 +1,3 @@
-import { IAgeBracket } from '@/dto/dashboard.dto';
 import prisma from '@/lib/prisma';
 import { JwtPayload } from '@/types/common.type';
 import { UserTypeEnum } from '@prisma/client';

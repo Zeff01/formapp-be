@@ -139,18 +139,6 @@ export default class SessionsController extends Api {
     }
   };
 
-  // public joinGame = async (
-  //   req: Request,
-  //   res: CustomResponse<users>,
-  //   next: NextFunction
-  // ) => {
-  //   try {
-  //     const result = await this.sessionsService.joinGame(req.body);
-  //     this.send(res, result, HttpStatusCode.Created, 'Join Successfully');
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // };
   public getGamePerSubId = async (
     req: Request,
     res: CustomResponse<users>,
