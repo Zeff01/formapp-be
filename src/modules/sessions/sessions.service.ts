@@ -62,12 +62,13 @@ export default class SessionsService {
     subSessionId?: string,
     user?: JwtPayload
   ) {
+    //TODO will edit to consider per teams, not per subsession
     if (!subSessionId) {
       throw new HttpUnAuthorizedError('Forbidden');
     }
     return await prisma.users.findMany({
       where: {
-        subSessionId,
+        joinedLobbyId: subSessionId,
       },
       select: {
         id: true,
@@ -261,11 +262,6 @@ export default class SessionsService {
     });
   }
 
-  // public async joinGame(data:IGameDto){
-  //   return prisma.subSession.update({
-
-  //   })
-  // }
   // @LogMessage<[IPaySessionDto]>({ message: 'User Updated' })
   // public async paySession(data: IPaySessionDto) {
   //   const isPaymentExist = await prisma.payments.findFirst({

@@ -140,8 +140,6 @@ sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
  * @return {Xendit} 201 - paySession
  */
 
-// sessionRouter.patch('/join', verifyAuthToken, controller.joinGame);
-
 // sessionRouter.post(
 //   '/payment',
 //   RequestValidator.validate(IPaySessionDto),

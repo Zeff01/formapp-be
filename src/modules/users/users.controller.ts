@@ -2,7 +2,7 @@ import { type NextFunction, type Request } from 'express';
 import { type users } from '@prisma/client';
 import { HttpStatusCode } from 'axios';
 import UserService from './users.service';
-import { type CustomResponse } from '@/types/common.type';
+import { JwtPayload, type CustomResponse } from '@/types/common.type';
 import Api from '@/lib/api';
 
 export default class UserController extends Api {
@@ -127,6 +127,36 @@ export default class UserController extends Api {
     try {
       const user = await this.userService.deleteUser(req.body);
       this.send(res, user, HttpStatusCode.Ok, 'User Deleted Successfully');
+    } catch (e) {
+      next(e);
+    }
+  };
+  public joinGame = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.userService.joinGame(
+        req.query?.id as string,
+        req.user as JwtPayload
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Join Successfully');
+    } catch (e) {
+      next(e);
+    }
+  };
+  public joinTeamPerSubSession = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.userService.joinTeamPerSubSession(
+        req.query?.id as string,
+        req.user as JwtPayload
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Join Team Successfully');
     } catch (e) {
       next(e);
     }

@@ -118,7 +118,7 @@ Table users {
   gender Gender
   type UserTypeEnum [not null]
   clubs clubs [not null]
-  subSessionId String
+  joinedLobbyId String
   subSession subSession
   payments payments [not null]
   teamId String[] [not null]
@@ -178,6 +178,6 @@ Ref: teams.players > users.id
 
 Ref: rates.sessionId > sessions.id
 
-Ref: users.subSessionId > subSession.id
+Ref: users.joinedLobbyId > subSession.id
 
 Ref: users.teamId > teams.id

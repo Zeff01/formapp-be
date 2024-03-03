@@ -138,4 +138,7 @@ users.delete(
   controller.deleteUser
 );
 
+users.patch('/join', verifyAuthToken, controller.joinGame);
+
+users.patch('/team/join', verifyAuthToken, controller.joinTeamPerSubSession);
 export default users;
