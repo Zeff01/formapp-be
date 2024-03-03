@@ -91,7 +91,7 @@ export default class UserService {
     if (!data.password) {
       throw new Error('Password is required');
     }
-    console.log('--------------', data.password);
+    // console.log('--------------', data.password);
     return await prisma.users.create({
       data: {
         email: data.email,
@@ -123,7 +123,7 @@ export default class UserService {
 
   // @LogMessage<[CreateUserDto]>({ message: 'User Updated' })
   public async createStaff(data: CreateUserDto) {
-    console.log(data);
+    // console.log(data);
     return await prisma.users.create({
       data: {
         email: data.email,
@@ -221,7 +221,7 @@ export default class UserService {
     teamList.forEach((team) => {
       userTeamTobeRemoved.push(team.id);
     });
-    console.log(0, userTeamTobeRemoved);
+    // console.log(0, userTeamTobeRemoved);
 
     //get all teamId
     const userCurrentTeams = await prisma.users.findMany({
