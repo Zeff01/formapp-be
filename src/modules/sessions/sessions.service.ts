@@ -263,110 +263,127 @@ export default class SessionsService {
   }
 
   // @LogMessage<[IPaySessionDto]>({ message: 'User Updated' })
-  // public async paySession(data: IPaySessionDto) {
-  //   const isPaymentExist = await prisma.payments.findFirst({
-  //     where: {
-  //       sessionId: data.sessionId,
-  //       email: data.email,
-  //     },
-  //   });
+  public async paySubSession(data: IPaySessionDto, rateId: string) {
+    const isPaymentExist = await prisma.payments.findFirst({
+      where: {
+        subSessionId: data.subSessionId,
+        email: data.email,
+      },
+    });
 
-  //   if (isPaymentExist) {
-  //     throw new HttpNotFoundError('Payment', ['Already paid.']);
-  //   }
+    if (isPaymentExist) {
+      throw new HttpNotFoundError('Payment', ['Already paid.']);
+    }
 
-  //   const session = await prisma.sessions.findFirstOrThrow({
-  //     where: {
-  //       id: data.sessionId,
-  //     },
-  //   });
+    const subSessionType = await prisma.subSession.findFirst({
+      where: {
+        id: data.subSessionId,
+      },
+      select: {
+        sessionType: true,
+      },
+    });
+    // get rates per sub
+    const rates = await prisma.rates.findFirst({
+      where: {
+        id: rateId,
+      },
+      select: {
+        onlineRate: true,
+        sessionCount: true,
+        sessions: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
 
-  //   return this.xenditService.createInvoice({
-  //     amount: session.price,
-  //     currency: 'PHP',
-  //     description: `Paying membership for ${session.name} with amount of ${session.price}`,
-  //     external_id: `${data.sessionId}||${data.email}`,
-  //     success_redirect_url: `${process.env.FE_BASE_URL}/sucess-payment`,
-  //     failure_redirect_url: `${process.env.FE_BASE_URL}/failed-payment`,
-  //     payer_email: data.email,
-  //   });
-  // }
+    if (rates?.onlineRate) {
+      return this.xenditService.createInvoice({
+        amount: rates!.onlineRate,
+        currency: 'PHP',
+        description: `Paying membership for ${rates?.sessions.name} | ${subSessionType?.sessionType} with amount of ${rates?.onlineRate}`,
+        external_id: `${data.subSessionId}||${data.email}`,
+        success_redirect_url: `${process.env.FE_BASE_URL}/sucess-payment`,
+        failure_redirect_url: `${process.env.FE_BASE_URL}/failed-payment`,
+        payer_email: data.email,
+      });
+      //TODO save invoices to db
+    }
+    return false;
+  }
 
   // @LogMessage<[IInvoiceTransactionOutput]>({
   //   message: 'New member paid.',
   // })
-  // public async paymentCallback(data: IInvoiceTransactionOutput) {
-  //   console.log(data);
-  //   try {
-  //     if (data.status === 'PAID') {
-  //       const sessionId = data.external_id.split('||')[0];
-  //       const email = data.external_id.split('||')[1];
+  public async paymentCallback(data: IInvoiceTransactionOutput) {
+    console.log(data);
+    try {
+      if (data.status === 'PAID') {
+        const subSessionId = data.external_id.split('||')[0];
+        const email = data.external_id.split('||')[1];
 
-  //       const session = await prisma.sessions.findFirstOrThrow({
-  //         where: {
-  //           id: sessionId,
-  //         },
-  //         include: {
-  //           founder: {
-  //             select: {
-  //               email: true,
-  //               phone: true,
-  //             },
-  //           },
-  //         },
-  //       });
+        const subSession = await prisma.subSession.findFirstOrThrow({
+          where: {
+            id: subSessionId,
+          },
+          select: {
+            createdBy: true,
+          },
+        });
 
-  //       const payoutRes = await this.xenditService.createPayout({
-  //         amount: session?.price,
-  //         description: `Receiving ${data.amount} from ${email}`,
-  //         reference_id: `${sessionId}-${email}`,
-  //         channel_properties: {
-  //           account_holder_name: session.founder.email!,
-  //           account_number: session.founder.phone!,
-  //         },
-  //         receipt_notification: {
-  //           email_to: [session.founder.email!],
-  //           email_cc: [
-  //             'marktomarse@gmail.com', // and other staff
-  //           ],
-  //         },
-  //       });
+        if (subSession.createdBy) {
+          const founderInfo = await prisma.users.findFirstOrThrow({
+            where: {
+              id: subSession.createdBy,
+            },
+            select: {
+              email: true,
+              phone: true,
+            },
+          });
 
-  //       if (payoutRes.status !== 'ACCEPTED') {
-  //         throw new HttpBadRequestError('Xendit payout error', [
-  //           'Payout for founder error.',
-  //         ]);
-  //       }
+          const payoutRes = await this.xenditService.createPayout({
+            amount: data?.paid_amount,
+            description: `Receiving ${data.paid_amount} from ${email}`,
+            reference_id: `PO-${subSessionId}-${email}`,
+            channel_properties: {
+              account_holder_name: founderInfo.email!,
+              account_number: founderInfo.phone!,
+            },
+            receipt_notification: {
+              email_to: [founderInfo.email!],
+              email_cc: [
+                // 'marktomarse@gmail.com', // and other
+                'fjab.dev@gmail.com',
+                //TODO staff email here
+              ],
+            },
+          });
 
-  //       return prisma.payments.create({
-  //         data: {
-  //           amount: data.amount as number,
-  //           status: 'SUCCESS',
-  //           xenditReferenceId: data.id,
-  //           sessionId: sessionId,
-  //           email: email,
-  //           xenditPayoutId: payoutRes.id,
-  //         },
-  //       });
-  //     }
-  //   } catch (error) {
-  //     throw new HttpUnAuthorizedError('Error');
-  //   }
-  // }
+          if (payoutRes.status !== 'ACCEPTED') {
+            throw new HttpBadRequestError('Xendit payout error', [
+              'Payout for founder error.',
+            ]);
+          }
 
-  // @LogMessage<[sessions]>({ message: 'Session Deleted' })
-  // public async deleteSession(data: sessions) {
-  //   const { code } = data;
-  //   if (code === null) {
-  //     throw new Error(`"Session Code cannot be null"`);
-  //   }
-  //   return await prisma.sessions.delete({
-  //     where: {
-  //       code,
-  //     },
-  //     select: {
-  //       code: true,
-  //     },
-  //   });
-  // }
+          return prisma.payments.create({
+            data: {
+              amount: data.paid_amount as number,
+              status: 'SUCCESS',
+              xenditReferenceId: data.id,
+              subSessionId: subSessionId,
+              email: email,
+              xenditPayoutId: payoutRes.id,
+            },
+          });
+        } else {
+          throw new HttpNotFoundError('Payment', ['User info not found']);
+        }
+      }
+    } catch (error) {
+      throw new HttpUnAuthorizedError('Error');
+    }
+  }
 }
