@@ -32,14 +32,14 @@ Table Feedbacks {
 Table payments {
   id String [pk]
   email String [not null]
-  sessionId String [not null]
+  subSessionId String [not null]
   amount Float [not null]
   xenditReferenceId String [not null]
   xenditPayoutId String [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
   status PaymentStatusEnum [not null]
-  session sessions [not null]
+  subsession subSession [not null]
   user users [not null]
 }
 
@@ -51,7 +51,6 @@ Table sessions {
   sessionTime String [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
-  payments payments [not null]
   subSession subSession [not null]
   rates rates [not null]
   status RecordStatus [not null, default: 'ACTIVE']
@@ -73,6 +72,7 @@ Table subSession {
   users users [not null]
   status RecordStatus [not null, default: 'ACTIVE']
   createdBy String
+  payments payments [not null]
 }
 
 Table teams {
@@ -166,7 +166,7 @@ Enum RecordStatus {
 
 Ref: clubs.founderId > users.id
 
-Ref: payments.sessionId > sessions.id
+Ref: payments.subSessionId > subSession.id
 
 Ref: payments.email > users.email
 

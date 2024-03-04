@@ -17,7 +17,7 @@ import { Type } from 'class-transformer';
 export class IPaySessionDto {
   @IsString()
   @IsNotEmpty()
-  sessionId: string;
+  subSessionId: string;
 
   @IsEmail()
   @IsNotEmpty()

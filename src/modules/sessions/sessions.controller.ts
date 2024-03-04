@@ -154,42 +154,32 @@ export default class SessionsController extends Api {
     }
   };
 
-  // public paySession = async (
-  //   req: Request,
-  //   res: CustomResponse<users>,
-  //   next: NextFunction
-  // ) => {
-  //   try {
-  //     const result = await this.sessionsService.paySession(req.body);
-  //     this.send(res, result, HttpStatusCode.Created, 'paySession');
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // };
+  public paySubSession = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.sessionsService.paySubSession(
+        req.body,
+        req.query?.rateId as string
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Session Payment');
+    } catch (e) {
+      next(e);
+    }
+  };
 
-  // public paymentCallback = async (
-  //   req: Request,
-  //   res: CustomResponse<users>,
-  //   next: NextFunction
-  // ) => {
-  //   try {
-  //     const result = await this.sessionsService.paymentCallback(req.body);
-  //     this.send(res, result, HttpStatusCode.Created, 'paymentCallback');
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // };
-
-  // public deleteSession = async (
-  //   req: Request,
-  //   res: CustomResponse<users>,
-  //   next: NextFunction
-  // ) => {
-  //   try {
-  //     const result = await this.sessionsService.deleteSession(req.body);
-  //     this.send(res, result, HttpStatusCode.Ok, 'Session Successfully Deleted');
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // };
+  public paymentCallback = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.sessionsService.paymentCallback(req.body);
+      this.send(res, result, HttpStatusCode.Created, 'paymentCallback');
+    } catch (e) {
+      next(e);
+    }
+  };
 }
