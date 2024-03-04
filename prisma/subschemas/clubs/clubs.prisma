@@ -2,6 +2,7 @@ import { users } from "..\user\user"
 
 model Clubs {
   id          String    @id @default(uuid()) @map("_id")
+  clubId      String    @unique
   clubName    String
   packages    Package[]
   password    String
@@ -17,4 +18,6 @@ model Package {
   features        String[]
   monthlyRate     String
   yearlyRate      String
+  clubId          String 
+  clubs           Clubs     @relation(fields: [clubId], references: [id])
 }

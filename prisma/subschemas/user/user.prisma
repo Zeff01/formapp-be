@@ -1,5 +1,5 @@
 import { Gender,UserTypeEnum } from "..\enum\enum"
-import {clubs} from "..\clubs\clubs"
+import {Clubs} from "..\clubs\clubs"
 import {payments} from "..\payments\payments"
 import { subSession, teams } from "..\session\session"
 model users {
