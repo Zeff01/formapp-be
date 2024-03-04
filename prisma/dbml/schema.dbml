@@ -4,6 +4,7 @@
 
 Table Clubs {
   id String [pk]
+  clubId String [unique, not null]
   clubName String [not null]
   packages Package [not null]
   password String [not null]
@@ -19,8 +20,8 @@ Table Package {
   features String[] [not null]
   monthlyRate String [not null]
   yearlyRate String [not null]
-  Clubs Clubs
-  clubsId String
+  clubId String [not null]
+  clubs Clubs [not null]
 }
 
 Table Faq {
@@ -128,7 +129,7 @@ Table users {
   updatedAt DateTime [default: `now()`]
   gender Gender
   type UserTypeEnum [not null]
-  clubs clubs [not null]
+  clubs Clubs [not null]
   joinedLobbyId String
   subSession subSession
   payments payments [not null]
@@ -175,20 +176,9 @@ Enum RecordStatus {
   ACTIVE
 }
 
-Enum SesssionType {
-  OPENPLAY
-  TRAINING
-  TOURNAMENT
-}
-
-Enum RecordStatus {
-  DELETED
-  ACTIVE
-}
-
 Ref: Clubs.founderId > users.id
 
-Ref: Package.clubsId > Clubs.id
+Ref: Package.clubId > Clubs.id
 
 Ref: payments.sessionId > sessions.id
 

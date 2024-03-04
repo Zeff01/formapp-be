@@ -3,24 +3,27 @@ import {Clubs} from "..\clubs\clubs"
 import {payments} from "..\payments\payments"
 import { subSession, teams } from "..\session\session"
 model users {
-  id          String       @id @default(uuid()) @map("_id")
-  firstName   String
-  lastName    String
-  email       String
-  password    String?
-  phone       String
-  profilePic  String?
-  link        String?
-  age         Int?
-  address     String?
-  dateofbirth DateTime?
-  createdAt   DateTime?    @default(now()) @map("created_at")
-  updatedAt   DateTime?    @default(now()) @map("updated_at")
-  gender      Gender?
-  type        UserTypeEnum
-  clubs       Clubs[]
-  sessions    sessions[]
-  payments    payments[]
+  id            String       @id @default(uuid()) @map("_id")
+  firstName     String
+  lastName      String
+  email         String
+  password      String?
+  phone         String
+  profilePic    String?
+  link          String?
+  age           Int?
+  address       String?
+  dateofbirth   DateTime?
+  createdAt     DateTime?    @default(now()) @map("created_at")
+  updatedAt     DateTime?    @default(now()) @map("updated_at")
+  gender        Gender?
+  type          UserTypeEnum
+  clubs         Clubs[]
+  joinedLobbyId String?
+  subSession    subSession?  @relation(fields: [joinedLobbyId], references: [id])
+  payments      payments[]
+  teamId        String[]
+  teams         teams[]      @relation(fields: [teamId], references: [id])
 
   @@unique([email])
 }

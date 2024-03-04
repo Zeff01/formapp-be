@@ -1,37 +1,40 @@
-//🧩Don't Edit this file.✨Generated in Mon Mar 04 2024 12:09:44 GMT+0800 (Singapore Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Mar 04 2024 12:14:26 GMT+0800 (Singapore Standard Time)✨
 
 generator client {
-provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
+
 generator dbml {
-provider = "prisma-dbml-generator"
+  provider = "prisma-dbml-generator"
 }
+
 datasource db {
-provider = "mongodb"
-url      = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model Clubs {
-  id          String    @id @default(uuid()) @map("_id")
-  clubId      String    @unique
-  clubName    String
-  packages    Package[]
-  password    String
-  founderId   String
-  createdAt   DateTime? @default(now()) @map("created_at")
-  updatedAt   DateTime? @default(now()) @map("updated_at")
-  founder     users    @relation(fields: [founderId], references: [id])
+  id        String    @id @default(uuid()) @map("_id")
+  clubId    String    @unique
+  clubName  String
+  packages  Package[]
+  password  String
+  founderId String
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @map("updated_at")
+  founder   users     @relation(fields: [founderId], references: [id])
 }
 
 model Package {
-  id              String    @id @default(uuid()) @map("_id")
-  packageName     String
-  features        String[]
-  monthlyRate     String
-  yearlyRate      String
-  clubId          String 
-  clubs           Clubs     @relation(fields: [clubId], references: [id])
+  id          String   @id @default(uuid()) @map("_id")
+  packageName String
+  features    String[]
+  monthlyRate String
+  yearlyRate  String
+  clubId      String
+  clubs       Clubs    @relation(fields: [clubId], references: [id])
 }
+
 enum UserTypeEnum {
   ADMIN
   FOUNDER
@@ -87,6 +90,7 @@ model Feedbacks {
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @default(now()) @map("updated_at")
 }
+
 model payments {
   id                String            @id @default(uuid()) @map("_id")
   email             String
@@ -142,7 +146,7 @@ model teams {
   createdAt    DateTime?    @default(now()) @map("created_at")
   updatedAt    DateTime?    @default(now()) @map("updated_at")
   players      String[]
-  users        users      @relation(fields: [players], references: [id])
+  users        users[]      @relation(fields: [players], references: [id])
   status       RecordStatus @default(ACTIVE)
 }
 
@@ -158,25 +162,29 @@ model rates {
   sessions     sessions     @relation(fields: [sessionId], references: [id])
   status       RecordStatus @default(ACTIVE)
 }
+
 model users {
-  id          String       @id @default(uuid()) @map("_id")
-  firstName   String
-  lastName    String
-  email       String
-  password    String?
-  phone       String
-  profilePic  String?
-  link        String?
-  age         Int?
-  address     String?
-  dateofbirth DateTime?
-  createdAt   DateTime?    @default(now()) @map("created_at")
-  updatedAt   DateTime?    @default(now()) @map("updated_at")
-  gender      Gender?
-  type        UserTypeEnum
-  clubs       Clubs[]
-  sessions    sessions[]
-  payments    payments[]
+  id            String       @id @default(uuid()) @map("_id")
+  firstName     String
+  lastName      String
+  email         String
+  password      String?
+  phone         String
+  profilePic    String?
+  link          String?
+  age           Int?
+  address       String?
+  dateofbirth   DateTime?
+  createdAt     DateTime?    @default(now()) @map("created_at")
+  updatedAt     DateTime?    @default(now()) @map("updated_at")
+  gender        Gender?
+  type          UserTypeEnum
+  clubs         Clubs[]
+  joinedLobbyId String?
+  subSession    subSession?  @relation(fields: [joinedLobbyId], references: [id])
+  payments      payments[]
+  teamId        String[]
+  teams         teams[]      @relation(fields: [teamId], references: [id])
 
   @@unique([email])
 }
