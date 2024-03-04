@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Feb 29 2024 17:03:23 GMT+0800 (Singapore Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Mar 04 2024 00:26:57 GMT+0800 (Philippine Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -62,6 +62,17 @@ enum Gender {
   FEMALE
 }
 
+enum SesssionType {
+  OPENPLAY
+  TRAINING
+  TOURNAMENT
+}
+
+enum RecordStatus {
+  DELETED
+  ACTIVE
+}
+
 model Faq {
   id        String   @id @default(uuid()) @map("_id")
   question  String
@@ -94,38 +105,89 @@ model payments {
 }
 
 model sessions {
-  id        String     @id @default(uuid()) @map("_id")
-  name      String
-  teams     String[]   @default(["Red Team", "Orange Team", "Yellow Team", "Green Team", "Blue Team", "White Team", "Violet Team"])
-  maxMember Int
-  price     Float
-  founderId String
-  code      String     @unique
-  createdAt DateTime?  @default(now()) @map("created_at")
-  updatedAt DateTime?  @default(now()) @map("updated_at")
-  founder   users      @relation(fields: [founderId], references: [id])
-  payments  payments[]
-}
-
-model users {
   id          String       @id @default(uuid()) @map("_id")
-  firstName   String
-  lastName    String
-  email       String
-  password    String?
-  phone       String
-  profilePic  String?
-  link        String?
-  age         Int?
-  address     String?
-  dateofbirth DateTime?
+  name        String
+  location    String
+  sessionDate String
+  sessionTime String
   createdAt   DateTime?    @default(now()) @map("created_at")
   updatedAt   DateTime?    @default(now()) @map("updated_at")
   gender      Gender?
   type        UserTypeEnum
-  clubs       Clubs[]
+  clubs       clubs[]
   sessions    sessions[]
   payments    payments[]
+  subSession  subSession[]
+  rates       rates[]
+  status      RecordStatus @default(ACTIVE)
+  createdBy   String?
+}
+
+model subSession {
+  id          String       @id @default(uuid()) @map("_id")
+  sessionType SesssionType
+  coach       String
+  noofTeams   Int
+  maxPlayers  Int
+  maxperTeam  Int
+  createdAt   DateTime?    @default(now()) @map("created_at")
+  updatedAt   DateTime?    @default(now()) @map("updated_at")
+  sessionId   String
+  sessions    sessions     @relation(fields: [sessionId], references: [id])
+  teams       teams[]
+  users       users[]
+  status      RecordStatus @default(ACTIVE)
+  createdBy   String?
+}
+
+model teams {
+  id           String       @id @default(uuid()) @map("_id")
+  teamName     String
+  color        String
+  subSessionId String
+  subSession   subSession   @relation(fields: [subSessionId], references: [id])
+  createdAt    DateTime?    @default(now()) @map("created_at")
+  updatedAt    DateTime?    @default(now()) @map("updated_at")
+  players      String[]
+  users        users[]      @relation(fields: [players], references: [id])
+  status       RecordStatus @default(ACTIVE)
+}
+
+model rates {
+  id           String       @id @default(uuid()) @map("_id")
+  packageName  String
+  cashRate     Float
+  onlineRate   Float
+  sessionCount Int
+  createdAt    DateTime?    @default(now()) @map("created_at")
+  updatedAt    DateTime?    @default(now()) @map("updated_at")
+  sessionId    String
+  sessions     sessions     @relation(fields: [sessionId], references: [id])
+  status       RecordStatus @default(ACTIVE)
+}
+
+model users {
+  id            String       @id @default(uuid()) @map("_id")
+  firstName     String
+  lastName      String
+  email         String
+  password      String?
+  phone         String
+  profilePic    String?
+  link          String?
+  age           Int?
+  address       String?
+  dateofbirth   DateTime?
+  createdAt     DateTime?    @default(now()) @map("created_at")
+  updatedAt     DateTime?    @default(now()) @map("updated_at")
+  gender        Gender?
+  type          UserTypeEnum
+  clubs         clubs[]
+  joinedLobbyId String?
+  subSession    subSession?  @relation(fields: [joinedLobbyId], references: [id])
+  payments      payments[]
+  teamId        String[]
+  teams         teams[]      @relation(fields: [teamId], references: [id])
 
   @@unique([email])
 }

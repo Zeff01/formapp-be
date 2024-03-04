@@ -147,4 +147,34 @@ export default class UserController extends Api {
       next(e);
     }
   };
+  public joinGame = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.userService.joinGame(
+        req.query?.id as string,
+        req.user as JwtPayload
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Join Successfully');
+    } catch (e) {
+      next(e);
+    }
+  };
+  public joinTeamPerSubSession = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.userService.joinTeamPerSubSession(
+        req.query?.id as string,
+        req.user as JwtPayload
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Join Team Successfully');
+    } catch (e) {
+      next(e);
+    }
+  };
 }

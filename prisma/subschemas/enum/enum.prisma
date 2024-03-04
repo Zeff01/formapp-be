@@ -13,7 +13,6 @@ enum PaymentStatusEnum {
   PENDING
 }
 
-
 enum Rating {
   TERRIBLE
   BAD
@@ -25,4 +24,15 @@ enum Rating {
 enum Gender {
   MALE
   FEMALE
+}
+
+enum SesssionType {
+  OPENPLAY
+  TRAINING
+  TOURNAMENT
+}
+
+enum RecordStatus {
+  DELETED
+  ACTIVE
 }

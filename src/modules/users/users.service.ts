@@ -22,7 +22,7 @@ export default class UserService {
       },
       include: {
         clubs: true,
-        sessions: true,
+        subSession: true,
       },
     });
   }
@@ -35,7 +35,7 @@ export default class UserService {
         type: UserTypeEnum.USER,
       },
       include: {
-        sessions: true,
+        subSession: true,
         payments: true,
       },
     });
@@ -93,6 +93,7 @@ export default class UserService {
     if (!data.password) {
       throw new Error('Password is required');
     }
+    // console.log('--------------', data.password);
     return await prisma.users.create({
       data: {
         email: data.email,
@@ -124,7 +125,7 @@ export default class UserService {
 
   // @LogMessage<[CreateUserDto]>({ message: 'User Updated' })
   public async createStaff(data: CreateUserDto) {
-    console.log(data);
+    // console.log(data);
     return await prisma.users.create({
       data: {
         email: data.email,
@@ -207,6 +208,91 @@ export default class UserService {
       },
       select: {
         email: true,
+      },
+    });
+  }
+  public async joinGame(subSessionId: string, user: JwtPayload) {
+    if (!subSessionId) {
+      throw new HttpNotFoundError('Invalid session');
+    }
+    //update users joinlobby
+    return await prisma.users.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        joinedLobbyId: subSessionId,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  public async joinTeamPerSubSession(teamId: string, user: JwtPayload) {
+    if (!teamId) {
+      throw new HttpNotFoundError('Invalid team');
+    }
+
+    //get subsession from team
+    const subSessionId = await prisma.teams.findUnique({
+      where: {
+        id: teamId,
+      },
+      select: {
+        subSessionId: true,
+      },
+    });
+
+    //get all team under session id where player was joined
+    const teamList = await prisma.teams.findMany({
+      where: {
+        subSessionId: subSessionId?.subSessionId,
+        players: {
+          hasSome: [user.id],
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    //if exist, remove all teams in the list
+    const userTeamTobeRemoved: string[] = [];
+    teamList.forEach((team) => {
+      userTeamTobeRemoved.push(team.id);
+    });
+    // console.log(0, userTeamTobeRemoved);
+
+    //get all teamId
+    const userCurrentTeams = await prisma.users.findMany({
+      where: {
+        id: user.id,
+      },
+      select: {
+        teamId: true,
+      },
+    });
+
+    //remove existing teams per sub sesion
+    userCurrentTeams.forEach((obj) => {
+      obj.teamId = obj.teamId.filter((id) => !userTeamTobeRemoved.includes(id));
+    });
+
+    //join to team ID
+    userCurrentTeams[0].teamId.push(teamId);
+
+    //update data
+    return prisma.users.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        teamId: userCurrentTeams[0].teamId,
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        profilePic: true,
       },
     });
   }
