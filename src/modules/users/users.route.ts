@@ -77,7 +77,7 @@ users.route('/').get(controller.getClub);
  */
 
 /**
- * POST /clubs/
+ * POST /users/club
  * @typedef {object} CreateClubDto
  * @summary Create Club
  * @tags users

@@ -70,6 +70,9 @@ export class CreateClubDto {
   name: string;
 
   @IsString()
+  clubId: string;
+
+  @IsString()
   @IsNotEmpty()
   password: string;
 
