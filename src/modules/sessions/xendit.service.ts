@@ -103,7 +103,7 @@ export default class XenditService {
       return response.data;
     } catch (error) {
       console.error('HTTP Request Error:', error);
-      // throw error;
+      throw error;
     }
   }
   public async createRecurringPlan(data: XCreateSubscriptionPlan) {
@@ -145,7 +145,7 @@ export default class XenditService {
       return response.data;
     } catch (error) {
       console.error('HTTP Request Error:', error);
-      // throw error;
+      throw error;
     }
   }
 }
