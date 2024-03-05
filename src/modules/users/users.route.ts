@@ -27,12 +27,69 @@ const controller = new Controller();
  */
 
 /**
+ * GET /club/
+ * @summary Get Club
+ * @tags users
+ * @security BearerAuth
+ * @return {GetClub} 200 - getSessions
+ */
+
+users.route('/').get(controller.getClub);
+
+/**
  * Club
  * @typedef {object} Club
+ * @property {string} name.required - Club Name
+ * @property {string} password.required - Password of Club
+ * @property {Package[]} package - Package of Club
+ */
+
+/**
+ * Club/Package
+ * @typedef {object} Package
+ * @property {string} packageName.required - Name of Package
+ * @property {string[]} features - features of Package
+ * @property {string} MonthlyRate - Monthly Rate of Package
+ */
+
+/**
+ * Return CreateClub
+ * @typedef {object} CreateClub
  * @property {string} name - Club Name
  * @property {string} password - Password of Club
- * @property {String} {}
+ * @property {string} clubId - Id of Club
+ * @property {PackageClub[]} package - Package of Club
  */
+
+/** Return Package
+ * @typedef {object} PackageClub
+ * @property {string} packageName.required - Name of Package
+ * @property {string[]} features - features of Package
+ * @property {string} MonthlyRate - Monthly Rate of Package
+ * @property {string} YearlyRate - Monthly Rate of Package
+ */
+
+/**
+ * Return GetClub
+ * @typedef {object} GetClub
+ * @property {string} clubId - Id of Club
+ * @property {string} name - Club Name
+ */
+
+/**
+ * POST /clubs/
+ * @typedef {object} CreateClubDto
+ * @summary Create Club
+ * @tags users
+ * @param {Club} request.body.required
+ * @return {CreateClub} 201 - Club Created
+ * @security BearerAuth
+ */
+
+users
+  .route('/club')
+  .post(RequestValidator.validate(CreateClubDto), controller.createClub)
+  .get(controller.getClub);
 
 /**
  * POST /users
@@ -95,23 +152,6 @@ users
   .route('/founder')
   .post(RequestValidator.validate(CreateFounderDto), controller.createFounder)
   .get(controller.getFounderInfo);
-
-/**
- * POST /clubs/
- * @typedef {object} CreateClubDto
- * @summary Create Club
- * @tags users
- * @property {string} name.required
- * @property {string} password.required
- * @property {string} clublink
- * @property {string} package.required
- * @param {CreateClubDto} request.body.required
- * @return {User} 201 - Club Created
- */
-
-users
-  .route('/club')
-  .post(RequestValidator.validate(CreateClubDto), controller.createClub);
 
 /**
  * PATCH /users/
