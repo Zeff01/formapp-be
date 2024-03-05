@@ -182,4 +182,17 @@ export default class SessionsController extends Api {
       next(e);
     }
   };
+  public getPlayersBySubSession = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.sessionsService.getPlayersBySubSession(
+        req.query?.id as string
+      );
+    } catch (e) {
+      next(e);
+    }
+  };
 }

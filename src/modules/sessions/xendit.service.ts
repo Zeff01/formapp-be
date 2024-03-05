@@ -53,7 +53,24 @@ export default class XenditService {
           },
         }
       );
-      console.log('payout response', response.data);
+      // console.log('payout response', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('HTTP Request Error:', error);
+      throw error;
+    }
+  }
+
+  public async getInvoices() {
+    try {
+      const response = await axios.get(this.API_GATEWAY_URL + '/v2/invoices', {
+        timeout: 10000,
+        auth: {
+          username: process.env.XENDIT_API_KEY,
+          password: '',
+        },
+      });
+      // console.log('invoice response', response.data);
       return response.data;
     } catch (error) {
       console.error('HTTP Request Error:', error);

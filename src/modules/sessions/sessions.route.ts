@@ -161,4 +161,5 @@ sessionRouter.post('/payment/callback', controller.paymentCallback);
 //  */
 sessionRouter.post('/payout/callback', controller.paymentCallback);
 
+sessionRouter.get('/view', verifyAuthToken, controller.getPlayersBySubSession);
 export default sessionRouter;
