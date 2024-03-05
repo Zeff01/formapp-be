@@ -143,4 +143,11 @@ users.patch('/join', verifyAuthToken, controller.joinGame);
 users.patch('/team/join', verifyAuthToken, controller.joinTeamPerSubSession);
 
 users.get('/player', verifyAuthToken, controller.getPlayerById);
+
+users.post(
+  '/portal/customer',
+  verifyAuthToken,
+  controller.createCustomerXendit
+);
+users.post('/portal/plan', verifyAuthToken, controller.createRecurringPlan);
 export default users;
