@@ -16,8 +16,8 @@ model Package {
   id              String    @id @default(uuid()) @map("_id")
   packageName     String
   features        String[]
-  monthlyRate     String
-  yearlyRate      String
+  monthlyRate     Float
+  yearlyRate      Float
   clubId          String 
   clubs           Clubs     @relation(fields: [clubId], references: [id])
 }

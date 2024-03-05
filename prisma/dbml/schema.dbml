@@ -18,8 +18,8 @@ Table Package {
   id String [pk]
   packageName String [not null]
   features String[] [not null]
-  monthlyRate String [not null]
-  yearlyRate String [not null]
+  monthlyRate Float [not null]
+  yearlyRate Float [not null]
   clubId String [not null]
   clubs Clubs [not null]
 }
