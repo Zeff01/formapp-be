@@ -161,4 +161,17 @@ export default class UserController extends Api {
       next(e);
     }
   };
+  public getPlayerById = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.userService.getPlayerById(
+        req.user as JwtPayload
+      );
+    } catch (e) {
+      next(e);
+    }
+  };
 }

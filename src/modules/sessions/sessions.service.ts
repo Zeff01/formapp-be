@@ -386,4 +386,63 @@ export default class SessionsService {
       throw new HttpUnAuthorizedError('Error');
     }
   }
+  public async getPlayersBySubSession(subSessionId: string) {
+    if (!subSessionId)
+      throw new HttpBadRequestError('Get Players', [
+        'Sub Session Id is undefined',
+      ]);
+    try {
+      let invoiceList: any;
+      //get invoice list per sub session id chain
+      await this.xenditService.getInvoices().then((invoices) => {
+        invoiceList = invoices.filter((invoice: any) =>
+          invoice.external_id.includes(subSessionId)
+        );
+      });
+      //extract data to remove unnecessary fields
+      const data = invoiceList.map((invoice: any) => ({
+        id: invoice.id,
+        external_id: invoice.external_id,
+        payment_method: invoice.payment_method,
+        status: invoice.status,
+        amount: invoice.amount,
+        paid_amount: invoice.paid_amount,
+        paid_at: invoice.paid_at,
+        payer_email: invoice.payer_email,
+        description: invoice.description,
+        created: invoice.created,
+        updated: invoice.updated,
+        currency: invoice.currency,
+      }));
+      //get payer email list
+      const payer_emails: string[] = data.map(
+        (payment: any) => payment.payer_email
+      );
+      // get users per email list
+      const users = await prisma.users.findMany({
+        where: {
+          email: {
+            in: payer_emails,
+          },
+        },
+        select: {
+          firstName: true,
+          lastName: true,
+          profilePic: true,
+          email: true,
+          payments: true,
+        },
+      });
+
+      const finalData = users.map((user) => {
+        const userPayments = data.find(
+          (payment: any) => payment.payer_email === user.email
+        );
+        return { ...user, payments: userPayments };
+      });
+      return finalData;
+    } catch (error) {
+      throw new HttpUnAuthorizedError('Error');
+    }
+  }
 }

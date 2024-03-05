@@ -257,4 +257,23 @@ export default class UserService {
       },
     });
   }
+  public async getPlayerById(user: JwtPayload) {
+    if (!user) throw new HttpNotFoundError('Invalid user');
+
+    return prisma.users.findFirst({
+      where: {
+        id: user.id,
+      },
+      select: {
+        firstName: true,
+        lastName: true,
+        gender: true,
+        phone: true,
+        dateofbirth: true,
+        address: true,
+        email: true,
+        profilePic: true,
+      },
+    });
+  }
 }
