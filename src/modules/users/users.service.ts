@@ -1,4 +1,10 @@
-import { type Prisma, UserTypeEnum, type users, Gender } from '@prisma/client';
+import {
+  type Prisma,
+  UserTypeEnum,
+  type users,
+  Gender,
+  Clubs,
+} from '@prisma/client';
 import prisma from '@/lib/prisma';
 import LogMessage from '@/decorators/log-message.decorator';
 import {
@@ -159,42 +165,77 @@ export default class UserService {
     });
   }
 
+  public async generateNumericUniqueId(): Promise<string> {
+    let clubId = '';
+    let existingClub: Clubs | null;
+    do {
+      // Generate a random 10-digit number
+      const randomNumeric = Math.floor(Math.random() * 9000000000) + 1000000000;
+      clubId = `${randomNumeric}`;
+
+      // Check if the generated ID already exists in the database
+      existingClub = await prisma.clubs.findFirst({
+        where: {
+          clubId: clubId,
+        },
+      });
+
+      // If the ID already exists, generate a new one
+    } while (existingClub);
+
+    return clubId;
+  }
+
   public async createClub(data: CreateClubDto, user: JwtPayload) {
     if (user?.type !== UserTypeEnum.FOUNDER) {
       throw new HttpUnAuthorizedError('Forbidden');
     }
-    return prisma.clubs.create({
-      data: {
-        clubName: data.name,
-        password: GeneratorProvider.generateHash(data.password),
-        packages: {
-          create: data.packages.map((packageData) => {
-            return {
-              packageName: packageData.packageName,
-              features: { set: packageData.features },
-              monthlyRate: packageData.monthlyRate,
-              yearlyRate: packageData.yearlyRate,
-            };
-          }),
-        },
-        founderId: user.id,
+    const clubId = await this.generateNumericUniqueId();
+    const clubData = {
+      clubId: clubId,
+      clubName: data.name,
+      password: GeneratorProvider.generateHash(data.password),
+      packages: {
+        create: data.packages.map((packageData) => {
+          const monthlyRate = parseFloat(packageData.monthlyRate);
+          const yearlyRate = monthlyRate * 12;
+          return {
+            packageName: packageData.packageName,
+            features: { set: packageData.features },
+            monthlyRate: monthlyRate,
+            yearlyRate: yearlyRate,
+          };
+        }),
       },
+      founderId: user.id, // Assuming Prisma expects a founder object with an id property
+    };
+
+    console.log('user type', clubData.founderId);
+    console.log('user', user);
+    console.log(JSON.stringify(clubData, null, 2));
+    return prisma.clubs.create({
+      data: clubData,
     });
   }
 
-  // public async getClub(data: GetClubDto, user: JwtPayload) {
-  //   if (user?.type!== UserTypeEnum.FOUNDER) {
-  //     throw new HttpUnAuthorizedError('Forbidden');
-  //   }
-  //   return prisma.clubs.findFirst({
-  //     where: {
-  //       clubName: data.name,
-  //     },
-  //     include: {
-  //       packages: true,
-  //     },
-  //   });
-  // }
+  public async getClub(clubId: string, clubName: string) {
+    return prisma.clubs.findFirst({
+      where: {
+        OR: [
+          {
+            clubId: clubId,
+          },
+          {
+            clubName: clubName,
+          },
+        ],
+      },
+      select: {
+        clubId: true,
+        clubName: true,
+      },
+    });
+  }
 
   @LogMessage<[users]>({ message: 'User Deleted' })
   public async deleteUser(data: users) {
