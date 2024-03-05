@@ -24,6 +24,14 @@ const controller = new Controller();
  * @property {string} profilePic - Profile Pic URL
  * @property {string} phone - Phone Number
  * @property {string} type - User Type | ADMIN, FOUNDER,USER
+*/
+
+
+/**
+ * Return GetClub
+ * @typedef {object} GetClub
+ * @property {string} clubId - Id of Club
+ * @property {string} name - Club Name
  */
 
 /**
@@ -35,22 +43,6 @@ const controller = new Controller();
  */
 
 users.route('/').get(controller.getClub);
-
-/**
- * Club
- * @typedef {object} Club
- * @property {string} name.required - Club Name
- * @property {string} password.required - Password of Club
- * @property {Package[]} package - Package of Club
- */
-
-/**
- * Club/Package
- * @typedef {object} Package
- * @property {string} packageName.required - Name of Package
- * @property {string[]} features - features of Package
- * @property {string} MonthlyRate - Monthly Rate of Package
- */
 
 /**
  * Return CreateClub
@@ -69,12 +61,6 @@ users.route('/').get(controller.getClub);
  * @property {string} YearlyRate - Monthly Rate of Package
  */
 
-/**
- * Return GetClub
- * @typedef {object} GetClub
- * @property {string} clubId - Id of Club
- * @property {string} name - Club Name
- */
 
 /**
  * POST /users/club
