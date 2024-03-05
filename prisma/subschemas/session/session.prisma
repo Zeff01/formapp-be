@@ -11,7 +11,6 @@ model sessions {
   sessionTime String
   createdAt   DateTime?    @default(now()) @map("created_at")
   updatedAt   DateTime?    @default(now()) @map("updated_at")
-  payments    payments[]
   subSession  subSession[]
   rates       rates[]
   status      RecordStatus @default(ACTIVE)
@@ -33,6 +32,7 @@ model subSession {
   users       users[]
   status      RecordStatus @default(ACTIVE)
   createdBy   String?
+  payments    payments[]
 }
 
 model teams {

@@ -1,4 +1,5 @@
 //🧩Don't Edit this file.✨Generated in Tue Mar 05 2024 13:53:44 GMT+0800 (Singapore Standard Time)✨
+=======
 
 generator client {
   provider = "prisma-client-js"
@@ -94,14 +95,14 @@ model Feedbacks {
 model payments {
   id                String            @id @default(uuid()) @map("_id")
   email             String
-  sessionId         String
+  subSessionId      String
   amount            Float
   xenditReferenceId String
   xenditPayoutId    String
   createdAt         DateTime?         @default(now()) @map("created_at")
   updatedAt         DateTime?         @default(now()) @map("updated_at")
   status            PaymentStatusEnum
-  session           sessions          @relation(fields: [sessionId], references: [id])
+  subsession        subSession        @relation(fields: [subSessionId], references: [id])
   user              users             @relation(fields: [email], references: [email])
 }
 
@@ -113,7 +114,6 @@ model sessions {
   sessionTime String
   createdAt   DateTime?    @default(now()) @map("created_at")
   updatedAt   DateTime?    @default(now()) @map("updated_at")
-  payments    payments[]
   subSession  subSession[]
   rates       rates[]
   status      RecordStatus @default(ACTIVE)
@@ -135,6 +135,7 @@ model subSession {
   users       users[]
   status      RecordStatus @default(ACTIVE)
   createdBy   String?
+  payments    payments[]
 }
 
 model teams {

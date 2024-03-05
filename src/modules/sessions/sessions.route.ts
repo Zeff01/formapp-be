@@ -140,18 +140,18 @@ sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
  * @return {Xendit} 201 - paySession
  */
 
-// sessionRouter.post(
-//   '/payment',
-//   RequestValidator.validate(IPaySessionDto),
-//   controller.paySession
-// );
+sessionRouter.post(
+  '/payment',
+  RequestValidator.validate(IPaySessionDto),
+  controller.paySubSession
+);
 // /**
 //  * POST sessions/payment/callback
 //  * @summary Payment Callback
 //  * @tags sessions
 //  * @return {Payments} 201 - paySession
 //  */
-// sessionRouter.post('/payment/callback', controller.paymentCallback);
+sessionRouter.post('/payment/callback', controller.paymentCallback);
 
 // /**
 //  * POST sessions/payout/callback
@@ -159,6 +159,6 @@ sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
 //  * @tags sessions
 //  * @return {Payments} 201 - paymentCallback
 //  */
-// sessionRouter.post('/payout/callback', controller.paymentCallback);
+sessionRouter.post('/payout/callback', controller.paymentCallback);
 
 export default sessionRouter;
