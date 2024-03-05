@@ -81,7 +81,7 @@ users.route('/').get(controller.getClub);
  * @typedef {object} CreateClubDto
  * @summary Create Club
  * @tags users
- * @param {Club} request.body.required
+ * @param {CreateClub} request.body.required
  * @return {CreateClub} 201 - Club Created
  * @security BearerAuth
  */
