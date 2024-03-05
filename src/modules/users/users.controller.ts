@@ -120,6 +120,23 @@ export default class UserController extends Api {
     }
   };
 
+  public getClub = async (
+    req: Request,
+    res: CustomResponse<Clubs>,
+    next: NextFunction
+  ) => {
+    try {
+      const { clubId, clubName } = req.query;
+      const club = await this.userService.getClub(
+        clubId as string,
+        clubName as string
+      );
+      this.send(res, club, HttpStatusCode.Ok, 'Get Club');
+    } catch (e) {
+      next(e);
+    }
+  };
+
   public getFounderInfo = async (
     req: Request,
     res: CustomResponse<users>,
