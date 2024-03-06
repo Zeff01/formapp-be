@@ -1,3 +1,5 @@
+import { IsNumber, IsObject, IsString } from 'class-validator';
+
 export class IXenditInvoiceBodyData {
   external_id: string;
   currency: string;
@@ -67,4 +69,24 @@ export interface IXenditPayoutDto {
     email_bcc?: string[];
   };
   metadata?: any;
+}
+export class XCreateCustomerDto {
+  reference_id: string;
+  individual_detail: {
+    given_names: string;
+    surname: string;
+  };
+  email: string;
+  mobile_number: string;
+}
+
+export class XCreateSubscriptionPlan {
+  @IsString()
+  reference_id: string;
+
+  @IsString()
+  customer_id: string;
+
+  @IsNumber()
+  amount: number;
 }

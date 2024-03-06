@@ -2,12 +2,13 @@ import { type NextFunction, type Request } from 'express';
 import { Clubs, type users } from '@prisma/client';
 import { HttpStatusCode } from 'axios';
 import UserService from './users.service';
+import XenditService from '../sessions/xendit.service';
 import { JwtPayload, type CustomResponse } from '@/types/common.type';
 import Api from '@/lib/api';
 
 export default class UserController extends Api {
   private readonly userService = new UserService();
-
+  private readonly xenditService = new XenditService();
   public createUser = async (
     req: Request,
     res: CustomResponse<users>,
@@ -190,6 +191,49 @@ export default class UserController extends Api {
         req.user as JwtPayload
       );
       this.send(res, result, HttpStatusCode.Created, 'Join Team Successfully');
+    } catch (e) {
+      next(e);
+    }
+  };
+  public getPlayerById = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.userService.getPlayerById(
+        req.user as JwtPayload
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Player Info');
+    } catch (e) {
+      next(e);
+    }
+  };
+  public createCustomerXendit = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.xenditService.createCustomer(req.body);
+      this.send(
+        res,
+        result,
+        HttpStatusCode.Created,
+        'Customer Created in Xendit'
+      );
+    } catch (e) {
+      next(e);
+    }
+  };
+  public createRecurringPlan = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.xenditService.createRecurringPlan(req.body);
+      this.send(res, result, HttpStatusCode.Created, 'Plan Created');
     } catch (e) {
       next(e);
     }

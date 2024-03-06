@@ -25,5 +25,6 @@ model users {
   teamId        String[]
   teams         teams[]      @relation(fields: [teamId], references: [id])
 
+  //todo add crossref for xendit refid
   @@unique([email])
 }

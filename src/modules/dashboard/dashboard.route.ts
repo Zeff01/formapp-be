@@ -12,4 +12,6 @@ dashboardRouter.get(
   controller.getGenderAgeDist
 );
 
+dashboardRouter.get('/invoices', verifyAuthToken, controller.getInvoices);
+
 export default dashboardRouter;

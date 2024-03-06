@@ -1,10 +1,18 @@
 import axios from 'axios';
-import { IXenditInvoiceBodyData, IXenditPayoutDto } from '@/dto/xendit.dto';
+import {
+  XCreateCustomerDto,
+  IXenditInvoiceBodyData,
+  IXenditPayoutDto,
+  XCreateSubscriptionPlan,
+} from '@/dto/xendit.dto';
 
 export default class XenditService {
   private readonly API_GATEWAY_URL = 'https://api.xendit.co';
   private readonly CHANNEL_CODE = 'PH_GCASH';
   private readonly CURRENCY = 'PHP';
+  private readonly TYPE = 'INDIVIDUAL';
+  private readonly RECUR_ACTION = 'PAYMENT';
+
   public async createInvoice(data: IXenditInvoiceBodyData) {
     try {
       const response = await axios.post(
@@ -53,7 +61,87 @@ export default class XenditService {
           },
         }
       );
-      console.log('payout response', response.data);
+      // console.log('payout response', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('HTTP Request Error:', error);
+      throw error;
+    }
+  }
+
+  public async getInvoices() {
+    try {
+      const response = await axios.get(this.API_GATEWAY_URL + '/v2/invoices', {
+        timeout: 10000,
+        auth: {
+          username: process.env.XENDIT_API_KEY,
+          password: '',
+        },
+      });
+      // console.log('invoice response', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('HTTP Request Error:', error);
+      throw error;
+    }
+  }
+  public async createCustomer(data: XCreateCustomerDto) {
+    try {
+      const response = await axios.post(
+        this.API_GATEWAY_URL + '/customers',
+        {
+          ...data,
+          type: this.TYPE,
+        },
+        {
+          auth: {
+            username: process.env.XENDIT_API_KEY,
+            password: '',
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('HTTP Request Error:', error);
+      throw error;
+    }
+  }
+  public async createRecurringPlan(data: XCreateSubscriptionPlan) {
+    try {
+      const response = await axios.post(
+        this.API_GATEWAY_URL + '/recurring/plans',
+        {
+          ...data,
+          recurring_action: this.RECUR_ACTION,
+          currency: this.CURRENCY,
+          schedule: {
+            reference_id: data.reference_id,
+            interval: 'DAY',
+            interval_count: 1,
+            retry_interval: 'DAY',
+            retry_interval_count: 3,
+            total_retry: 2,
+            failed_attempt_notifications: [1, 2],
+          },
+          immediate_action_type: 'FULL_AMOUNT',
+          notification_config: {
+            recurring_created: ['EMAIL'],
+            recurring_succeeded: ['EMAIL'],
+            recurring_failed: ['EMAIL'],
+          },
+          failed_cycle_action: 'STOP',
+          payment_link_for_failed_attempt: true,
+          description: 'Formapp Premium Subscription',
+          success_return_url: 'https://www.google.com/', //change to formapp
+          failure_return_url: 'https://www.google.com/', //change to formapp
+        },
+        {
+          auth: {
+            username: process.env.XENDIT_API_KEY,
+            password: '',
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       console.error('HTTP Request Error:', error);
