@@ -72,10 +72,6 @@ export class CreateClubDto {
   @IsString()
   clubId: string;
 
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-
   @IsArray()
   @IsNotEmpty()
   packages: PackageDto[];
