@@ -19,8 +19,8 @@ const expressJSDocSwaggerConfig = {
   },
   servers: [
     {
-      url: `${environment.appUrl}:${port}/{basePath}/{version}/{env}`,
-      // url: `https://formapp-be.onrender.com/{basePath}/{version}/{env}`,
+      // url: `${environment.appUrl}:${port}/{basePath}/{version}/{env}`,
+      url: `https://formapp-be.onrender.com/{basePath}/{version}/{env}`,
       description: 'Express Server',
       variables: {
         port: {
