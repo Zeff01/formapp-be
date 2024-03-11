@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Mar 05 2024 21:55:59 GMT+0800 (Philippine Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Mar 11 2024 13:25:49 GMT+0800 (Singapore Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -18,21 +18,22 @@ model Clubs {
   clubId    String    @unique
   clubName  String
   packages  Package[]
-  password  String
-  founderId String
+  founderId String?
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @default(now()) @map("updated_at")
-  founder   users     @relation(fields: [founderId], references: [id])
+  founder   users?    @relation(fields: [founderId], references: [id])
 }
 
 model Package {
-  id          String   @id @default(uuid()) @map("_id")
+  id          String    @id @default(uuid()) @map("_id")
   packageName String
   features    String[]
   monthlyRate Float
   yearlyRate  Float
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @default(now()) @map("updated_at")
   clubId      String
-  clubs       Clubs    @relation(fields: [clubId], references: [id])
+  clubs       Clubs     @relation(fields: [clubId], references: [id])
 }
 
 enum UserTypeEnum {
@@ -186,5 +187,6 @@ model users {
   teamId        String[]
   teams         teams[]      @relation(fields: [teamId], references: [id])
 
+  //todo add crossref for xendit refid
   @@unique([email])
 }

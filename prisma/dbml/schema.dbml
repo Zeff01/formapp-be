@@ -7,11 +7,10 @@ Table Clubs {
   clubId String [unique, not null]
   clubName String [not null]
   packages Package [not null]
-  password String [not null]
-  founderId String [not null]
+  founderId String
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
-  founder users [not null]
+  founder users
 }
 
 Table Package {
@@ -20,6 +19,8 @@ Table Package {
   features String[] [not null]
   monthlyRate Float [not null]
   yearlyRate Float [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
   clubId String [not null]
   clubs Clubs [not null]
 }
