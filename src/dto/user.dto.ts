@@ -70,7 +70,8 @@ export class CreateClubDto {
   name: string;
 
   @IsString()
-  clubId: string;
+  @IsOptional()
+  clubId?: string;
 
   @IsArray()
   @IsNotEmpty()
@@ -79,20 +80,17 @@ export class CreateClubDto {
 
 export class PackageDto {
   @IsString()
-  @IsNotEmpty()
   packageName: string;
 
   @IsArray()
-  @ArrayNotEmpty()
   features: string[];
 
   @IsString()
-  @IsNotEmpty()
   monthlyRate: string;
 
   @IsString()
-  @IsNotEmpty()
-  yearlyRate: string;
+  @IsOptional()
+  yearlyRate?: string;
 }
 
 export class UpdateUserDto {

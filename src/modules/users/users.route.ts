@@ -34,14 +34,13 @@ const controller = new Controller();
  */
 
 /**
- * GET /club/
+ * GET users/club/
  * @summary Get Club
  * @tags users
- * @security BearerAuth
  * @return {GetClub} 200 - getSessions
  */
 
-users.route('/').get(controller.getClub);
+users.get('/club', controller.getClub);
 
 /**
  * Return CreateClub
@@ -60,19 +59,20 @@ users.route('/').get(controller.getClub);
  */
 
 /**
- * POST /users/club
+ * POST users/club
  * @typedef {object} CreateClubDto
  * @summary Create Club
  * @tags users
- * @param {CreateClub} request.body.required
+ * @param {CreateClub} request.body
  * @return {CreateClub} 201 - Club Created
  */
 
-users
-  .route('/club')
-  .post(RequestValidator.validate(CreateClubDto), controller.createClub)
-  .get(controller.getClub);
-
+users.post(
+  '/club',
+  verifyAuthToken,
+  RequestValidator.validate(CreateClubDto),
+  controller.createClub
+);
 /**
  * POST /users
  * @typedef {object} CreateUserDto
