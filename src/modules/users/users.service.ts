@@ -166,10 +166,13 @@ export default class UserService {
   }
 
   public async createClub(data: CreateClubDto, user: JwtPayload) {
+    if (user?.type !== UserTypeEnum.FOUNDER) {
+      throw new HttpUnAuthorizedError('Forbidden');
+    }
     return await prisma.clubs.create({
       data: {
-        clubId: GeneratorProvider.Uuid4(),
         clubName: data.name,
+        clubId: GeneratorProvider.Uuid4(),
         packages: {
           create: data.packages.map((packageData) => {
             const monthlyRate = parseFloat(packageData.monthlyRate);
@@ -184,23 +187,16 @@ export default class UserService {
         },
         founderId: user.id,
       },
+      include: { packages: true },
     });
   }
 
-  public async getClub(id: string, clubName: string) {
-    const filter: Prisma.ClubsWhereInput = {
-      AND: [{ clubId: id }, { clubName: { contains: clubName } }],
-    };
-
-    const clubs = await prisma.clubs.findMany({
-      where: filter,
-      select: {
-        clubId: true,
-        clubName: true,
+  public async getClub(clubName?: string) {
+    return prisma.clubs.findFirst({
+      where: {
+        clubName: clubName
       },
     });
-
-    return clubs;
   }
 
   @LogMessage<[users]>({ message: 'User Deleted' })

@@ -111,11 +111,11 @@ export default class UserController extends Api {
     next: NextFunction
   ) => {
     try {
-      const club = await this.userService.createClub(
+      const result = await this.userService.createClub(
         req.body,
         req.user as JwtPayload
       );
-      this.send(res, club, HttpStatusCode.Created, 'Club Created');
+      this.send(res, result, HttpStatusCode.Created, 'Club Created');
     } catch (e) {
       next(e);
     }
@@ -127,10 +127,9 @@ export default class UserController extends Api {
     next: NextFunction
   ) => {
     try {
-      const { id, clubName } = req.query;
+     
       const club = await this.userService.getClub(
-        id as string,
-        clubName as string
+        req.query.clubName as string,
       );
       this.send(res, club, HttpStatusCode.Ok, 'Get Club');
     } catch (e) {
