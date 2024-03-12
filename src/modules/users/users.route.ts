@@ -4,6 +4,7 @@ import {
   CreateUserDto,
   DeleteUserDto,
   CreateFounderDto,
+  CreateClubDto,
   LoginFounderDto,
   UpdateUserDto,
 } from '@/dto/user.dto';
@@ -25,6 +26,52 @@ const controller = new Controller();
  * @property {string} type - User Type | ADMIN, FOUNDER,USER
  */
 
+/**
+ * Return GetClub
+ * @typedef {object} GetClub
+ * @property {string} clubId - Id of Club
+ * @property {string} name - Club Name
+ */
+
+/**
+ * GET users/club/
+ * @summary Get Club
+ * @tags users
+ * @return {GetClub} 200 - getSessions
+ */
+
+users.get('/club', controller.getClub);
+
+/**
+ * Return CreateClub
+ * @typedef {object} CreateClub
+ * @property {string} name - Club Name
+ * @property {PackageClub[]} packages - Package of Club
+ */
+
+/** Return Packages
+ * @typedef {object} PackageClub
+ * @property {string} packageName.required - Name of Package
+ * @property {string[]} features - features of Package
+ * @property {number} MonthlyRate - Monthly Rate of Package
+ */
+
+/**
+ * POST /users/club
+ * @typedef {object} CreateClubDto
+ * @summary Create Club
+ * @tags users
+ * @param {CreateClub} request.body
+ * @security BearerAuth
+ * @return {CreateClub} 201 - Club Created
+ */
+
+users.post(
+  '/club',
+  verifyAuthToken,
+  RequestValidator.validate(CreateClubDto),
+  controller.createClub
+);
 /**
  * POST /users
  * @typedef {object} CreateUserDto
@@ -63,6 +110,7 @@ users
  * @param {CreateUserDto} request.body.required
  * @return {User} 201 - Staff Successfully Created
  */
+
 users
   .route('/staff')
   .post(RequestValidator.validate(CreateUserDto), controller.createStaff)

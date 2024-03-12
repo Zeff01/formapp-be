@@ -2,14 +2,28 @@
 //// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 //// ------------------------------------------------------
 
-Table clubs {
+Table Clubs {
   id String [pk]
+  clubLink String [not null]
+  clubId String [unique, not null]
   clubName String [not null]
-  package String [not null]
-  founderId String [not null]
+  packages Package [not null]
+  founderId String
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
-  founder users [not null]
+  founder users
+}
+
+Table Package {
+  id String [pk]
+  packageName String [not null]
+  features String[] [not null]
+  monthlyRate Float [not null]
+  yearlyRate Float [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+  clubId String [not null]
+  clubs Clubs [not null]
 }
 
 Table Faq {
@@ -117,7 +131,7 @@ Table users {
   updatedAt DateTime [default: `now()`]
   gender Gender
   type UserTypeEnum [not null]
-  clubs clubs [not null]
+  clubs Clubs [not null]
   joinedLobbyId String
   subSession subSession
   payments payments [not null]
@@ -164,7 +178,9 @@ Enum RecordStatus {
   ACTIVE
 }
 
-Ref: clubs.founderId > users.id
+Ref: Clubs.founderId > users.id
+
+Ref: Package.clubId > Clubs.id
 
 Ref: payments.subSessionId > subSession.id
 

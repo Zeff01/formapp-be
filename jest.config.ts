@@ -1,7 +1,7 @@
 import { type Config } from 'jest';
 
 const testRegex = '(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)?$';
-const config: Config = {
+const configs: Config = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   testRegex,
@@ -12,4 +12,4 @@ const config: Config = {
   },
 };
 
-export default config;
+export default configs;

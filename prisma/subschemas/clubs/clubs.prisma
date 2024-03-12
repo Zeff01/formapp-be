@@ -1,11 +1,26 @@
 import { users } from "..\user\user"
 
-model clubs {
-  id        String    @id @default(uuid()) @map("_id")
-  clubName  String
-  package   String
-  founderId String
-  createdAt DateTime? @default(now()) @map("created_at")
-  updatedAt DateTime? @default(now()) @map("updated_at")
-  founder   users     @relation(fields: [founderId], references: [id])
+
+model Clubs {
+  id          String    @id @default(uuid()) @map("_id")
+  clubLink    String
+  clubId      String    @unique
+  clubName    String
+  packages    Package[]
+  founderId   String?
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @default(now()) @map("updated_at")
+  founder     users?    @relation(fields: [founderId], references: [id])
+}
+
+model Package {
+  id              String    @id @default(uuid()) @map("_id")
+  packageName     String
+  features        String[]
+  monthlyRate     Float
+  yearlyRate      Float
+  createdAt       DateTime?    @default(now()) @map("created_at")
+  updatedAt       DateTime?    @default(now()) @map("updated_at")
+  clubId          String 
+  clubs           Clubs     @relation(fields: [clubId], references: [id])
 }

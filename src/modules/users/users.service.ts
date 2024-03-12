@@ -1,12 +1,20 @@
-import { type Prisma, UserTypeEnum, type users, Gender } from '@prisma/client';
+import {
+  type Prisma,
+  UserTypeEnum,
+  type users,
+  Gender,
+  Clubs,
+} from '@prisma/client';
 import prisma from '@/lib/prisma';
 import LogMessage from '@/decorators/log-message.decorator';
 import {
+  CreateClubDto,
   CreateFounderDto,
   CreateUserDto,
+  PackageDto,
   LoginFounderDto,
 } from '@/dto/user.dto';
-import { HttpNotFoundError } from '@/lib/errors';
+import { HttpNotFoundError, HttpUnAuthorizedError } from '@/lib/errors';
 import { GeneratorProvider } from '@/lib/bcrypt';
 import JwtUtil from '@/lib/jwt';
 import { JwtPayload } from '@/types/common.type';
@@ -153,6 +161,41 @@ export default class UserService {
         phone: data.phone,
         password: GeneratorProvider.generateHash(data.password),
         type: UserTypeEnum.FOUNDER,
+      },
+    });
+  }
+
+  public async createClub(data: CreateClubDto, user: JwtPayload) {
+    if (user?.type !== UserTypeEnum.FOUNDER) {
+      throw new HttpUnAuthorizedError('Forbidden');
+    }
+    return await prisma.clubs.create({
+      data: {
+        clubLink: GeneratorProvider.shortUuid4(),
+        clubName: data.name,
+        clubId: GeneratorProvider.Uuid4(),
+        packages: {
+          create: data.packages.map((packageData) => {
+            const monthlyRate = parseFloat(packageData.monthlyRate);
+            const yearlyRate = monthlyRate * 12;
+            return {
+              packageName: packageData.packageName,
+              features: { set: packageData.features },
+              monthlyRate: monthlyRate,
+              yearlyRate: yearlyRate,
+            };
+          }),
+        },
+        founderId: user.id,
+      },
+      include: { packages: true },
+    });
+  }
+
+  public async getClub(clubName?: string) {
+    return prisma.clubs.findFirst({
+      where: {
+        clubName: clubName,
       },
     });
   }

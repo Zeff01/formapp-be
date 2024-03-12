@@ -1,9 +1,12 @@
 import {
+  ArrayNotEmpty,
+  IsArray,
   IsDateString,
   IsEmail,
   IsEnum,
   IsMobilePhone,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -11,6 +14,7 @@ import {
 } from 'class-validator';
 
 import { Gender } from '@prisma/client';
+import { isFloat32Array, isFloat64Array } from 'util/types';
 
 export class CreateUserDto {
   @IsString()
@@ -60,6 +64,35 @@ export class CreateFounderDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+}
+
+export class CreateClubDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @IsString()
+  @IsOptional()
+  clubId?: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  packages: PackageDto[];
+}
+
+export class PackageDto {
+  @IsString()
+  packageName: string;
+
+  @IsArray()
+  features: string[];
+
+  @IsNumber()
+  monthlyRate: number;
+
+  @IsNumber()
+  @IsOptional()
+  yearlyRate?: number;
 }
 
 export class UpdateUserDto {

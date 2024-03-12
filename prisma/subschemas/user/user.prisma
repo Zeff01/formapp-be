@@ -1,5 +1,5 @@
 import { Gender,UserTypeEnum } from "..\enum\enum"
-import {clubs} from "..\clubs\clubs"
+import {Clubs} from "..\clubs\clubs"
 import {payments} from "..\payments\payments"
 import { subSession, teams } from "..\session\session"
 model users {
@@ -18,7 +18,7 @@ model users {
   updatedAt     DateTime?    @default(now()) @map("updated_at")
   gender        Gender?
   type          UserTypeEnum
-  clubs         clubs[]
+  clubs         Clubs[]
   joinedLobbyId String?
   subSession    subSession?  @relation(fields: [joinedLobbyId], references: [id])
   payments      payments[]
