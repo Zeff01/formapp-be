@@ -6,6 +6,7 @@ import {
   IsEnum,
   IsMobilePhone,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -13,6 +14,7 @@ import {
 } from 'class-validator';
 
 import { Gender } from '@prisma/client';
+import { isFloat32Array, isFloat64Array } from 'util/types';
 
 export class CreateUserDto {
   @IsString()
@@ -85,12 +87,12 @@ export class PackageDto {
   @IsArray()
   features: string[];
 
-  @IsString()
-  monthlyRate: string;
+  @IsNumber()
+  monthlyRate: number;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  yearlyRate?: string;
+  yearlyRate?: number;
 }
 
 export class UpdateUserDto {

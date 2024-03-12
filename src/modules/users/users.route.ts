@@ -46,7 +46,6 @@ users.get('/club', controller.getClub);
  * Return CreateClub
  * @typedef {object} CreateClub
  * @property {string} name - Club Name
- * @property {string} clubId - Id of Club
  * @property {PackageClub[]} packages - Package of Club
  */
 
@@ -54,16 +53,16 @@ users.get('/club', controller.getClub);
  * @typedef {object} PackageClub
  * @property {string} packageName.required - Name of Package
  * @property {string[]} features - features of Package
- * @property {string} MonthlyRate - Monthly Rate of Package
- * @property {string} YearlyRate - Monthly Rate of Package
+ * @property {number} MonthlyRate - Monthly Rate of Package
  */
 
 /**
- * POST users/club
+ * POST /users/club
  * @typedef {object} CreateClubDto
  * @summary Create Club
  * @tags users
  * @param {CreateClub} request.body
+ * @security BearerAuth
  * @return {CreateClub} 201 - Club Created
  */
 
