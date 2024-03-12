@@ -7,6 +7,11 @@ export class GeneratorProvider {
     return uuidv4();
   }
 
+    static shortUuid4(): string {
+      const uuid = uuidv4();
+      return uuid.substr(0, 8); // Get the first 8 characters of the UUID
+    }
+
   static generateHash(str: string): string {
     const salt = genSaltSync(10);
     const hashed = hashSync(str, salt);

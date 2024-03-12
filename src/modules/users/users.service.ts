@@ -171,6 +171,7 @@ export default class UserService {
     }
     return await prisma.clubs.create({
       data: {
+        clubLink: GeneratorProvider.shortUuid4(),
         clubName: data.name,
         clubId: GeneratorProvider.Uuid4(),
         packages: {
@@ -194,7 +195,7 @@ export default class UserService {
   public async getClub(clubName?: string) {
     return prisma.clubs.findFirst({
       where: {
-        clubName: clubName
+        clubName: clubName,
       },
     });
   }
