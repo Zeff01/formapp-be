@@ -3,6 +3,7 @@ import { users } from "..\user\user"
 
 model Clubs {
   id          String    @id @default(uuid()) @map("_id")
+  clubLink    String
   clubId      String    @unique
   clubName    String
   packages    Package[]

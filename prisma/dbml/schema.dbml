@@ -4,6 +4,7 @@
 
 Table Clubs {
   id String [pk]
+  clubLink String [not null]
   clubId String [unique, not null]
   clubName String [not null]
   packages Package [not null]
