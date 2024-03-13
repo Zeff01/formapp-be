@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Mar 12 2024 14:06:48 GMT+0800 (Singapore Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Mar 13 2024 09:05:57 GMT+0800 (Singapore Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -76,6 +76,13 @@ enum RecordStatus {
   ACTIVE
 }
 
+enum MarketingChannel {
+  FACEBOOK
+  TIKTOK
+  INSTAGRAM
+  TWITTER
+}
+
 model Faq {
   id        String   @id @default(uuid()) @map("_id")
   question  String
@@ -91,6 +98,15 @@ model Feedbacks {
   rating           Rating
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @default(now()) @map("updated_at")
+}
+
+model MarketingPreference {
+  id               String           @id @default(uuid()) @map("_id")
+  marketingChannel MarketingChannel
+  userId           String           @unique
+  marketing        users            @relation(fields: [userId], references: [id])
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @default(now()) @map("updated_at")
 }
 
 model payments {
@@ -166,7 +182,7 @@ model rates {
 }
 
 model users {
-  id            String       @id @default(uuid()) @map("_id")
+  id            String               @id @default(uuid()) @map("_id")
   firstName     String
   lastName      String
   email         String
@@ -177,16 +193,17 @@ model users {
   age           Int?
   address       String?
   dateofbirth   DateTime?
-  createdAt     DateTime?    @default(now()) @map("created_at")
-  updatedAt     DateTime?    @default(now()) @map("updated_at")
+  createdAt     DateTime?            @default(now()) @map("created_at")
+  updatedAt     DateTime?            @default(now()) @map("updated_at")
   gender        Gender?
   type          UserTypeEnum
   clubs         Clubs[]
   joinedLobbyId String?
-  subSession    subSession?  @relation(fields: [joinedLobbyId], references: [id])
+  subSession    subSession?          @relation(fields: [joinedLobbyId], references: [id])
   payments      payments[]
   teamId        String[]
-  teams         teams[]      @relation(fields: [teamId], references: [id])
+  teams         teams[]              @relation(fields: [teamId], references: [id])
+  marketing     MarketingPreference?
 
   //todo add crossref for xendit refid
   @@unique([email])

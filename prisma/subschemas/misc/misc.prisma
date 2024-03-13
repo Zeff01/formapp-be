@@ -1,4 +1,5 @@
-import { Rating } from "..\enum\enum"
+import { Rating, MarketingChannel } from "..\enum\enum"
+import { users } from "..\user\user
 
 model Faq {
   id        String   @id @default(uuid()) @map("_id")
@@ -13,6 +14,15 @@ model Feedbacks {
   experience       String?
   difficultProcess String?
   rating           Rating
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @default(now()) @map("updated_at")
+}
+
+model MarketingPreference {
+  id               String   @id @default(uuid()) @map("_id")
+  marketingChannel MarketingChannel
+  userId           String @unique
+  marketing        users @relation(fields: [userId], references: [id])
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @default(now()) @map("updated_at")
 }

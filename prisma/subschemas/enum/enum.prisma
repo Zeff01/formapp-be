@@ -36,3 +36,10 @@ enum RecordStatus {
   DELETED
   ACTIVE
 }
+
+enum MarketingChannel {
+  FACEBOOK
+  TIKTOK
+  INSTAGRAM
+  TWITTER
+}
