@@ -87,8 +87,8 @@ export class PackageDto {
   @IsArray()
   features: string[];
 
-  @IsNumber()
-  monthlyRate: number;
+  @IsString()
+  monthlyRate: string;
 
   @IsNumber()
   @IsOptional()
