@@ -37,7 +37,7 @@ enum RecordStatus {
   ACTIVE
 }
 
-enum MarketingChannel {
+enum Marketing {
   FACEBOOK
   TIKTOK
   INSTAGRAM
