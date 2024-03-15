@@ -72,7 +72,7 @@ miscRouter
  * @typedef {object} SurveyDto
  * @tags misc
  * @summary Survey
- * @param {SurveyDto} request.body.required
+ * @param {Survey} request.body.required
  * @return {Survey} 201 - Survey Added
  */
 

@@ -43,11 +43,11 @@ Table Feedbacks {
   updatedAt DateTime [default: `now()`, not null]
 }
 
-Table MarketingPreference {
+Table Survey {
   id String [pk]
-  marketingChannel MarketingChannel [not null]
+  marketing Marketing [not null]
   userId String [unique, not null]
-  marketing users [not null]
+  user users [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
 }
@@ -146,7 +146,7 @@ Table users {
   payments payments [not null]
   teamId String[] [not null]
   teams teams [not null]
-  marketing MarketingPreference
+  survey Survey
 }
 
 Enum UserTypeEnum {
@@ -188,7 +188,7 @@ Enum RecordStatus {
   ACTIVE
 }
 
-Enum MarketingChannel {
+Enum Marketing {
   FACEBOOK
   TIKTOK
   INSTAGRAM
@@ -199,7 +199,7 @@ Ref: Clubs.founderId > users.id
 
 Ref: Package.clubId > Clubs.id
 
-Ref: MarketingPreference.userId - users.id
+Ref: Survey.userId - users.id
 
 Ref: payments.subSessionId > subSession.id
 
