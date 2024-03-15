@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Mar 12 2024 14:06:48 GMT+0800 (Singapore Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Fri Mar 15 2024 17:34:21 GMT+0800 (Singapore Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -76,6 +76,13 @@ enum RecordStatus {
   ACTIVE
 }
 
+enum Marketing {
+  FACEBOOK
+  TIKTOK
+  INSTAGRAM
+  TWITTER
+}
+
 model Faq {
   id        String   @id @default(uuid()) @map("_id")
   question  String
@@ -91,6 +98,15 @@ model Feedbacks {
   rating           Rating
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @default(now()) @map("updated_at")
+}
+
+model Survey {
+  id        String    @id @default(uuid()) @map("_id")
+  marketing Marketing
+  userId    String    @unique
+  user      users     @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
 }
 
 model payments {
@@ -187,6 +203,7 @@ model users {
   payments      payments[]
   teamId        String[]
   teams         teams[]      @relation(fields: [teamId], references: [id])
+  survey        Survey?
 
   //todo add crossref for xendit refid
   @@unique([email])

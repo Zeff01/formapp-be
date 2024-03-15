@@ -1,4 +1,5 @@
 import { Gender,UserTypeEnum } from "..\enum\enum"
+import { Survey } from "..\misc\misc" 
 import {Clubs} from "..\clubs\clubs"
 import {payments} from "..\payments\payments"
 import { subSession, teams } from "..\session\session"
@@ -24,6 +25,7 @@ model users {
   payments      payments[]
   teamId        String[]
   teams         teams[]      @relation(fields: [teamId], references: [id])
+  survey        Survey?
 
   //todo add crossref for xendit refid
   @@unique([email])

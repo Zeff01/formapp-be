@@ -1,7 +1,7 @@
 import { type NextFunction, type Request } from 'express';
 import Api from '@/lib/api';
-import { CustomResponse } from '@/types/common.type';
-import { Feedbacks, type Faq } from '@prisma/client';
+import { CustomResponse, JwtPayload } from '@/types/common.type';
+import { Feedbacks, Survey, type Faq } from '@prisma/client';
 import MiscService from './misc.service';
 import { HttpStatusCode } from 'axios';
 
@@ -41,6 +41,22 @@ export default class MiscController extends Api {
     try {
       const feedbacks = await this.miscService.addFeedback(req.body);
       this.send(res, feedbacks, HttpStatusCode.Created, 'Feedback Added');
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public Survey = async (
+    req: Request,
+    res: CustomResponse<Survey>,
+    next: NextFunction
+  ) => {
+    try {
+      const survey = await this.miscService.SurveyData(
+        req.body
+      );
+
+      this.send(res, survey, HttpStatusCode.Created, 'Survey Added');
     } catch (e) {
       next(e);
     }

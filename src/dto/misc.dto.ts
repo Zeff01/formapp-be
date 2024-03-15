@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Marketing } from '@prisma/client'; // Assuming Marketing is defined elsewhere
 
 export class CreateFaqDto {
   @IsString()
@@ -21,4 +22,14 @@ export class addFeedbackDto {
 
   @IsString()
   rating: string;
+}
+
+export class SurveyDto {
+  @IsEnum(Marketing)
+  marketing: Marketing;
+
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
+
 }

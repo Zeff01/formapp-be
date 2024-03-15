@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import MiscController from './misc.controller';
 import RequestValidator from '@/middlewares/request-validator';
-import { CreateFaqDto, addFeedbackDto } from '@/dto/misc.dto';
+import { CreateFaqDto, SurveyDto, addFeedbackDto } from '@/dto/misc.dto';
+import { verifyAuthToken } from '@/middlewares/auth';
 const miscRouter: Router = Router();
 const controller = new MiscController();
 
@@ -21,6 +22,13 @@ const controller = new MiscController();
  * @property {string} answer
  * @property {string} createdAt
  * @property {string} updatedAt
+ */
+
+/**
+ * Survey
+ * @typedef {object} Survey
+ * @property {string} marketing
+ * @property {string} userId
  */
 
 /**
@@ -58,4 +66,29 @@ miscRouter
 miscRouter
   .route('/addfeedback')
   .post(RequestValidator.validate(addFeedbackDto), controller.addFeedback);
+
+/**
+ * POST /misc/survey
+ * @typedef {object} SurveyDto
+ * @tags misc
+ * @summary Survey
+ * @param {Survey} request.body.required
+ * @return {Survey} 201 - Survey Added
+ */
+
+
+// it will change depends upon the requirements of the create a player(auth)
+// miscRouter.post(
+//   '/survey',
+//   verifyAuthToken,
+//   RequestValidator.validate(SurveyDto),
+//   controller.Survey
+// );
+
+miscRouter.post(
+  '/survey',
+  RequestValidator.validate(SurveyDto),
+  controller.Survey
+);
+
 export default miscRouter;
