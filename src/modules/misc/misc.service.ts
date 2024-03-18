@@ -39,4 +39,17 @@ export default class MiscService {
       throw new HttpUnAuthorizedError('Error');
     }
   }
+
+  public async getSurveyData() {
+    try {
+      return await prisma.survey.groupBy({
+        by: ['marketing'], 
+        _count: {
+          _all: true,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
