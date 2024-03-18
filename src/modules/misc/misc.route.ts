@@ -25,10 +25,16 @@ const controller = new MiscController();
  */
 
 /**
- * Survey
+ * Post Survey
  * @typedef {object} Survey
  * @property {string} marketing
  * @property {string} userId
+ */
+
+/**
+ * Get Survey
+ * @typedef {object} GetSurvey
+ * @property {string} marketing
  */
 
 /**
@@ -38,6 +44,15 @@ const controller = new MiscController();
  * @returns {FAQ} 200 - FAQ List
  */
 miscRouter.get('/faq', controller.getFaq);
+
+/**
+ * GET /misc/survey
+ * @tags misc
+ * @summary Get All Survey Data
+ * @return {GetSurvey} 200 - Survey Data
+ */
+
+miscRouter.get('/survey', controller.getSurvey)
 
 /**
  * POST /misc/addfaq
@@ -90,5 +105,7 @@ miscRouter.post(
   RequestValidator.validate(SurveyDto),
   controller.Survey
 );
+
+
 
 export default miscRouter;
