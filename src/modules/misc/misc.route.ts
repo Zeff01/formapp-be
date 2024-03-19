@@ -52,7 +52,7 @@ miscRouter.get('/faq', controller.getFaq);
  * @return {GetSurvey} 200 - Survey Data
  */
 
-miscRouter.get('/survey', controller.getSurvey)
+miscRouter.get('/survey', controller.getSurvey);
 
 /**
  * POST /misc/addfaq
@@ -91,7 +91,6 @@ miscRouter
  * @return {Survey} 201 - Survey Added
  */
 
-
 // it will change depends upon the requirements of the create a player(auth)
 // miscRouter.post(
 //   '/survey',
@@ -105,7 +104,5 @@ miscRouter.post(
   RequestValidator.validate(SurveyDto),
   controller.Survey
 );
-
-
 
 export default miscRouter;

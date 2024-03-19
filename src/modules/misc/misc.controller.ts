@@ -53,7 +53,6 @@ export default class MiscController extends Api {
   ) => {
     try {
       const survey = await this.miscService.SurveyData(req.body);
-
       this.send(res, survey, HttpStatusCode.Created, 'Survey Added');
     } catch (e) {
       next(e);
@@ -66,7 +65,12 @@ export default class MiscController extends Api {
     next: NextFunction
   ) => {
     try {
-      const getSurvey = await this.miscService.getSurveyData();
+      const fromDate = req.query.from ? new Date(req.query.from as string) : undefined;
+      const toDate = req.query.to ? new Date(req.query.to as string) : undefined;
+      const getSurvey = await this.miscService.getAllSurveyData(
+        fromDate,
+        toDate
+      );
       this.send(res, getSurvey, HttpStatusCode.Ok, 'Survey List');
     } catch (e) {
       next(e);
