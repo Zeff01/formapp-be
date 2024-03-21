@@ -192,7 +192,6 @@ Enum Marketing {
   FACEBOOK
   TIKTOK
   INSTAGRAM
-  TWITTER
 }
 
 Ref: Clubs.founderId > users.id
