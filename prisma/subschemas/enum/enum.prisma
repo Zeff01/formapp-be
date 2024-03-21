@@ -41,5 +41,4 @@ enum Marketing {
   FACEBOOK
   TIKTOK
   INSTAGRAM
-  TWITTER
 }

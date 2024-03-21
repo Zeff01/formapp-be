@@ -39,4 +39,40 @@ export default class MiscService {
       throw new HttpUnAuthorizedError('Error');
     }
   }
+
+  public async getAllSurveyData(from?: Date, to?: Date) {
+    let whereClause: any = {};
+
+    if (!from && !to) {
+      try {
+        return await prisma.survey.groupBy({
+          by: ['marketing'],
+          _count: {
+            _all: true,
+          },
+        });
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+
+    if (from && to) {
+      whereClause.createdAt = {
+        gte: from,
+        lte: to,
+      };
+
+      try {
+        return await prisma.survey.groupBy({
+          by: ['marketing'],
+          _count: {
+            _all: true,
+          },
+          where: whereClause,
+        });
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+  }
 }
