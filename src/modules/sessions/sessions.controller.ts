@@ -14,11 +14,18 @@ export default class SessionsController extends Api {
     next: NextFunction
   ) => {
     try {
-      const { id, from, to } = req.query;
+      const fromDate = req.query.from
+        ? new Date(req.query.from as string)
+        : undefined;
+      const toDate = req.query.to
+        ? new Date(req.query.to as string)
+        : undefined;
+
+      console.log('test01: ', fromDate, toDate);
       const result = await this.sessionsService.getSessions(
-        id as string,
-        from as string,
-        to as string,
+        req.query.id as string,
+        fromDate,
+        toDate,
         req.user as JwtPayload
       );
       this.send(res, result, HttpStatusCode.Ok, 'Session List');
