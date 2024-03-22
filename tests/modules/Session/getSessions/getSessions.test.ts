@@ -44,7 +44,16 @@ describe('SessionService', () => {
       fromDate,
       toDate
     );
-        // TODO: It doesn't work the date filter
+    // TODO: It doesn't work the date filter
     console.log(sessions);
+  });
+
+
+
+  // TODO: It should behave as how getSession response 
+  it('should not return a session if its status is DELETED', async () => {
+    const sessionData = data.data[1];
+    
+    console.log('sessionData', sessionData);
   });
 });

@@ -38,6 +38,10 @@ export default class SessionsService {
       where.createdBy = user.id;
     }
 
+    where.status = {
+      not: RecordStatus.DELETED,
+    };
+
     if (from && to) {
       const fromDateStr = from.toISOString().split('T')[0];
       const toDateStr = to.toISOString().split('T')[0];
@@ -57,6 +61,11 @@ export default class SessionsService {
             status: true,
             _count: {
               select: { users: true },
+            },
+          },
+          where: {
+            status: {
+              not: RecordStatus.DELETED,
             },
           },
         },

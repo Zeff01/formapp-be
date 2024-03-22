@@ -20,8 +20,6 @@ export default class SessionsController extends Api {
       const toDate = req.query.to
         ? new Date(req.query.to as string)
         : undefined;
-
-      console.log('test01: ', fromDate, toDate);
       const result = await this.sessionsService.getSessions(
         req.query.id as string,
         fromDate,
