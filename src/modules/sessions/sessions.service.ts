@@ -29,21 +29,30 @@ export default class SessionsService {
 
   public async getSessions(
     id: string,
-    from: string,
-    to: string,
+    from?: Date,
+    to?: Date,
     user?: JwtPayload
   ) {
     let where: any = {};
     if (user?.id && user?.type === UserTypeEnum.FOUNDER) {
       where.createdBy = user.id;
     }
-    if (from && to) where.sessionDate = { gte: from, lte: to };
-    console.log(where);
+
+    where.status = {
+      not: RecordStatus.DELETED,
+    };
+
+    if (from && to) {
+      const fromDateStr = from.toISOString().split('T')[0];
+      const toDateStr = to.toISOString().split('T')[0];
+      where.sessionDate = { gte: fromDateStr, lte: toDateStr };
+    }
     return await prisma.sessions.findMany({
       where: where,
       include: {
         subSession: {
           select: {
+            id: true,
             sessionType: true,
             coach: true,
             noofTeams: true,
@@ -52,6 +61,11 @@ export default class SessionsService {
             status: true,
             _count: {
               select: { users: true },
+            },
+          },
+          where: {
+            status: {
+              not: RecordStatus.DELETED,
             },
           },
         },

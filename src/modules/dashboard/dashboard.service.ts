@@ -2,13 +2,12 @@ import prisma from '@/lib/prisma';
 import { JwtPayload } from '@/types/common.type';
 import { UserTypeEnum } from '@prisma/client';
 
+interface IAgeBracket {
+  min: number;
+  max: number;
+}
 export default class DashboardService {
-  constructor() {
-    interface IAgeBracket {
-      min: number;
-      max: number;
-    }
-  }
+  constructor() {}
 
   public async getGenderAgeDist(user?: JwtPayload) {
     let where: any = {};
@@ -106,7 +105,7 @@ export default class DashboardService {
     return age;
   }
 
-  private categorizeAgeToBracket(age: number, ageBrackets: IAgeBracket) {
+  private categorizeAgeToBracket(age: number, ageBrackets: IAgeBracket[]) {
     for (const bracket of ageBrackets) {
       if (age >= bracket.min && age <= bracket.max) {
         return `${bracket.min}-${bracket.max}`;
