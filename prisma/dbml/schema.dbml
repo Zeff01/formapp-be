@@ -7,7 +7,6 @@ Table Clubs {
   clubLink String [not null]
   clubId String [unique, not null]
   clubName String [not null]
-  packages Package [not null]
   founderId String
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
@@ -22,8 +21,6 @@ Table Package {
   yearlyRate Float [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
-  clubId String [not null]
-  clubs Clubs [not null]
 }
 
 Table Faq {
@@ -195,8 +192,6 @@ Enum Marketing {
 }
 
 Ref: Clubs.founderId > users.id
-
-Ref: Package.clubId > Clubs.id
 
 Ref: Survey.userId - users.id
 

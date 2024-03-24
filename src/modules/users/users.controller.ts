@@ -127,10 +127,7 @@ export default class UserController extends Api {
     next: NextFunction
   ) => {
     try {
-     
-      const club = await this.userService.getClub(
-        req.query.clubName as string,
-      );
+      const club = await this.userService.getClub(req.query.clubName as string);
       this.send(res, club, HttpStatusCode.Ok, 'Get Club');
     } catch (e) {
       next(e);
@@ -236,5 +233,14 @@ export default class UserController extends Api {
     } catch (e) {
       next(e);
     }
+  };
+
+  public getSubscriptionRate = async (
+    req: Request,
+    res: CustomResponse<Clubs>,
+    next: NextFunction
+  ) => {
+    const result = await this.userService.getSubscriptionRate(req.query?.id as string);
+    this.send(res, result, HttpStatusCode.Ok, 'Subscription info');
   };
 }

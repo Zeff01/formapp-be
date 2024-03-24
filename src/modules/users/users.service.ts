@@ -174,21 +174,8 @@ export default class UserService {
         clubLink: GeneratorProvider.shortUuid4(),
         clubName: data.name,
         clubId: GeneratorProvider.Uuid4(),
-        packages: {
-          create: data.packages.map((packageData) => {
-            const monthlyRate = parseFloat(packageData.monthlyRate);
-            const yearlyRate = monthlyRate * 12;
-            return {
-              packageName: packageData.packageName,
-              features: { set: packageData.features },
-              monthlyRate: monthlyRate,
-              yearlyRate: yearlyRate,
-            };
-          }),
-        },
         founderId: user.id,
       },
-      include: { packages: true },
     });
   }
 
@@ -200,7 +187,27 @@ export default class UserService {
     });
   }
 
-  @LogMessage<[users]>({ message: 'User Deleted' })
+  public async getSubscriptionRate(id?: string) {
+    try {
+      if (id) {
+        return await prisma.package.findUnique({
+          where: {
+            id: id,
+          },
+          select: {
+            id: true,
+            features: true,
+            monthlyRate: true,
+            yearlyRate: true,
+          },
+        });
+      }
+      return await prisma.package.findMany({});
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   public async deleteUser(data: users) {
     const { email } = data;
     if (email === null) {

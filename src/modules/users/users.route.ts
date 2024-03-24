@@ -42,6 +42,12 @@ const controller = new Controller();
 
 users.get('/club', controller.getClub);
 
+//TODO: ARRANGE USER / CLUB 
+
+//TODO: Document getSubscription
+
+users.get('/subscription', controller.getSubscriptionRate)
+
 /**
  * Return CreateClub
  * @typedef {object} CreateClub
