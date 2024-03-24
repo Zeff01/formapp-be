@@ -35,4 +35,20 @@ export default class DashboardController extends Api {
       next(e);
     }
   };
+
+  public getTransactionReport = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.xenditService.getTransactionReport(
+        req.query.from as string,
+        req.query.to as string
+      );
+      this.send(res, result, HttpStatusCode.Ok, 'Transcation Report');
+    } catch (e) {
+      next(e);
+    }
+  };
 }

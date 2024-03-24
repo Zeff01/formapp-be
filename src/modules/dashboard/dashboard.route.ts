@@ -14,4 +14,9 @@ dashboardRouter.get(
 
 dashboardRouter.get('/invoices', verifyAuthToken, controller.getInvoices);
 
+dashboardRouter.get(
+  '/report',
+  verifyAuthToken,
+  controller.getTransactionReport
+);
 export default dashboardRouter;
