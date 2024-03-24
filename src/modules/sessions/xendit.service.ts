@@ -148,4 +148,39 @@ export default class XenditService {
       throw error;
     }
   }
+  public convertToGMT8(date: string) {
+    let newDate = new Date(date);
+    newDate.setTime(newDate.getTime() + 20 * 59 * 60 * 1000);
+
+    return newDate;
+  }
+  public async getTransactionReport(from: string, to: string) {
+    try {
+      if (!from || !to) throw new Error('Date is required');
+
+      const fromDate = this.convertToGMT8(from);
+      const fromDateUTC = fromDate.toISOString();
+      const toDate = this.convertToGMT8(to);
+      const toDateUTC = toDate.toISOString();
+      console.log(fromDateUTC, toDateUTC);
+      // return;
+      const response = await axios.get(
+        this.API_GATEWAY_URL +
+          `/transactions?currency=PHP&types=PAYMENT&statuses=SUCCESS&created[gte]=${fromDateUTC}&created[lte]=${toDateUTC}
+          `,
+        {
+          timeout: 10000,
+          auth: {
+            username: process.env.XENDIT_API_KEY,
+            password: '',
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error('HTTP Request Error:', error);
+      throw error;
+    }
+  }
 }
