@@ -6,6 +6,9 @@ import {
   XCreateSubscriptionPlan,
 } from '@/dto/xendit.dto';
 
+interface Transaction {
+  amount: number;
+}
 export default class XenditService {
   private readonly API_GATEWAY_URL = 'https://api.xendit.co';
   private readonly CHANNEL_CODE = 'PH_GCASH';
@@ -162,8 +165,6 @@ export default class XenditService {
       const fromDateUTC = fromDate.toISOString();
       const toDate = this.convertToGMT8(to);
       const toDateUTC = toDate.toISOString();
-      console.log(fromDateUTC, toDateUTC);
-      // return;
       const response = await axios.get(
         this.API_GATEWAY_URL +
           `/transactions?currency=PHP&types=PAYMENT&statuses=SUCCESS&created[gte]=${fromDateUTC}&created[lte]=${toDateUTC}
@@ -177,7 +178,14 @@ export default class XenditService {
         }
       );
 
-      return response.data;
+      const result = response.data;
+
+      let onlinePayment = 0;
+      result.data.forEach((data: Transaction) => {
+        const res = (onlinePayment += data.amount);
+        return res;
+      });
+      return { result, onlinePayment };
     } catch (error) {
       console.error('HTTP Request Error:', error);
       throw error;

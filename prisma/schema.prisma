@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-//🧩Don't Edit this file.✨Generated in Fri Mar 22 2024 16:42:41 GMT+0800 (Singapore Standard Time)✨
-=======
-//🧩Don't Edit this file.✨Generated in Sun Mar 24 2024 16:56:42 GMT+0800 (Philippine Standard Time)✨
->>>>>>> Stashed changes
+//🧩Don't Edit this file.✨Generated in Mon Mar 25 2024 16:28:07 GMT+0800 (Singapore Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
