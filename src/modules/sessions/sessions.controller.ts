@@ -200,4 +200,24 @@ export default class SessionsController extends Api {
       next(e);
     }
   };
+
+  public getRates = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const fromDate = req.query.from
+        ? new Date(req.query.from as string)
+        : undefined;
+      const toDate = req.query.to
+        ? new Date(req.query.to as string)
+        : undefined;
+
+      const result = await this.sessionsService.getRates(fromDate, toDate);
+      this.send(res, result, HttpStatusCode.Ok, 'Rate List');
+    } catch (e) {
+      next(e);
+    }
+  };
 }
