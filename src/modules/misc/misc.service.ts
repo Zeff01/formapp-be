@@ -1,5 +1,10 @@
 import prisma from '@/lib/prisma';
-import { CreateFaqDto, addFeedbackDto, SurveyDto } from '@/dto/misc.dto';
+import {
+  CreateFaqDto,
+  addFeedbackDto,
+  SurveyDto,
+  BankDto,
+} from '@/dto/misc.dto';
 import { Rating, Marketing } from '@prisma/client';
 import { JwtPayload } from '@/types/common.type';
 import { HttpUnAuthorizedError } from '@/lib/errors';
@@ -73,6 +78,20 @@ export default class MiscService {
       } catch (error) {
         throw new Error(error);
       }
+    }
+  }
+
+  public async addBankCoverage(data: BankDto) {
+    try {
+      return await prisma.bank.create({
+        data: {
+          channelCode: data.channelCode,
+          channelType: data.channelType,
+          bankName: data.bankName,
+        },
+      });
+    } catch (error) {
+      throw error;
     }
   }
 }
