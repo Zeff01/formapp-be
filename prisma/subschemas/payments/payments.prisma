@@ -1,6 +1,7 @@
 import { PaymentStatusEnum } from "..\enum\enum"
 import { sessions,subSession } from "..\session\session"
 import { users } from "..\user\user"
+import { ChannelType } from "..\enum\enum"
 
 model payments {
   id                String            @id @default(uuid()) @map("_id")
@@ -14,4 +15,11 @@ model payments {
   status            PaymentStatusEnum
   subsession        subSession        @relation(fields: [subSessionId], references: [id])
   user              users             @relation(fields: [email], references: [email])
+}
+
+model bank {
+  id          String      @id @default(uuid()) @map("_id")
+  channelCode String
+  channelType ChannelType
+  bankName    String
 }
