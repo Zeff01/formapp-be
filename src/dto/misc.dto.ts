@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { Marketing } from '@prisma/client'; // Assuming Marketing is defined elsewhere
+import { ChannelType, Marketing } from '@prisma/client'; // Assuming Marketing is defined elsewhere
 
 export class CreateFaqDto {
   @IsString()
@@ -31,5 +31,15 @@ export class SurveyDto {
   @IsString()
   @IsNotEmpty()
   userId: string;
+}
 
+export class BankDto {
+  @IsString()
+  channelCode: string;
+
+  @IsEnum(ChannelType)
+  channelType: ChannelType;
+
+  @IsString()
+  bankName: string;
 }

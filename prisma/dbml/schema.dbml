@@ -66,6 +66,15 @@ Table payments {
   user users [not null]
 }
 
+Table bank {
+  id String [pk]
+  channelCode String [not null]
+  channelType ChannelType [not null]
+  bankName String [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime [default: `now()`]
+}
+
 Table sessions {
   id String [pk]
   name String [not null]
@@ -192,6 +201,11 @@ Enum Marketing {
   FACEBOOK
   TIKTOK
   INSTAGRAM
+}
+
+Enum ChannelType {
+  BANK
+  EWALLET
 }
 
 Ref: Clubs.founderId > users.id

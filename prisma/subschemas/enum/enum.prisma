@@ -42,3 +42,8 @@ enum Marketing {
   TIKTOK
   INSTAGRAM
 }
+
+enum ChannelType {
+  BANK
+  EWALLET
+}
