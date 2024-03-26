@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Mar 26 2024 16:51:08 GMT+0800 (Singapore Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Mar 26 2024 21:15:38 GMT+0800 (Singapore Standard Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -132,6 +132,8 @@ model bank {
   channelCode String
   channelType ChannelType
   bankName    String
+  createdAt   DateTime?   @default(now()) @map("created_at")
+  updatedAt   DateTime?   @default(now()) @map("updated_at")
 }
 
 model sessions {

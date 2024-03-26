@@ -22,4 +22,6 @@ model bank {
   channelCode String
   channelType ChannelType
   bankName    String
+  createdAt   DateTime?   @default(now()) @map("created_at")
+  updatedAt   DateTime?   @default(now()) @map("updated_at")
 }

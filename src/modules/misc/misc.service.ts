@@ -94,4 +94,8 @@ export default class MiscService {
       throw error;
     }
   }
+
+  public async getBankCoverage() {
+    return await prisma.bank.findMany();
+  }
 }

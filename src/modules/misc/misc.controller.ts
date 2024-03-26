@@ -95,4 +95,17 @@ export default class MiscController extends Api {
       next(e);
     }
   };
+
+  public getBankCoverage = async (
+    req: Request,
+    res: CustomResponse<bank>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.miscService.getBankCoverage();
+      this.send(res, result, HttpStatusCode.Ok, 'Bank List');
+    } catch (e) {
+      next(e)
+    }
+  }
 }
