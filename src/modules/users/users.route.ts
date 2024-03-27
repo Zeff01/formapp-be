@@ -9,7 +9,7 @@ import {
   UpdateUserDto,
 } from '@/dto/user.dto';
 import RequestValidator from '@/middlewares/request-validator';
-import { verifyAuthToken } from '@/middlewares/auth';
+import { verifyAdmintAuthToken, verifyAuthToken } from '@/middlewares/auth';
 
 const users: Router = Router();
 const controller = new Controller();
@@ -192,7 +192,7 @@ users.patch('/team/join', verifyAuthToken, controller.joinTeamPerSubSession);
 
 users.get('/player', verifyAuthToken, controller.getPlayerById);
 
-users.get('/player/find', verifyAuthToken, controller.getPlayerByName);
+users.get('/player/find', verifyAdmintAuthToken, controller.getPlayerByName);
 
 users.post(
   '/portal/customer',
