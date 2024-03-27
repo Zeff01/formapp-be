@@ -130,7 +130,7 @@ sessionRouter.post(
 
 sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
 
-sessionRouter.get('/rates', controller.getRates)
+sessionRouter.get('/rates', controller.getRates);
 /**
  * POST sessions/payment
  * @typedef {object} IPaySessionDto
