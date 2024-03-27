@@ -1,5 +1,5 @@
 import { type NextFunction, type Request } from 'express';
-import { type users } from '@prisma/client';
+import { subSession, type users } from '@prisma/client';
 import { HttpStatusCode } from 'axios';
 import { JwtPayload, type CustomResponse } from '@/types/common.type';
 import Api from '@/lib/api';
@@ -196,6 +196,7 @@ export default class SessionsController extends Api {
       const result = await this.sessionsService.getPlayersBySubSession(
         req.query?.id as string
       );
+      this.send(res, result, HttpStatusCode.Ok, 'Player Game Details');
     } catch (e) {
       next(e);
     }
@@ -216,6 +217,19 @@ export default class SessionsController extends Api {
 
       const result = await this.sessionsService.getRates(fromDate, toDate);
       this.send(res, result, HttpStatusCode.Ok, 'Rate List');
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public getSubSessions = async (
+    req: Request,
+    res: CustomResponse<subSession>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.sessionsService.getSubSessions();
+      this.send(res, result, HttpStatusCode.Ok, 'Sub Session List');
     } catch (e) {
       next(e);
     }

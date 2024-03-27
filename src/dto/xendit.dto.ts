@@ -1,4 +1,4 @@
-import { IsNumber, IsObject, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class IXenditInvoiceBodyData {
   external_id: string;

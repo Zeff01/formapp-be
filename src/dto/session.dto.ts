@@ -1,18 +1,12 @@
 import {
   ArrayUnique,
   IsArray,
-  IsCurrency,
-  IsDefined,
   IsEmail,
   IsInt,
   IsNotEmpty,
-  IsNotEmptyObject,
   IsNumber,
   IsString,
-  ValidateNested,
 } from 'class-validator';
-
-import { Type } from 'class-transformer';
 
 export class IPaySessionDto {
   @IsString()

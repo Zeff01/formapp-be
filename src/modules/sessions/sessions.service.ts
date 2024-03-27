@@ -477,4 +477,12 @@ export default class SessionsService {
       throw new Error(error);
     }
   }
+
+  public async getSubSessions() {
+    try {
+      return await prisma.subSession.findMany();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
