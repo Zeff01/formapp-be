@@ -127,10 +127,7 @@ export default class UserController extends Api {
     next: NextFunction
   ) => {
     try {
-     
-      const club = await this.userService.getClub(
-        req.query.clubName as string,
-      );
+      const club = await this.userService.getClub(req.query.clubName as string);
       this.send(res, club, HttpStatusCode.Ok, 'Get Club');
     } catch (e) {
       next(e);
@@ -208,6 +205,22 @@ export default class UserController extends Api {
       next(e);
     }
   };
+
+  public getPlayerByName = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.userService.getPlayerByName(
+        req.query.name as string
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Player Info');
+    } catch (e) {
+      next(e);
+    }
+  };
+
   public createCustomerXendit = async (
     req: Request,
     res: CustomResponse<users>,

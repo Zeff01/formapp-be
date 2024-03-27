@@ -192,6 +192,8 @@ users.patch('/team/join', verifyAuthToken, controller.joinTeamPerSubSession);
 
 users.get('/player', verifyAuthToken, controller.getPlayerById);
 
+users.get('/player/find', verifyAuthToken, controller.getPlayerByName);
+
 users.post(
   '/portal/customer',
   verifyAuthToken,

@@ -319,4 +319,30 @@ export default class UserService {
       },
     });
   }
+  public async getPlayerByName(name: string) {
+    if (!name) throw new HttpNotFoundError('Invalid user');
+
+    return prisma.users.findMany({
+      where: {
+        OR: [
+          {
+            firstName: {
+              contains: name,
+            },
+          },
+          {
+            lastName: {
+              contains: name,
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        profilePic: true,
+      },
+    });
+  }
 }
