@@ -250,4 +250,13 @@ export default class UserController extends Api {
       next(e);
     }
   };
+
+  public getSubscriptionRate = async (
+    req: Request,
+    res: CustomResponse<Clubs>,
+    next: NextFunction
+  ) => {
+    const result = await this.userService.getSubscriptionRate(req.query?.id as string);
+    this.send(res, result, HttpStatusCode.Ok, 'Subscription info');
+  };
 }
