@@ -149,3 +149,9 @@ export class DeleteUserDto {
   @IsEmail()
   email: string;
 }
+
+export class JoinGameDto {
+  @IsString()
+  @IsNotEmpty()
+  joinLobbyId: string;
+}

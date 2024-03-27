@@ -127,10 +127,7 @@ export default class UserController extends Api {
     next: NextFunction
   ) => {
     try {
-     
-      const club = await this.userService.getClub(
-        req.query.clubName as string,
-      );
+      const club = await this.userService.getClub(req.query.clubName as string);
       this.send(res, club, HttpStatusCode.Ok, 'Get Club');
     } catch (e) {
       next(e);
