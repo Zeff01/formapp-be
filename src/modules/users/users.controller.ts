@@ -205,6 +205,22 @@ export default class UserController extends Api {
       next(e);
     }
   };
+
+  public getPlayerByName = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.userService.getPlayerByName(
+        req.query.name as string
+      );
+      this.send(res, result, HttpStatusCode.Created, 'Player Info');
+    } catch (e) {
+      next(e);
+    }
+  };
+
   public createCustomerXendit = async (
     req: Request,
     res: CustomResponse<users>,
@@ -233,5 +249,14 @@ export default class UserController extends Api {
     } catch (e) {
       next(e);
     }
+  };
+
+  public getSubscriptionRate = async (
+    req: Request,
+    res: CustomResponse<Clubs>,
+    next: NextFunction
+  ) => {
+    const result = await this.userService.getSubscriptionRate(req.query?.id as string);
+    this.send(res, result, HttpStatusCode.Ok, 'Subscription info');
   };
 }
