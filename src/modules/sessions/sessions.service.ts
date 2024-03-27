@@ -459,4 +459,22 @@ export default class SessionsService {
       throw new HttpUnAuthorizedError('Error');
     }
   }
+
+  public async getRates(from?: Date, to?: Date) {
+    try {
+      let where: any = {};
+
+      if (from && to) {
+        where.createdAt = { gte: from, lte: to };
+
+        return await prisma.rates.findMany({
+          where,
+        });
+      } else {
+        return await prisma.rates.findMany();
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 //🧩Don't Edit this file.✨Generated in Fri Mar 22 2024 16:42:41 GMT+0800 (Singapore Standard Time)✨
@@ -7,6 +8,9 @@
 =======
 //🧩Don't Edit this file.✨Generated in Sun Mar 24 2024 18:02:53 GMT+0800 (Philippine Standard Time)✨
 >>>>>>> Stashed changes
+=======
+//🧩Don't Edit this file.✨Generated in Tue Mar 26 2024 21:15:38 GMT+0800 (Singapore Standard Time)✨
+>>>>>>> f2e9db6577ce9513f94f13a4a1a028761f257ca4
 
 generator client {
   provider = "prisma-client-js"
@@ -87,6 +91,11 @@ enum Marketing {
   INSTAGRAM
 }
 
+enum ChannelType {
+  BANK
+  EWALLET
+}
+
 model Faq {
   id        String   @id @default(uuid()) @map("_id")
   question  String
@@ -125,6 +134,15 @@ model payments {
   status            PaymentStatusEnum
   subsession        subSession        @relation(fields: [subSessionId], references: [id])
   user              users             @relation(fields: [email], references: [email])
+}
+
+model bank {
+  id          String      @id @default(uuid()) @map("_id")
+  channelCode String
+  channelType ChannelType
+  bankName    String
+  createdAt   DateTime?   @default(now()) @map("created_at")
+  updatedAt   DateTime?   @default(now()) @map("updated_at")
 }
 
 model sessions {

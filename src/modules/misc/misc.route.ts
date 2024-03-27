@@ -105,4 +105,8 @@ miscRouter.post(
   controller.Survey
 );
 
+miscRouter.post('/bank', controller.addBankCoverage);
+
+miscRouter.get('/bank', controller.getBankCoverage);
+
 export default miscRouter;

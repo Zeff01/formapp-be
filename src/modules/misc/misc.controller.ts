@@ -1,9 +1,10 @@
 import { type NextFunction, type Request } from 'express';
 import Api from '@/lib/api';
 import { CustomResponse, JwtPayload } from '@/types/common.type';
-import { Feedbacks, Survey, type Faq } from '@prisma/client';
+import { bank, Feedbacks, Survey, type Faq } from '@prisma/client';
 import MiscService from './misc.service';
 import { HttpStatusCode } from 'axios';
+import { BankDto } from '@/dto/misc.dto';
 
 export default class MiscController extends Api {
   private miscService = new MiscService();
@@ -65,8 +66,12 @@ export default class MiscController extends Api {
     next: NextFunction
   ) => {
     try {
-      const fromDate = req.query.from ? new Date(req.query.from as string) : undefined;
-      const toDate = req.query.to ? new Date(req.query.to as string) : undefined;
+      const fromDate = req.query.from
+        ? new Date(req.query.from as string)
+        : undefined;
+      const toDate = req.query.to
+        ? new Date(req.query.to as string)
+        : undefined;
       const getSurvey = await this.miscService.getAllSurveyData(
         fromDate,
         toDate
@@ -76,4 +81,31 @@ export default class MiscController extends Api {
       next(e);
     }
   };
+
+  public addBankCoverage = async (
+    req: Request,
+    res: CustomResponse<bank>,
+    next: NextFunction
+  ) => {
+    try {
+      const bankData: BankDto[] = req.body; // Assuming req.body is an array of bank data objects
+      const result = await Promise.all(bankData.map(data => this.miscService.addBankCoverage(data)));
+      this.send(res, result, HttpStatusCode.Created, 'Bank Created')
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public getBankCoverage = async (
+    req: Request,
+    res: CustomResponse<bank>,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await this.miscService.getBankCoverage();
+      this.send(res, result, HttpStatusCode.Ok, 'Bank List');
+    } catch (e) {
+      next(e)
+    }
+  }
 }
