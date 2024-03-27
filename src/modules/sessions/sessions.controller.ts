@@ -196,6 +196,7 @@ export default class SessionsController extends Api {
       const result = await this.sessionsService.getPlayersBySubSession(
         req.query?.id as string
       );
+      this.send(res, result, HttpStatusCode.Ok, 'Player Game Details');
     } catch (e) {
       next(e);
     }
@@ -232,5 +233,5 @@ export default class SessionsController extends Api {
     } catch (e) {
       next(e);
     }
-  }
+  };
 }

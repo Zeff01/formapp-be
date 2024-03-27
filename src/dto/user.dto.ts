@@ -1,5 +1,4 @@
 import {
-  ArrayNotEmpty,
   IsArray,
   IsDateString,
   IsEmail,
@@ -14,7 +13,6 @@ import {
 } from 'class-validator';
 
 import { Gender } from '@prisma/client';
-import { isFloat32Array, isFloat64Array } from 'util/types';
 
 export class CreateUserDto {
   @IsString()

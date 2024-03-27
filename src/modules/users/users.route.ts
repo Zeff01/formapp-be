@@ -204,7 +204,7 @@ users.get('/subscription', controller.getSubscriptionRate)
  * @tags users
  * @security BearerAuth
  * @param {string} id.query.required - ID of the lobby to join
- * @return {JoinGameDto} 201 - Join Lobby Updated
+ * @return {string} 201 - Join Lobby Updated
  */
 
 users.patch('/join', verifyAuthToken, controller.joinGame);
@@ -214,6 +214,7 @@ users.patch('/team/join', verifyAuthToken, controller.joinTeamPerSubSession);
 users.get('/player', verifyAuthToken, controller.getPlayerById);
 
 users.get('/player/find', verifyAdmintAuthToken, controller.getPlayerByName);
+
 
 users.post(
   '/portal/customer',
