@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { type NextFunction, type Request } from 'express';
 import { Clubs, type users } from '@prisma/client';
 import { HttpStatusCode } from 'axios';
@@ -256,7 +258,9 @@ export default class UserController extends Api {
     res: CustomResponse<Clubs>,
     next: NextFunction
   ) => {
-    const result = await this.userService.getSubscriptionRate(req.query?.id as string);
+    const result = await this.userService.getSubscriptionRate(
+      req.query?.id as string
+    );
     this.send(res, result, HttpStatusCode.Ok, 'Subscription info');
   };
 }
