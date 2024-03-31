@@ -1,6 +1,6 @@
 import { type NextFunction, type Request } from 'express';
 import Api from '@/lib/api';
-import { CustomResponse, JwtPayload } from '@/types/common.type';
+import { CustomResponse } from '@/types/common.type';
 import { bank, Feedbacks, Survey, type Faq } from '@prisma/client';
 import MiscService from './misc.service';
 import { HttpStatusCode } from 'axios';

@@ -1,7 +1,7 @@
-import UserService from '../../../src/modules/users/users.service';
-import prisma from '../../../src/lib/prisma';
-import { HttpUnAuthorizedError } from '../../../src/lib/errors';
-import { JwtPayload } from '../../../src/types/common.type';
+import { HttpUnAuthorizedError } from '../../../../src/lib/errors';
+import prisma from '../../../../src/lib/prisma';
+import UserService from '../../../../src/modules/users/users.service';
+import { JwtPayload } from '../../../../src/types/common.type';
 
 // Mock Prisma instance
 jest.mock('../../../src/lib/prisma', () => ({
@@ -85,7 +85,9 @@ describe('createClub', () => {
     const userService = new UserService(); // Create instance of UserService
 
     // Call createClub function with mocked data and user, expect it to throw HttpUnAuthorizedError
-    await expect(userService.createClub(data, mockUser)).rejects.toThrow(HttpUnAuthorizedError);
+    await expect(userService.createClub(data, mockUser)).rejects.toThrow(
+      HttpUnAuthorizedError
+    );
 
     // Ensure that Prisma create method was not called
     expect(prisma.clubs.create).not.toHaveBeenCalled();

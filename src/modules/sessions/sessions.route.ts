@@ -28,6 +28,18 @@ const controller = new SessionsController();
  * @property {string} createdAt - created at
  * @property {string} updatedAt - updated at
  */
+
+/**
+ * SubSessions
+ * @typedef {object} SubSessions
+ * @property {string} id - id
+ * @property {string} sessionType - session type
+ * @property {string} coach - coach
+ * @property {integer} noOfTeams - number of teams
+ * @property {integer} maxPlayers - number of players
+ * @property {integer} maxPerTeam - max number of player in team
+ * @property {string} status -status of team
+ */
 /**
  * Xendit
  * @typedef {object} Xendit
@@ -62,7 +74,18 @@ const controller = new SessionsController();
  * @security BearerAuth
  * @return {Sessions} 200 - getSessions
  */
+
 sessionRouter.get('/', controller.getSessions);
+
+/**
+ * GET /sessions/subsession
+ * @summary Get SubSessions
+ * @tags sessions
+ * @security BearerAuth
+ * @return {SubSessions} 200 - getsubSessions
+ */
+
+sessionRouter.get('/subsession', controller.getSubSessions);
 
 sessionRouter.get(
   '/players',
@@ -164,4 +187,6 @@ sessionRouter.post('/payment/callback', controller.paymentCallback);
 sessionRouter.post('/payout/callback', controller.paymentCallback);
 
 sessionRouter.get('/view', verifyAuthToken, controller.getPlayersBySubSession);
+
+
 export default sessionRouter;

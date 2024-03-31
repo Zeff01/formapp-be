@@ -100,7 +100,7 @@ export default class UserService {
       throw new Error('Password is required');
     }
     // console.log('--------------', data.password);
-    return await prisma.users.create({
+    const user = await prisma.users.create({
       data: {
         email: data.email,
         password: GeneratorProvider.generateHash(data.password),
@@ -114,6 +114,17 @@ export default class UserService {
         type: UserTypeEnum.USER,
       },
     });
+
+    const payload: JwtPayload = {
+      id: user.id,
+      email: user.email,
+      type: user.type,
+    };
+
+    return {
+      user,
+      token: payload,
+    };
   }
 
   @LogMessage<[users]>({ message: 'User Updated' })
