@@ -81,7 +81,6 @@ Table sessions {
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
   subSession subSession [not null]
-  rates rates [not null]
   status RecordStatus [not null, default: 'ACTIVE']
   createdBy String
 }
@@ -99,6 +98,7 @@ Table subSession {
   sessions sessions [not null]
   teams teams [not null]
   users users [not null]
+  rates rates [not null]
   status RecordStatus [not null, default: 'ACTIVE']
   createdBy String
   payments payments [not null]
@@ -125,9 +125,9 @@ Table rates {
   sessionCount Int [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
-  sessionId String [not null]
-  sessions sessions [not null]
   status RecordStatus [not null, default: 'ACTIVE']
+  subSession subSession
+  subSessionId String
 }
 
 Table users {
@@ -219,7 +219,7 @@ Ref: teams.subSessionId > subSession.id
 
 Ref: teams.players > users.id
 
-Ref: rates.sessionId > sessions.id
+Ref: rates.subSessionId > subSession.id
 
 Ref: users.joinedLobbyId > subSession.id
 
