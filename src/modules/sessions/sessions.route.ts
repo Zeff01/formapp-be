@@ -85,7 +85,7 @@ sessionRouter.get('/', controller.getSessions);
  * @return {SubSessions} 200 - getsubSessions
  */
 
-sessionRouter.get('/subsession', controller.getSubSessions);
+sessionRouter.get('/sub', controller.getSubSessions);
 
 sessionRouter.get(
   '/players',
@@ -144,6 +144,58 @@ sessionRouter.patch(
   controller.deleteSubSession
 );
 
+/**
+ * Create Sub Session
+ * @typedef {object} CreateSubSession
+ * @property {string} sessionId.required - Session ID
+ * @property {string} coach.required - Coach of the session
+ * @property {integer} noofTeams.required - Number of teams that will be created
+ * @property {integer} maxperTeams.required - Maximum player of all teams that has been created
+ * @property {integer} maxPlayers.required - Maximum player per teams that will be created
+ * @property {'OPENPLAY' | 'TRAINING' | 'TOURNAMENT'} sessionType.required - Type of session (OPENPLAY, TRAINING, TOURNAMENT)
+ * @property {TeamSubSession} teams.required - Team Sub Session
+ * @property {RateSubSession} packages.required - Rate Sub Session
+ *
+ */
+/**
+ * Sub Session
+ * @typedef {object} SubSession
+ * @property {string} sessionId - Session ID
+ * @property {string} coach - Coach of the session
+ * @property {integer} noofTeams - Number of teams that will be created
+ * @property {integer} maxperTeams - Maximum player of all teams that has been created
+ * @property {integer} maxPlayers - Maximum player per teams that will be created
+ * @property {'OPENPLAY' | 'TRAINING' | 'TOURNAMENT'} sessionType0- Type of session (OPENPLAY, TRAINING, TOURNAMENT)
+ * @property {TeamSubSession} teams - Team Sub Session
+ * @property {RateSubSession} packages - Rate Sub Session
+ *
+ */
+
+/**
+ * Team Sub Session
+ * @typedef {object} TeamSubSession
+ * @property {string} teamName - Name of team
+ * @property {string} color - color
+ */
+
+/**
+ * Rate Sub Session
+ * @typedef {object} RateSubSession
+ * @property {string} packageName - Name of Package
+ * @property {integer} cashRate - Cash Rate
+ * @property {integer} onlineRate - Online Rate
+ * @property {integer} sessionCount - Session Count
+ */
+
+/**
+ * POST /sessions/sub
+ * @summary Create Sub Session
+ * @tags sessions
+ * @param {CreateSubSession} request.body.required
+ * @security BearerAuth
+ * @return {SubSession} 201 - Sub Session Created
+ */
+
 sessionRouter.post(
   '/sub',
   verifyAuthToken,
@@ -187,6 +239,5 @@ sessionRouter.post('/payment/callback', controller.paymentCallback);
 sessionRouter.post('/payout/callback', controller.paymentCallback);
 
 sessionRouter.get('/view', verifyAuthToken, controller.getPlayersBySubSession);
-
 
 export default sessionRouter;

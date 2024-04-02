@@ -55,7 +55,7 @@ export class TeamsDto {
   color: string;
 }
 
-export class PackagesDto {
+export class RatesDto {
   @IsString()
   packageName: string;
 
@@ -65,11 +65,11 @@ export class PackagesDto {
   @IsNumber()
   onlineRate: number;
 
-  @IsString()
-  packageType: string;
-
   @IsNumber()
   sessionCount: number;
+
+  @IsString()
+  description: string;
 }
 export class CreateSessionDto {
   @IsString()
@@ -103,8 +103,7 @@ export class CreateSessionDto {
   teams: TeamsDto[];
 
   @IsArray()
-  packages: PackagesDto[];
-
+  rates: RatesDto[];
   //TODO Validate Nested
   // @ValidateNested({ each: true })
   // @Type(() => teamsDto)
@@ -175,7 +174,10 @@ export class CreateSubSessionDto {
 
   @IsString()
   sessionType: string;
-  //TODO Validate Nested
+
   @IsArray()
   teams: TeamsDto[];
+
+  @IsArray()
+  rates: RatesDto[];
 }
