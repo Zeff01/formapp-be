@@ -1,3 +1,7 @@
+# Setup for environment
+
+create .env.test that required later to run the tests  
+
 # Tests for Modules in tests/modules Folder
 
 This document outlines various tests present within the `tests/modules` folder, organized by module. It serves as a reference for developers to understand and navigate through the available tests.
