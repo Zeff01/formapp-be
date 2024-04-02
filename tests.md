@@ -1,6 +1,6 @@
 # Setup for environment
 
-create .env.test that required later to run the tests  
+create .env.test that required later to run the tests just copy the .env file
 
 # Tests for Modules in tests/modules Folder
 
