@@ -25,13 +25,6 @@ describe('createClub', () => {
     // Mocked data for testing
     const data = {
       name: 'Test Club',
-      packages: [
-        {
-          packageName: 'Basic Package',
-          features: ['Feature 1', 'Feature 2'],
-          monthlyRate: '10.00',
-        },
-      ],
     };
 
     // Mocked user payload
