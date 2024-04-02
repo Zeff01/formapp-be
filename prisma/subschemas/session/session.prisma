@@ -54,9 +54,10 @@ model rates {
   cashRate     Float
   onlineRate   Float
   sessionCount Int
+  description  String
   createdAt    DateTime?    @default(now()) @map("created_at")
   updatedAt    DateTime?    @default(now()) @map("updated_at")
   status       RecordStatus @default(ACTIVE)
-  subSession   subSession?  @relation(fields: [subSessionId], references: [id])
-  subSessionId String?
+  subSession   subSession   @relation(fields: [subSessionId], references: [id])
+  subSessionId String
 }

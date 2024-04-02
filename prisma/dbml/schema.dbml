@@ -123,11 +123,12 @@ Table rates {
   cashRate Float [not null]
   onlineRate Float [not null]
   sessionCount Int [not null]
+  description String [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime [default: `now()`]
   status RecordStatus [not null, default: 'ACTIVE']
-  subSession subSession
-  subSessionId String
+  subSession subSession [not null]
+  subSessionId String [not null]
 }
 
 Table users {
