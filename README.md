@@ -220,14 +220,6 @@ This repo contains four tsconfig files.
 
 * `tsconfig.eslint.json`: This configuration file is intended to be used by Eslint. It may contain TypeScript-specific ESLint rules and configuration options, which may differ from the regular TypeScript configuration. This file may also extend the base TypeScript configuration from tsconfig.json to ensure that the TypeScript code analyzed by ESLint matches the actual compilation output.
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
-## Badges
-
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-
 ## Pattern swagger docs
 ```
 /**
@@ -260,3 +252,13 @@ users.post(
   controller.createUser
 );
 ```
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+## Badges
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+
