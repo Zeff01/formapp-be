@@ -29,17 +29,7 @@ const controller = new SessionsController();
  * @property {string} updatedAt - updated at
  */
 
-/**
- * SubSessions
- * @typedef {object} SubSessions
- * @property {string} id - id
- * @property {string} sessionType - session type
- * @property {string} coach - coach
- * @property {integer} noOfTeams - number of teams
- * @property {integer} maxPlayers - number of players
- * @property {integer} maxPerTeam - max number of player in team
- * @property {string} status -status of team
- */
+
 /**
  * Xendit
  * @typedef {object} Xendit
