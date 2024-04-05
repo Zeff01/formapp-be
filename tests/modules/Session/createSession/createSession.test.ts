@@ -37,7 +37,7 @@ describe('Create Session', () => {
     try {
       await sessionService.createSession(sessionData, mockUser);
     } catch (error) {
-      expect(error).toThrowError;
+      expect(error).toThrowError();
     }
   });
 
