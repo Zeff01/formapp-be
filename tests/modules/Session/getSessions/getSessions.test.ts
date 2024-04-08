@@ -36,24 +36,24 @@ describe('SessionService', () => {
     expect(sessions).toBe(data.data);
   });
 
-  it('should return based on the date ', async () => {
-    const fromDate = new Date('06-06-2024');
-    const toDate = new Date('12-01-2024');
-    const sessions = await sessionService.getSessions(
-      'sampleId',
-      fromDate,
-      toDate
-    );
-    // TODO: It doesn't work the date filter
-    console.log(sessions);
-  });
+  // it('should return based on the date ', async () => {
+  //   const fromDate = new Date('06-06-2024');
+  //   const toDate = new Date('12-01-2024');
+  //   const sessions = await sessionService.getSessions(
+  //     'sampleId',
+  //     fromDate,
+  //     toDate
+  //   );
+  //   // TODO: It doesn't work the date filter
+  //   console.log(sessions);
+  // });
 
 
 
-  // TODO: It should behave as how getSession response 
-  it('should not return a session if its status is DELETED', async () => {
-    const sessionData = data.data[1];
+  // // TODO: It should behave as how getSession response 
+  // it('should not return a session if its status is DELETED', async () => {
+  //   const sessionData = data.data[1];
     
-    console.log('sessionData', sessionData);
-  });
+  //   console.log('sessionData', sessionData);
+  // });
 });

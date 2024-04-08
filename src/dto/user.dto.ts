@@ -72,10 +72,6 @@ export class CreateClubDto {
   @IsString()
   @IsOptional()
   clubId?: string;
-
-  @IsArray()
-  @IsNotEmpty()
-  packages: PackageDto[];
 }
 
 export class PackageDto {

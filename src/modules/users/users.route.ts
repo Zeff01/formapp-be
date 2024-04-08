@@ -46,52 +46,58 @@ const controller = new Controller();
  * @summary Create user
  * @tags users
  * @param {CreateUserBody} request.body.required
- * @return {CreateUser} 201 - Created User
+ * @return {CreateUser} 201 - User Successfully Created
  */
 
 users.post('', RequestValidator.validate(CreateUserDto), controller.createUser);
 
 /**
  * POST /users/staff
- * @typedef {object} CreateUserDto
  * @summary Create Staff
  * @tags users
- * @property {string} firstName.required - Staff Firstname
- * @property {string} lastName.required - Staff LastName
- * @property {string} phone.required - Phone Number
- * @property {string} dateofbirth.required - Date of Birth (1998-01-01 00:00:00Z)
- * @property {string} address.required - Date of Birth (1998-01-01 00:00:00Z)
- * @property {string} email.required - User Email
- * @property {string} gender.required -  Gender
- * @property {string} password.required - Staff Password
- * @property {string} profilePic - Profile pic URL
- * @param {CreateUserDto} request.body.required
- * @return {User} 201 - Staff Successfully Created
+ * @param {CreateUserBody} request.body.required
+ * @return {CreateUser} 201 - Staff Successfully Created
  */
 
-users
-  .route('/staff')
-  .post(RequestValidator.validate(CreateUserDto), controller.createStaff)
-  .get(controller.getMemberInfo);
+users.post(
+  '/staff',
+  RequestValidator.validate(CreateUserDto),
+  controller.createStaff
+);
 
 /**
- * POST /users/Founder
- * @typedef {object} CreateFounderDto
- * @summary Create Founder
- * @tags users
+ * Create Founder Body
+ * @typedef {object} CreateFounderBody
  * @property {string} firstName.required - Founder FirstName
  * @property {string} lastName.required - Founder LastName
  * @property {string} phone.required - Phone Number
  * @property {string} email.required - Founder Email
  * @property {string} password.required - Founder Password
- * @param {CreateFounderDto} request.body.required
- * @return {User} 201 - Staff Successfully Created
  */
 
-users
-  .route('/founder')
-  .post(RequestValidator.validate(CreateFounderDto), controller.createFounder)
-  .get(controller.getFounderInfo);
+/**
+ * Create Founder
+ * @typedef {object} CreateFounder
+ * @property {string} firstName - Founder FirstName
+ * @property {string} lastName - Founder LastName
+ * @property {string} phone - Phone Number
+ * @property {string} email - Founder Email
+ * @property {string} password - Founder Password
+ */
+
+/**
+ * POST /users/Founder
+ * @summary Create Founder
+ * @tags users
+ * @param {CreateFounderBody} request.body.required
+ * @return {CreateFounder} 201 - Founder Successfully Created
+ */
+
+users.post(
+  '/founder',
+  RequestValidator.validate(CreateFounderDto),
+  controller.createFounder
+);
 
 /**
  * PATCH /users/
