@@ -30,6 +30,17 @@ const controller = new SessionsController();
  */
 
 /**
+ * @typedef {object} CreateSession
+ * @property {string} name.required - Name of the session
+ * @property {string} location.required - location
+ * @property {string} sessionTime.required - Time of session
+ * @property {string} createdBy.required - Created By Identifier
+ * @property {SubSession[]} subSession.required - Sub Session(s)
+ * 
+ */
+
+
+/**
  * Create Sub Session
  * @typedef {object} CreateSubSession
  * @property {string} sessionId.required - Session ID
@@ -50,7 +61,7 @@ const controller = new SessionsController();
  * @property {integer} noofTeams - Number of teams that will be created
  * @property {integer} maxperTeams - Maximum player of all teams that has been created
  * @property {integer} maxPlayers - Maximum player per teams that will be created
- * @property {'OPENPLAY' | 'TRAINING' | 'TOURNAMENT'} sessionType - Type of session (OPENPLAY, TRAINING, TOURNAMENT)
+ * @property {'OPENPLAY' | 'TRAINING' | 'TOURNAMENT'} \ - Type of session (OPENPLAY, TRAINING, TOURNAMENT)
  * @property {TeamSubSession} teams - Team Sub Session
  * @property {RateSubSession} packages - Rate Sub Session
  *
@@ -140,22 +151,15 @@ sessionRouter.get(
   verifyAuthToken,
   controller.getPlayersPerSubSession
 );
-// /**
-//  * POST /sessions/
-//  * @typedef {object} ICreateSessionDto
-//  * @tags sessions
-//  * @summary Create Session
-//  * @security BearerAuth
-//  * @property {string} name.required
-//  * @property {string} code.required
-//  * @property {string} price.required
-//  * @property {integer} maxMember.required
-//  * @property {string[]} teams
-//  * @property {string} name
-//  * @security BearerAuth
-//  * @param {ICreateSessionDto} request.body.required
-//  * @return {Session} 201 - Session Created
-//  */
+/**
+ * POST /sessions/
+ * @typedef {object} ICreateSessionDto
+ * @tags sessions
+ * @param {CreateSession} request.body.required  ad
+ * @summary Create Session 
+ * @security BearerAuth 
+ * @return {CreateSession} 201 - Session Created
+ */
 
 sessionRouter.post(
   '/',
