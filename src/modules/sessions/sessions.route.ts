@@ -42,8 +42,8 @@ const controller = new SessionsController();
  */
 
 /**
- * Create Sub Session
- * @typedef {object} CreateSubSession
+ * Create Sub Session Body
+ * @typedef {object} CreateSubSessionBody
  * @property {string} sessionId.required - Session ID
  * @property {string} coach.required - Coach of the session
  * @property {integer} noofTeams.required - Number of teams that will be created
@@ -54,9 +54,10 @@ const controller = new SessionsController();
  * @property {RateSubSession} packages.required - Rate Sub Session
  *
  */
+
 /**
- * Sub Session
- * @typedef {object} SubSession
+ * Create Sub Session
+ * @typedef {object} CreateSubSession
  * @property {string} sessionId - Session ID
  * @property {string} coach - Coach of the session
  * @property {integer} noofTeams - Number of teams that will be created
@@ -88,9 +89,9 @@ const controller = new SessionsController();
  * POST /sessions/sub
  * @summary Create Sub Session
  * @tags sessions
- * @param {CreateSubSession} request.body.required
+ * @param {CreateSubSessionBody} request.body.required
  * @security BearerAuth
- * @return {SubSession} 201 - Sub Session Created
+ * @return {CreateSubSession} 201 - Sub Session Created
  */
 
 sessionRouter.post(

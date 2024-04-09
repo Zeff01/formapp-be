@@ -13,12 +13,15 @@ jest.mock('../../../../src/lib/prisma', () => ({
 }));
 
 describe('Create Sub Session', () => {
+  let sessionService: SessionsService;
+
+  beforeAll(() => (sessionService = new SessionsService()));
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('should create a new sub session', async () => {
-    const sessionService = new SessionsService();
     (prisma.subSession.create as jest.Mock).mockImplementation(() => {
       return Promise.resolve(subSessionData);
     });
@@ -30,7 +33,6 @@ describe('Create Sub Session', () => {
   });
 
   it('should error if the input was not number in noofTeams, maxPlayers, maxperTeam', async () => {
-    const sessionService = new SessionsService();
     (subSessionData as any).noofTeams = '1';
     (subSessionData as any).maxPlayer = '30';
     (subSessionData as any).maxperTeam = '10';
@@ -45,7 +47,6 @@ describe('Create Sub Session', () => {
   });
 
   it('should error if the type is USER not FOUNDER', async () => {
-    const sessionService = new SessionsService();
     mockUser.type = 'USER';
 
     try {

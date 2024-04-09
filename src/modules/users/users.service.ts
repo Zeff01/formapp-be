@@ -94,12 +94,18 @@ export default class UserService {
     });
   }
 
-  // @LogMessage<[CreateUserDto]>({ message: 'User Created' })
   public async createUser(data: CreateUserDto) {
     if (!data.password) {
       throw new Error('Password is required');
     }
-    // console.log('--------------', data.password);
+
+    const emailExist = await prisma.users.findUnique({
+      where: { email: data.email },
+    });
+    if (emailExist) {
+      throw new HttpUnAuthorizedError('Email already exist');
+    }
+
     const user = await prisma.users.create({
       data: {
         email: data.email,
@@ -142,7 +148,16 @@ export default class UserService {
 
   // @LogMessage<[CreateUserDto]>({ message: 'User Updated' })
   public async createStaff(data: CreateUserDto) {
-    // console.log(data);
+    if (!data.password) {
+      throw new Error('Password is required');
+    }
+    const emailExist = await prisma.users.findUnique({
+      where: { email: data.email },
+    });
+    if (emailExist) {
+      throw new HttpUnAuthorizedError('Email already exist');
+    }
+
     return await prisma.users.create({
       data: {
         email: data.email,
@@ -163,6 +178,12 @@ export default class UserService {
   public async createFounder(data: CreateFounderDto) {
     if (!data.password) {
       throw new Error('Password is required');
+    }
+    const emailExist = await prisma.users.findUnique({
+      where: { email: data.email },
+    });
+    if (emailExist) {
+      throw new HttpUnAuthorizedError('Email already exist');
     }
     return await prisma.users.create({
       data: {
