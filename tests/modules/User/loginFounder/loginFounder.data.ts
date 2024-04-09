@@ -4,5 +4,6 @@ export const UserData = {
     id: '123456',
     email: 'email@example.com',
     password: 'password',
-    type: UserTypeEnum.ADMIN
+    type: UserTypeEnum.FOUNDER,
+    token: 'mockedToken'
 }
