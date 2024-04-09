@@ -25,6 +25,7 @@ const controller = new Controller();
  * @property {string} phone.required - phone number
  * @property {string} dateofbirth.required - birth date
  * @property {string} address.required - address of user
+ * @property {'MALE' | 'FEMALE'} gender.required - gender of user
  * @property {string} profilePic.required - Profile Pic URL
  */
 
@@ -38,6 +39,7 @@ const controller = new Controller();
  * @property {string} phone - phone number
  * @property {string} dateofbirth - birth date
  * @property {string} address - address of user
+ * @property {'MALE' | 'FEMALE'} gender - gender of user
  * @property {string} profilePic - Profile Pic URL
  */
 
@@ -100,34 +102,69 @@ users.post(
 );
 
 /**
+ * Update User Body
+ * @typedef {object} UpdateUserBody
+ * @property {string} id.required - User ID
+ * @property {string} firstname.required - firstname of user
+ * @property {string} lastname.required - lastname of user
+ * @property {string} phone.required - phone number
+ * @property {string} dateofbirth.required - birth date
+ * @property {string} address.required - address of user
+ * @property {'MALE' | 'FEMALE'} gender.required - gender of user
+ * @property {string} profilePic.required - Profile Pic URL
+ */
+
+/**
+ * Update User
+ * @typedef {object} UpdateUser
+ * @property {string} id.required
+ * @property {string} firstname - firstname of user
+ * @property {string} lastname - lastname of user
+ * @property {string} phone - phone number
+ * @property {string} dateofbirth - birth date
+ * @property {string} address - address of user
+ * @property {'MALE' | 'FEMALE'} gender - gender of user
+ * @property {string} profilePic - Profile Pic URL
+ */
+
+/**
  * PATCH /users/
- * @typedef {object} UpdateUserDto
  * @summary Update User
  * @tags users
- * @property {string} firstName - Firstname of user
- * @property {string} lastName - Lastname of user
- * @property {string} phone - Mobile phone of user
- * @param {UpdateUserDto} request.body
+ * @param {UpdateUserBody} request.body.required
  * @security BearerAuth
- * @return {User} 201 - User Updated
+ * @return {UpdateUser} 200 - User Successfully Updated.
  */
+
 users.patch(
   '/',
-  verifyAuthToken,
+  verifyAdmintAuthToken,
   RequestValidator.validate(UpdateUserDto),
   controller.updateUser
 );
 
 /**
+ * Login Founder Body
+ * @typedef {object} LoginFounderBody
+ * @property {string} email.required - Email address
+ * @property {string} password.required - Password
+ */
+
+/**
+ * Login Founder
+ * @typedef {object} LoginFounder
+ * @property {string} email - Email address
+ * @property {string} password - Password
+ */
+
+/**
  * POST /users/login
- * @typedef {object} LoginFounderDto
  * @summary Login
  * @tags users
- * @property {string} email.required - The email address
- * @property {string} password.required - The password
- * @param {LoginFounderDto} request.body.required
- * @return {User} 201
+ * @param {LoginFounderBody} request.body.required
+ * @return {LoginFounder} 200 - User Successfully Login
  */
+
 users.post(
   '/login',
   RequestValidator.validate(LoginFounderDto),
