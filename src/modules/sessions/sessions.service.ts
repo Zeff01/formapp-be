@@ -44,7 +44,7 @@ export default class SessionsService {
       where.sessionDate = { gte: fromDateStr, lte: toDateStr };
     }
 
-    await prisma.sessions.findMany({
+    return await prisma.sessions.findMany({
       where: where,
       include: {
         subSession: {
