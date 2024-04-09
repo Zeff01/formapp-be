@@ -36,7 +36,7 @@ export default class UserController extends Api {
   ) => {
     try {
       const user = await this.userService.login(req.body);
-      this.send(res, user, HttpStatusCode.Created, 'login');
+      this.send(res, user, HttpStatusCode.Ok, 'login');
     } catch (e) {
       next(e);
     }
