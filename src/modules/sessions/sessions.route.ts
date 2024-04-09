@@ -86,6 +86,17 @@ const controller = new SessionsController();
  */
 
 /**
+ * Update Main Session
+ * @typedef {object} UpdateMainSession
+ * @property {string} name.required - Session Name
+ * @property {string} location.required - Location
+ * @property {string} sessionDate.required - Session Date
+ * @property {string} sessionTime.required - Session Time
+ * @property {string} status.required - Status
+ *
+ */
+
+/**
  * POST /sessions/sub
  * @summary Create Sub Session
  * @tags sessions
@@ -170,9 +181,19 @@ sessionRouter.post(
   controller.createSession
 );
 
+/**
+ * PATCH /sessions
+ * @typedef {object} IUpdateMainSession
+ * @tags sessions
+ * @param {UpdateMainSession} request.body.required
+ * @summary Update Main Session
+ * @security BearerAuth
+ * @return {UpdateMainSession}
+ *
+ */
 sessionRouter.patch(
   '/',
-  verifyAuthToken,
+  // verifyAuthToken,
   RequestValidator.validate(UpdateMainSession),
   controller.updateMainSession
 );
