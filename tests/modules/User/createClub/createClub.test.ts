@@ -4,7 +4,7 @@ import UserService from '../../../../src/modules/users/users.service';
 import { JwtPayload } from '../../../../src/types/common.type';
 
 // Mock Prisma instance
-jest.mock('../../../src/lib/prisma', () => ({
+jest.mock('../../../../src/lib/prisma', () => ({
   __esModule: true,
   default: {
     clubs: {
@@ -47,9 +47,6 @@ describe('createClub', () => {
     // Call createClub function with mocked data and user
     const result = await userService.createClub(data, mockUser);
 
-    // Log the result
-    console.log(JSON.stringify(result, null, 2));
-
     // Expect the result to be defined
     expect(result).toBeDefined();
   });
@@ -59,13 +56,6 @@ describe('createClub', () => {
     // Mocked data for testing
     const data = {
       name: 'Test Club',
-      packages: [
-        {
-          packageName: 'Basic Package',
-          features: ['Feature 1', 'Feature 2'],
-          monthlyRate: '10.00',
-        },
-      ],
     };
 
     // Mocked user payload with non-founder type
