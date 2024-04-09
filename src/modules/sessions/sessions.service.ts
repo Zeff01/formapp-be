@@ -1,4 +1,3 @@
-import LogMessage from '@/decorators/log-message.decorator';
 import {
   CreateSessionDto,
   CreateSubSessionDto,
@@ -44,7 +43,8 @@ export default class SessionsService {
       const toDateStr = to.toISOString().split('T')[0];
       where.sessionDate = { gte: fromDateStr, lte: toDateStr };
     }
-    return await prisma.sessions.findMany({
+
+    await prisma.sessions.findMany({
       where: where,
       include: {
         subSession: {
@@ -500,10 +500,11 @@ export default class SessionsService {
   }
 
   public async getSubSessions() {
-    try {
-      return await prisma.subSession.findMany();
-    } catch (error) {
-      throw new Error(error);
-    }
+    let where: any = {};
+
+    where.status = {
+      not: RecordStatus.DELETED,
+    };
+    return await prisma.subSession.findMany({ where: where });
   }
 }
