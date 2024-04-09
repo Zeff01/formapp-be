@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { HttpUnAuthorizedError } from '../../../../src/lib/errors';
 import prisma from '../../../../src/lib/prisma';
 import SessionsService from '../../../../src/modules/sessions/sessions.service';

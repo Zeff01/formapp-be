@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { type NextFunction, type Request } from 'express';
 import { subSession, type users } from '@prisma/client';
 import { HttpStatusCode } from 'axios';

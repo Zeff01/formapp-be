@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { Router } from 'express';
 import SessionsController from './sessions.controller';
 import RequestValidator from '@/middlewares/request-validator';

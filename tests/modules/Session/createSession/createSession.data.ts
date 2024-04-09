@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { JwtPayload } from '../../../../src/types/common.type';
 
 export const mockUser: JwtPayload = {
