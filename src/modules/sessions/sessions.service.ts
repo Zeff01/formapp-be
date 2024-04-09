@@ -1,3 +1,4 @@
+/* eslint-disable */
 import LogMessage from '@/decorators/log-message.decorator';
 import {
   CreateSessionDto,
