@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import SessionsController from './sessions.controller';
 import RequestValidator from '@/middlewares/request-validator';
-import { verifyAuthToken } from '@/middlewares/auth';
+import { verifyAuthToken, verifyAdmintAuthToken } from '@/middlewares/auth';
 import {
   CreateSessionDto,
   CreateSubSessionDto,
@@ -193,7 +193,7 @@ sessionRouter.post(
  */
 sessionRouter.patch(
   '/',
-  // verifyAuthToken,
+  verifyAdmintAuthToken,
   RequestValidator.validate(UpdateMainSession),
   controller.updateMainSession
 );
