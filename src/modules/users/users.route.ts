@@ -184,33 +184,48 @@ users.post(
 
 users.delete(
   '/',
-  verifyAuthToken,
+  verifyAdmintAuthToken,
   RequestValidator.validate(DeleteUserDto),
   controller.deleteUser
 );
 
 /**
- * Return GetClub
- * @typedef {object} GetClub
- * @property {string} clubId - Id of Club
+ * Create Club Body
+ * @typedef {object} CreateClubBody
+ * @property {string} name.required - Club Name
+ */
+
+/**
+ * Create Club
+ * @typedef {object} CreateClub
  * @property {string} name - Club Name
  */
 
 /**
- * GET users/club/
+ * POST /users/club
+ * @summary Create Club
+ * @tags users
+ * @param {CreateClubBody} request.body
+ * @security BearerAuth
+ * @return {CreateClub} 201 - Club Created
+ */
+
+users.post(
+  '/club',
+  verifyAdmintAuthToken,
+  RequestValidator.validate(CreateClubDto),
+  controller.createClub
+);
+
+/**
+ * GET /users/club
  * @summary Get Club
  * @tags users
- * @return {GetClub} 200 - getSessions
+ * @param {string} clubName.query - Name of Club
+ * @param {string} clubId.query - Id of Club
  */
 
 users.get('/club', controller.getClub);
-
-/**
- * Return CreateClub
- * @typedef {object} CreateClub
- * @property {string} name - Club Name
- * @property {PackageClub[]} packages - Package of Club
- */
 
 /** Return Packages
  * @typedef {object} PackageClub
@@ -218,23 +233,6 @@ users.get('/club', controller.getClub);
  * @property {string[]} features - features of Package
  * @property {number} MonthlyRate - Monthly Rate of Package
  */
-
-/**
- * POST /users/club
- * @typedef {object} CreateClubDto
- * @summary Create Club
- * @tags users
- * @param {CreateClub} request.body
- * @security BearerAuth
- * @return {CreateClub} 201 - Club Created
- */
-
-users.post(
-  '/club',
-  verifyAuthToken,
-  RequestValidator.validate(CreateClubDto),
-  controller.createClub
-);
 
 //TODO: ARRANGE USER / CLUB
 
