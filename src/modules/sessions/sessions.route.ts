@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import SessionsController from './sessions.controller';
 import RequestValidator from '@/middlewares/request-validator';
-import { verifyAuthToken } from '@/middlewares/auth';
+import { verifyAuthToken, verifyAdmintAuthToken } from '@/middlewares/auth';
 import {
   CreateSessionDto,
   CreateSubSessionDto,
@@ -83,6 +83,17 @@ const controller = new SessionsController();
  * @property {integer} cashRate - Cash Rate
  * @property {integer} onlineRate - Online Rate
  * @property {integer} sessionCount - Session Count
+ */
+
+/**
+ * Update Main Session
+ * @typedef {object} UpdateMainSession
+ * @property {string} name.required - Session Name
+ * @property {string} location.required - Location
+ * @property {string} sessionDate.required - Session Date
+ * @property {string} sessionTime.required - Session Time
+ * @property {string} status.required - Status
+ *
  */
 
 /**
@@ -170,9 +181,19 @@ sessionRouter.post(
   controller.createSession
 );
 
+/**
+ * PATCH /sessions
+ * @typedef {object} IUpdateMainSession
+ * @tags sessions
+ * @param {UpdateMainSession} request.body.required
+ * @summary Update Main Session
+ * @security BearerAuth
+ * @return {UpdateMainSession}
+ *
+ */
 sessionRouter.patch(
   '/',
-  verifyAuthToken,
+  verifyAdmintAuthToken,
   RequestValidator.validate(UpdateMainSession),
   controller.updateMainSession
 );
