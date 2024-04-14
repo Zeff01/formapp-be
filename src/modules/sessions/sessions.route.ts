@@ -42,6 +42,33 @@ const controller = new SessionsController();
  */
 
 /**
+ * POST /sessions/
+ * @summary Create Session
+ * @tags sessions
+ * @param {CreateSession} request.body.required  ad
+ * @security BearerAuth
+ * @return {Sessions} 201 - Session Created
+ */
+
+sessionRouter.post(
+  '/',
+  verifyAdmintAuthToken,
+  RequestValidator.validate(CreateSessionDto),
+  controller.createSession
+);
+
+/**
+ * GET /sessions/
+ * @summary Get Sessions
+ * @tags sessions
+ * @param {string} from.query - Date From Session (YYYY-MM-DD)
+ * @param {string} to.query - Date To Session (YYYY-MM-DD)
+ * @return {Sessions} 200 - getSessions
+ */
+
+sessionRouter.get('/', controller.getSessions);
+
+/**
  * Create Sub Session Body
  * @typedef {object} CreateSubSessionBody
  * @property {string} sessionId.required - Session ID
@@ -127,6 +154,15 @@ sessionRouter.post(
 );
 
 /**
+ * GET /sessions/sub
+ * @summary Get SubSessions
+ * @tags sessions
+ * @return {CreateSubSession} 200 - getsubSessions
+ */
+
+sessionRouter.get('/sub', controller.getSubSessions);
+
+/**
  * Xendit
  * @typedef {object} Xendit
  * @property {integer} amount
@@ -152,26 +188,6 @@ sessionRouter.post(
  * @property {string} session
  * @property {string} user
  */
-
-/**
- * GET /sessions/
- * @summary Get Sessions
- * @tags sessions
- * @security BearerAuth
- * @return {Sessions} 200 - getSessions
- */
-
-sessionRouter.get('/', controller.getSessions);
-
-/**
- * GET /sessions/subsession
- * @summary Get SubSessions
- * @tags sessions
- * @security BearerAuth
- * @return {SubSessions} 200 - getsubSessions
- */
-
-sessionRouter.get('/sub', controller.getSubSessions);
 
 sessionRouter.get(
   '/players',
