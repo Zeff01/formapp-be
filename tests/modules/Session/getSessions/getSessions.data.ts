@@ -1,4 +1,4 @@
-const data = {
+export const data = {
   message: 'Session List',
   data: [
     {
@@ -464,5 +464,3 @@ const data = {
     },
   ],
 };
-
-export default data;
