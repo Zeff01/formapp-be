@@ -211,11 +211,25 @@ export default class UserService {
     });
   }
 
-  public async getClub(clubName?: string) {
-    return prisma.clubs.findFirst({
-      where: {
+  public async getClub(clubName?: string, clubId?: string) {
+
+    let where = {};
+
+    if (clubName) {
+      where = {
         clubName: clubName,
-      },
+      };
+    } else if (clubId) {
+      where = {
+        clubId: clubId,
+      };
+    }
+
+    if (!clubName && !clubId) {
+      return await prisma.clubs.findMany();
+    }
+    return prisma.clubs.findMany({
+      where: where,
     });
   }
 
