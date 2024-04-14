@@ -36,7 +36,7 @@ export default class UserController extends Api {
   ) => {
     try {
       const user = await this.userService.login(req.body);
-      this.send(res, user, HttpStatusCode.Created, 'login');
+      this.send(res, user, HttpStatusCode.Ok, 'login');
     } catch (e) {
       next(e);
     }
@@ -129,7 +129,10 @@ export default class UserController extends Api {
     next: NextFunction
   ) => {
     try {
-      const club = await this.userService.getClub(req.query.clubName as string);
+      const club = await this.userService.getClub(
+        req.query?.clubName as string,
+        req.query?.clubId as string
+      );
       this.send(res, club, HttpStatusCode.Ok, 'Get Club');
     } catch (e) {
       next(e);

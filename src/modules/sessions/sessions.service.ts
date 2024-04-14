@@ -1,9 +1,6 @@
-import LogMessage from '@/decorators/log-message.decorator';
 import {
   CreateSessionDto,
   CreateSubSessionDto,
-  ICreateSessionDto,
-  IGameDto,
   IPaySessionDto,
 } from '@/dto/session.dto';
 import XenditService from './xendit.service';
@@ -22,7 +19,6 @@ import {
   RecordStatus,
   subSession,
 } from '@prisma/client';
-import { AsyncLocalStorage } from 'async_hooks';
 
 export default class SessionsService {
   private readonly xenditService = new XenditService();
@@ -47,6 +43,7 @@ export default class SessionsService {
       const toDateStr = to.toISOString().split('T')[0];
       where.sessionDate = { gte: fromDateStr, lte: toDateStr };
     }
+
     return await prisma.sessions.findMany({
       where: where,
       include: {
@@ -121,26 +118,28 @@ export default class SessionsService {
                   data: data.teams,
                 },
               },
+              rates: {
+                createMany: {
+                  data: data.rates,
+                },
+              },
             },
           ],
         },
-        rates: {
-          createMany: {
-            data: data.packages,
-          },
-        },
       },
+
       include: {
         subSession: {
           include: {
             teams: true,
+            rates: true,
           },
         },
-        rates: true,
       },
     });
   }
 
+  //TODO: Fix subSessionId
   public async createSubSession(data: CreateSubSessionDto, user: JwtPayload) {
     if (user?.type !== UserTypeEnum.FOUNDER) {
       throw new HttpUnAuthorizedError('Forbidden');
@@ -160,9 +159,15 @@ export default class SessionsService {
             data: data.teams,
           },
         },
+        rates: {
+          createMany: {
+            data: data.rates,
+          },
+        },
       },
       include: {
         teams: true,
+        rates: true,
       },
     });
   }
@@ -305,25 +310,41 @@ export default class SessionsService {
       select: {
         onlineRate: true,
         sessionCount: true,
-        sessions: {
+        subSession: {
           select: {
-            name: true,
+            sessionId: true,
           },
         },
       },
     });
 
     if (rates?.onlineRate) {
-      return this.xenditService.createInvoice({
-        amount: rates!.onlineRate,
-        currency: 'PHP',
-        description: `Paying membership for ${rates?.sessions.name} | ${subSessionType?.sessionType} with amount of ${rates?.onlineRate}`,
-        external_id: `${data.subSessionId}||${data.email}`,
-        success_redirect_url: `${process.env.FE_BASE_URL}/sucess-payment`,
-        failure_redirect_url: `${process.env.FE_BASE_URL}/failed-payment`,
-        payer_email: data.email,
-      });
-      //TODO save invoices to db
+      const subSession = rates?.subSession;
+
+      if (subSession) {
+        const session = await prisma.sessions.findUnique({
+          where: {
+            id: subSession.sessionId,
+          },
+          select: {
+            name: true,
+          },
+        });
+
+        return this.xenditService.createInvoice({
+          amount: rates!.onlineRate,
+          currency: 'PHP',
+          description: `Paying membership for ${session?.name} | ${subSessionType?.sessionType} with amount of ${rates?.onlineRate}`,
+          external_id: `${data.subSessionId}||${data.email}`,
+          success_redirect_url: `${process.env.FE_BASE_URL}/sucess-payment`,
+          failure_redirect_url: `${process.env.FE_BASE_URL}/failed-payment`,
+          payer_email: data.email,
+        });
+        //TODO save invoices to db
+      } else {
+        console.error('Subsession is not found.');
+        return false;
+      }
     }
     return false;
   }
@@ -479,10 +500,11 @@ export default class SessionsService {
   }
 
   public async getSubSessions() {
-    try {
-      return await prisma.subSession.findMany();
-    } catch (error) {
-      throw new Error(error);
-    }
+    let where: any = {};
+
+    where.status = {
+      not: RecordStatus.DELETED,
+    };
+    return await prisma.subSession.findMany({ where: where });
   }
 }
