@@ -124,6 +124,20 @@ sessionRouter.get('/', controller.getSessions);
  */
 
 /**
+ * Delete Main Session
+ * @typedef {object} DeleteMainSession
+ * @property {string} id.required - Session ID
+ * @property {string} name.required - Name
+ * @property {string} location.required - Location
+ * @property {string} sessionTime.required - Session Time
+ * @property {string} sessionDate.required - Session Date
+ * @property {string} status.required - Status
+ * @property {string} createdBy - Created By
+ * @property {string} createdAt - Created At
+ * @property {string} updatedBy - Updated By
+ */
+
+/**
  * POST /sessions/sub
  * @summary Create Sub Session
  * @tags sessions
@@ -182,6 +196,23 @@ sessionRouter.get(
 );
 
 /**
+ * POST /sessions/
+ * @typedef {object} ICreateSessionDto
+ * @tags sessions
+ * @param {CreateSession} request.body.required  ad
+ * @summary Create Session
+ * @security BearerAuth
+ * @return {Sessions} 201 - Session Created
+ */
+
+sessionRouter.post(
+  '/',
+  verifyAuthToken,
+  RequestValidator.validate(CreateSessionDto),
+  controller.createSession
+);
+
+/**
  * PATCH /sessions
  * @typedef {object} IUpdateMainSession
  * @tags sessions
@@ -197,6 +228,16 @@ sessionRouter.patch(
   RequestValidator.validate(UpdateMainSession),
   controller.updateMainSession
 );
+
+/**
+ * PATCH /sessions/rm
+ * @typedef {object} IDeleteMainSession
+ * @tags sessions
+ * @summary Delete Main Session
+ * @param {DeleteMainSession} request.body.required
+ * @security BearerAuth
+ * @return {UpdateMainSession}
+ */
 
 sessionRouter.patch(
   '/rm',
