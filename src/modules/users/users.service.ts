@@ -11,8 +11,7 @@ import {
   CreateClubDto,
   CreateFounderDto,
   CreateUserDto,
-  PackageDto,
-  LoginFounderDto,
+  LoginDto,
 } from '@/dto/user.dto';
 import { HttpNotFoundError, HttpUnAuthorizedError } from '@/lib/errors';
 import { GeneratorProvider } from '@/lib/bcrypt';
@@ -47,7 +46,7 @@ export default class UserService {
     });
   }
 
-  public async login(data: LoginFounderDto) {
+  public async founderLogin(data: LoginDto) {
     try {
       const isExist = await prisma.users.findFirst({
         where: {
@@ -66,6 +65,10 @@ export default class UserService {
 
       if (!matchPassword) {
         throw new HttpNotFoundError('Invalid login');
+      }
+
+      if (isExist.type !== UserTypeEnum.FOUNDER) {
+        throw new HttpNotFoundError('You are not a founder');
       }
 
       const payload: JwtPayload = {
@@ -212,7 +215,6 @@ export default class UserService {
   }
 
   public async getClub(clubName?: string, clubId?: string) {
-
     let where = {};
 
     if (clubName) {

@@ -29,13 +29,13 @@ export default class UserController extends Api {
     }
   };
 
-  public login = async (
+  public founderLogin = async (
     req: Request,
     res: CustomResponse<users>,
     next: NextFunction
   ) => {
     try {
-      const user = await this.userService.login(req.body);
+      const user = await this.userService.founderLogin(req.body);
       this.send(res, user, HttpStatusCode.Ok, 'login');
     } catch (e) {
       next(e);

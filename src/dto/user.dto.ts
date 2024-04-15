@@ -12,7 +12,7 @@ import {
   IsUrl,
 } from 'class-validator';
 
-import { Gender } from '@prisma/client';
+import { Gender, UserTypeEnum } from '@prisma/client';
 
 export class CreateUserDto {
   @IsString()
@@ -106,12 +106,13 @@ export class UpdateUserDto {
   phone?: string;
 }
 
-export class LoginFounderDto {
+export class LoginDto {
   @IsEmail()
   email: string;
 
   @IsNotEmpty()
   password: string;
+
 }
 
 export class ICreateMemberDto {
