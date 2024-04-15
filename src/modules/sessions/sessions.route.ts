@@ -110,18 +110,72 @@ sessionRouter.get('/', controller.getSessions);
  * @property {integer} cashRate - Cash Rate
  * @property {integer} onlineRate - Online Rate
  * @property {integer} sessionCount - Session Count
+ * @property {string} description - description of session
  */
 
 /**
- * Update Main Session
- * @typedef {object} UpdateMainSession
+ * Update Main Session Body
+ * @typedef {object} UpdateMainSessionBody
  * @property {string} name.required - Session Name
  * @property {string} location.required - Location
  * @property {string} sessionDate.required - Session Date
  * @property {string} sessionTime.required - Session Time
  * @property {string} status.required - Status
- *
  */
+
+/**
+ * Update Main Session
+ * @typedef {object} UpdateMainSession
+ * @property {string} name - Session Name
+ * @property {string} location - Location
+ * @property {string} sessionDate - Session Date
+ * @property {string} sessionTime - Session Time
+ * @property {string} status - Status
+ */
+
+/**
+ * PATCH /sessions/
+ * @summary Update Main Session
+ * @tags sessions
+ * @param {UpdateMainSessionBody} request.body.required
+ * @security BearerAuth
+ * @return {UpdateMainSession} 200 - Session Updated Successfully
+ */
+
+sessionRouter.patch(
+  '/',
+  verifyAdmintAuthToken,
+  RequestValidator.validate(UpdateMainSession),
+  controller.updateMainSession
+);
+
+/**
+ * Delete Main Session Body
+ * @typedef {object} DeleteMainSessionBody
+ * @property {string} id.required - Session ID
+ */
+
+/**
+ * Delete Main Session
+ * @typedef {object} DeleteMainSession
+ * @property {string} id - Session ID
+ */
+
+/**
+ * PATCH /sessions/rm
+ * @summary Delete Main Session
+ * @tags sessions
+ * @security BearerAuth
+ * @param {DeleteMainSessionBody} request.body.required - ID of the session
+ * @return {DeleteMainSession} 200 - Session Updated Successfully
+ */
+
+sessionRouter.patch(
+  '/rm',
+  verifyAdmintAuthToken,
+  RequestValidator.validate(DeleteSessionDto),
+  controller.deleteMainSession
+);
 
 /**
  * POST /sessions/sub
@@ -182,27 +236,20 @@ sessionRouter.get(
 );
 
 /**
- * PATCH /sessions
- * @typedef {object} IUpdateMainSession
+ * POST /sessions/
+ * @typedef {object} ICreateSessionDto
  * @tags sessions
- * @param {UpdateMainSession} request.body.required
- * @summary Update Main Session
+ * @param {CreateSession} request.body.required  ad
+ * @summary Create Session
  * @security BearerAuth
- * @return {UpdateMainSession}
- *
+ * @return {Sessions} 201 - Session Created
  */
-sessionRouter.patch(
-  '/',
-  verifyAdmintAuthToken,
-  RequestValidator.validate(UpdateMainSession),
-  controller.updateMainSession
-);
 
-sessionRouter.patch(
-  '/rm',
+sessionRouter.post(
+  '/',
   verifyAuthToken,
-  RequestValidator.validate(DeleteSessionDto),
-  controller.deleteMainSession
+  RequestValidator.validate(CreateSessionDto),
+  controller.createSession
 );
 
 sessionRouter.patch(
