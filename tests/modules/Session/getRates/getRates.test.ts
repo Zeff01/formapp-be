@@ -1,4 +1,3 @@
-/* eslint-disable */
 import SessionsService from '../../../../src/modules/sessions/sessions.service';
 import prisma from '../../../../src/lib/prisma';
 import { data } from './getRates.data';
@@ -25,7 +24,7 @@ describe('Session Rates', () => {
     jest.clearAllMocks();
   });
 
-  it('should return all rates', async () => {
+  it('should return all rates if ', async () => {
     (prisma.rates.findMany as jest.Mock).mockResolvedValue(data.data);
     const rates = await sessionService.getRates();
     console.log(rates);

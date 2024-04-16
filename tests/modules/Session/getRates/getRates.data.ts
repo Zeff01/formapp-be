@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 export const data = {
   message: 'Rate List',
   data: [
