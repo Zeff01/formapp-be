@@ -42,6 +42,23 @@ const controller = new SessionsController();
  */
 
 /**
+ *
+ * Rates
+ * @typedef {object} Rates
+ * @property {string} id.required - id of the rate
+ * @property {string} packageName.required - Name of the package
+ * @property {integer} cashRate.required - Cash Rate
+ * @property {integer} onlineRate.required - Online Rate
+ * @property {integer} sessionCount.required - Session Count
+ * @property {string} description.required - Description
+ * @property {string} createdAt.required - Created At
+ * @property {string} updatedAt.required - Updated At
+ * @property {string} status.required - Status
+ * @property {string} subSessionId.required - Sub Session ID
+ *
+ */
+
+/**
  * POST /sessions/
  * @summary Create Session
  * @tags sessions
