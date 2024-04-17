@@ -42,6 +42,23 @@ const controller = new SessionsController();
  */
 
 /**
+ *
+ * Rates
+ * @typedef {object} Rates
+ * @property {string} id.required - id of the rate
+ * @property {string} packageName.required - Name of the package
+ * @property {integer} cashRate.required - Cash Rate
+ * @property {integer} onlineRate.required - Online Rate
+ * @property {integer} sessionCount.required - Session Count
+ * @property {string} description.required - Description
+ * @property {string} createdAt.required - Created At
+ * @property {string} updatedAt.required - Updated At
+ * @property {string} status.required - Status
+ * @property {string} subSessionId.required - Sub Session ID
+ *
+ */
+
+/**
  * POST /sessions/
  * @summary Create Session
  * @tags sessions
@@ -269,6 +286,7 @@ sessionRouter.patch(
 sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
 
 /**
+<<<<<<< HEAD
  *
  * Rates
  * @typedef {object} Rates
@@ -287,6 +305,10 @@ sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
 
 /**
  * GET /sessions/rates
+=======
+ * GET /sessions/rates
+ * @typedef {object} IRates
+>>>>>>> 2de9d11 (add documentation)
  * @summary Get Rates
  * @tags sessions
  * @param {string} from.query - Date From Session (YYYY-MM-DD)
