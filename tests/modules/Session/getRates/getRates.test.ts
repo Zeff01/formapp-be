@@ -24,7 +24,7 @@ describe('Session Rates', () => {
     jest.clearAllMocks();
   });
 
-  it('should return all rates if ', async () => {
+  it('should return all rates', async () => {
     (prisma.rates.findMany as jest.Mock).mockResolvedValue(data.data);
     const rates = await sessionService.getRates();
     expect(rates).toBe(data.data);
