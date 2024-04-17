@@ -24,10 +24,9 @@ describe('Session Rates', () => {
     jest.clearAllMocks();
   });
 
-  it('should return all rates if ', async () => {
+  it('should return all rates', async () => {
     (prisma.rates.findMany as jest.Mock).mockResolvedValue(data.data);
     const rates = await sessionService.getRates();
-    console.log(rates);
     expect(rates).toBe(data.data);
   });
 
@@ -45,7 +44,6 @@ describe('Session Rates', () => {
     );
 
     const rates: rates[] = await sessionService.getRates(fromDate, toDate);
-    console.log(rates.length);
     rates.forEach((rate) => {
       const createdAt = dayjs(rate.createdAt).unix();
       const isValid = createdAt >= fromUnix && createdAt <= toUnix;
