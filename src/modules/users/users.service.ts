@@ -87,6 +87,48 @@ export default class UserService {
     }
   }
 
+  public async staffLogin(data: LoginDto) {
+    try {
+      const isExist = await prisma.users.findFirst({
+        where: {
+          email: data.email,
+        },
+      });
+
+      if (!isExist) {
+        throw new HttpNotFoundError('Invalid login');
+      }
+
+      if (isExist.type !== UserTypeEnum.STAFF) {
+        throw new HttpNotFoundError('You are not a staff');
+      }
+
+      const matchPassword = GeneratorProvider.validateHash(
+        data.password,
+        isExist.password!
+      );
+
+      if (!matchPassword) {
+        throw new HttpNotFoundError('Invalid login');
+      }
+
+      const payload: JwtPayload = {
+        id: isExist.id,
+        email: isExist.email!,
+        type: isExist.type,
+      };
+
+      const { password, ...user } = isExist;
+      console.log(JwtUtil.generateToken(payload));
+      return {
+        user,
+        token: JwtUtil.generateToken(payload),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async getUser(
     data: Prisma.usersWhereInput,
     select?: Prisma.usersSelect
