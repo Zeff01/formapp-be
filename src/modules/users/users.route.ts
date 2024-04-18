@@ -171,6 +171,34 @@ users.post(
 );
 
 /**
+ * Login Staff Body
+ * @typedef {object} LoginStaffBody
+ * @property {string} email.required - Email address
+ * @property {string} password.required - Password
+ */
+
+/**
+ * Login Staff
+ * @typedef {object} LoginStaff
+ * @property {string} email - Email address
+ * @property {string} password - Password
+ */
+
+/**
+ * POST /users/staff/login
+ * @summary Staff Login
+ * @tags users
+ * @param {LoginStaffBody} request.body.required
+ * @return {LoginStaff} 200 - Staff Successfully Login
+ */
+
+users.post(
+  '/staff/login',
+  RequestValidator.validate(LoginDto),
+  controller.staffLogin
+);
+
+/**
  * DELETE /users/
  * @typedef {object} DeleteUserDto
  * @summary Delete User
