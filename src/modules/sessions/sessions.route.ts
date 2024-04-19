@@ -240,7 +240,7 @@ sessionRouter.get('/sub', controller.getSubSessions);
  */
 
 /**
- * @typedef {object} ReturnGetPlayersBySubSessionID
+ * @typedef {object} ReturnGetPlayersPerSubSessionID
  * @property {string} message - return message
  * @property {Player[]} data - return data
  */
@@ -248,10 +248,10 @@ sessionRouter.get('/sub', controller.getSubSessions);
 /**
  * GET /sessions/players
  * @param {string} id.query.required - query id
- * @summary Get Players by Sub Session ID
+ * @summary Get Players per Sub Session ID
  * @tags sessions
  * @security BearerAuth
- * @return {ReturnGetPlayersBySubSessionID} 200 - getPlayers
+ * @return {ReturnGetPlayersPerSubSessionID} 200 - getPlayers
  *
  */
 
