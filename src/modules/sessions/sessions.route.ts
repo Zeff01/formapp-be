@@ -213,6 +213,7 @@ sessionRouter.get('/sub', controller.getSubSessions);
  * @property {string} failure_redirect_url
  * @property {string} payer_email
  */
+
 /**
  * Payments
  * @typedef {object} Payments
@@ -227,6 +228,31 @@ sessionRouter.get('/sub', controller.getSubSessions);
  * @property {string} status
  * @property {string} session
  * @property {string} user
+ */
+
+/**'
+ * @typedef {object} Player
+ * @property {string} id - id
+ * @property {string} firstName - firstName
+ * @property {string} lastName - lastName
+ * @property {string} profilePic - profilePic
+ * @property {string} address - address
+ */
+
+/**
+ * @typedef {object} ReturnGetPlayersBySubSessionID
+ * @property {string} message - return message
+ * @property {Player[]} data - return data
+ */
+
+/**
+ * GET /sessions/players
+ * @param {string} id.query.required - query id
+ * @summary Get Players by Sub Session ID
+ * @tags sessions
+ * @security BearerAuth
+ * @return {ReturnGetPlayersBySubSessionID} 200 - getPlayers
+ *
  */
 
 sessionRouter.get(
