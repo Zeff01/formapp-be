@@ -354,6 +354,30 @@ sessionRouter.post('/payment/callback', controller.paymentCallback);
 //  */
 sessionRouter.post('/payout/callback', controller.paymentCallback);
 
+/**
+ * @typedef {object} PlayerBySubSession
+ * @property {string} firstName - firstName
+ * @property {string} lastName - lastName
+ * @property {string} profilePic - profilePic
+ * @property {string} email - email
+ *
+ */
+
+/**
+ * @typedef {object} ReturnGetPlayersBySubSessionID
+ * @property {string} message - return message
+ * @property {PlayerBySubSession[]} data - return data
+ */
+
+/**
+ *
+ * GET /sessions/view
+ * @summary Get Players By Sub Session ID
+ * @tags sessions
+ * @security BearerAuth
+ * @param {string} id.query.required - query id
+ * @return {ReturnGetPlayersBySubSessionID} 200 - Returns Players with Sub Session ID
+ */
 sessionRouter.get('/view', verifyAuthToken, controller.getPlayersBySubSession);
 
 export default sessionRouter;
