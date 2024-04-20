@@ -266,10 +266,65 @@ sessionRouter.patch(
   controller.deleteSubSession
 );
 
+/**
+ * Sessions
+ * @typedef {object} GameSessions
+ * @property {string} id - id
+ * @property {string} name - name
+ * @property {string} location - location
+ * @property {string} sessionDate - session date
+ * @property {string} sessionTime - session time
+ */
+
+/**
+ * UsersCount
+ * @typedef {object} TeamUsersCount
+ * @property {integer} users - users
+ */
+
+/**
+ * Teams
+ * @typedef {object} GameTeams
+ * @property {string} id - id
+ * @property {string} teamName - team name
+ * @property {string} color - color
+ * @property {string} subSessionId - sub session id
+ * @property {TeamUsersCount} _count - _count of the user
+ * @property {string[]} users - users
+ */
+
+/**
+ * Game Per Sub Id
+ * @typedef {object} GamePerSubId
+ * @property {string} id - id  of game
+ * @todo fix reference error of sessionType
+//  * @property {"OPENPLAY" | "TRAINING" | "TOURNAMENT"} sessionType - Type of session (OPENPLAY, TRAINING, TOURNAMENT)
+ * @property {string} coach - coach
+ * @property {integer} noofTeams - no. of teams
+ * @property {string} maxPlayers - max players
+ * @todo fix reference error of status
+//  * @property {"DELETED" | "ACTIVE"} status - status
+ * @property {string} createdAt - created at
+ * @property {string} updatedAt - updated at
+ * @property {string} sessionId - session id
+ * @property {string} createdBy - created by
+ * @property {GameSessions} sessions - sessions
+ * @property {GameTeams[]} teams - teams
+ * @property {string[]} users - users
+ */
+
+/**
+ * GET /sessions/game
+ * @summary Get Game per sub id
+ * @tags sessions
+ * @param {string} id.query - query id
+ * @security BearerAuth
+ * @return {GamePerSubId} 200 - getGamePerSubId
+ */
+
 sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
 
 /**
- *
  * Rates
  * @typedef {object} Rates
  * @property {string} id.required - id of the rate
@@ -282,7 +337,6 @@ sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
  * @property {string} updatedAt.required - Updated At
  * @property {string} status.required - Status
  * @property {string} subSessionId.required - Sub Session ID
- *
  */
 
 /**
@@ -296,6 +350,7 @@ sessionRouter.get('/game', verifyAuthToken, controller.getGamePerSubId);
  */
 
 sessionRouter.get('/rates', controller.getRates);
+
 /**
  * POST sessions/payment
  * @typedef {object} IPaySessionDto
