@@ -355,11 +355,29 @@ sessionRouter.post('/payment/callback', controller.paymentCallback);
 sessionRouter.post('/payout/callback', controller.paymentCallback);
 
 /**
+ * @typedef {object} PlayerBySubSessionPayments
+ * @property {string} id - id
+ * @property {string} external_id - external_id
+ * @property {string} payment_method - payment_method
+ * @property {string} payer_email - payer_email
+ * @property {string} description - description
+ * @property {string} status - status
+ * @property {integer} amount - amount
+ * @property {integer} paid_amount - paid_amount
+ * @property {string} paid_at - paid_at
+ * @property {string} created - created
+ * @property {string} updated - updated
+ * @property {string} currency - currency
+ *
+ */
+
+/**
  * @typedef {object} PlayerBySubSession
  * @property {string} firstName - firstName
  * @property {string} lastName - lastName
  * @property {string} profilePic - profilePic
  * @property {string} email - email
+ * @property {PlayerBySubSessionPayments[]} payments - payments
  *
  */
 
