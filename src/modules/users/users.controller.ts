@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { type NextFunction, type Request } from 'express';
 import { Clubs, type users } from '@prisma/client';
 import { HttpStatusCode } from 'axios';
@@ -39,6 +37,20 @@ export default class UserController extends Api {
       this.send(res, user, HttpStatusCode.Ok, 'login');
     } catch (e) {
       next(e);
+    }
+  };
+
+  public staffLogin = async (
+    req: Request,
+    res: CustomResponse<users>,
+    next: NextFunction
+  ) => {
+    try {
+      const user = await this.userService.staffLogin(req.body);
+
+      this.send(res, user, HttpStatusCode.Ok, 'login');
+    } catch (error) {
+      next(error);
     }
   };
 
