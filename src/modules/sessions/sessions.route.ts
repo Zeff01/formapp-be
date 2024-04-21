@@ -29,6 +29,16 @@ const controller = new SessionsController();
  * @property {string} createdBy - created by
  */
 
+/* id: string;
+    sessionType: $Enums.SesssionType;
+    coach: string;
+    noofTeams: number;
+    maxPlayers: number;
+    maxperTeam: number;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    sessionId: string;
+    status: $Enums.RecordStatus; 
 /**
  * Create Session Body
  * @typedef {object} CreateSession
@@ -213,6 +223,7 @@ sessionRouter.get('/sub', controller.getSubSessions);
  * @property {string} failure_redirect_url
  * @property {string} payer_email
  */
+
 /**
  * Payments
  * @typedef {object} Payments
@@ -227,6 +238,31 @@ sessionRouter.get('/sub', controller.getSubSessions);
  * @property {string} status
  * @property {string} session
  * @property {string} user
+ */
+
+/**'
+ * @typedef {object} Player
+ * @property {string} id - id
+ * @property {string} firstName - firstName
+ * @property {string} lastName - lastName
+ * @property {string} profilePic - profilePic
+ * @property {string} address - address
+ */
+
+/**
+ * @typedef {object} ReturnGetPlayersPerSubSessionID
+ * @property {string} message - return message
+ * @property {Player[]} data - return data
+ */
+
+/**
+ * GET /sessions/players
+ * @param {string} id.query.required - query id
+ * @summary Get Players per Sub Session ID
+ * @tags sessions
+ * @security BearerAuth
+ * @return {ReturnGetPlayersPerSubSessionID} 200 - getPlayers
+ *
  */
 
 sessionRouter.get(
@@ -251,6 +287,37 @@ sessionRouter.post(
   RequestValidator.validate(CreateSessionDto),
   controller.createSession
 );
+
+/**
+ * @typedef {object} UpdateSubSession
+ * @property {string} id.required - id
+ * @property {"OPENPLAY" | "TRAINING" | "TOURNAMENT"} sessionType.required - sessionType
+ * @property {string} coach - coach
+ * @property {integer} noofTeams - noofTeams
+ * @property {integer} maxPlayers - maxPlayers
+ * @property {integer} maxperTeam - maxperTeam
+ * @property {string} createdAt - createdAt
+ * @property {string} updatedAt - updatedAt
+ * @property {string} sessionId - sessionId
+ * @property {"DELETED" | "ACTIVE"} status - status
+ * @property {string} createdBy - createdBy
+ *
+ */
+
+/**
+ * @typedef {object} ReturnsUpdateSubSession
+ * @property {string} message - message
+ * @property {UpdateSubSession} data - data
+ */
+
+/**
+ * PATCH /sessions/sub
+ * @summary Update Sub Session
+ * @tags sessions
+ * @param {UpdateSubSession} request.body.required
+ * @security BearerAuth
+ * @return {ReturnsUpdateSubSession} 201 - Sub Session Updated
+ */
 
 sessionRouter.patch(
   '/sub',
@@ -320,12 +387,12 @@ sessionRouter.patch(
  * @typedef {object} GamePerSubId
  * @property {string} id - id  of game
  * @todo fix reference error of sessionType
-//  * @property {"OPENPLAY" | "TRAINING" | "TOURNAMENT"} sessionType - Type of session (OPENPLAY, TRAINING, TOURNAMENT)
+ * @property {"OPENPLAY" | "TRAINING" | "TOURNAMENT"} sessionType - Type of session (OPENPLAY, TRAINING, TOURNAMENT)
  * @property {string} coach - coach
  * @property {integer} noofTeams - no. of teams
  * @property {string} maxPlayers - max players
  * @todo fix reference error of status
-//  * @property {"DELETED" | "ACTIVE"} status - status
+ * @property {"DELETED" | "ACTIVE"} status - status
  * @property {string} createdAt - created at
  * @property {string} updatedAt - updated at
  * @property {string} sessionId - session id
@@ -405,6 +472,48 @@ sessionRouter.post('/payment/callback', controller.paymentCallback);
 //  */
 sessionRouter.post('/payout/callback', controller.paymentCallback);
 
+/**
+ * @typedef {object} PlayerBySubSessionPayments
+ * @property {string} id - id
+ * @property {string} external_id - external_id
+ * @property {string} payment_method - payment_method
+ * @property {string} payer_email - payer_email
+ * @property {string} description - description
+ * @property {string} status - status
+ * @property {integer} amount - amount
+ * @property {integer} paid_amount - paid_amount
+ * @property {string} paid_at - paid_at
+ * @property {string} created - created
+ * @property {string} updated - updated
+ * @property {string} currency - currency
+ *
+ */
+
+/**
+ * @typedef {object} PlayerBySubSession
+ * @property {string} firstName - firstName
+ * @property {string} lastName - lastName
+ * @property {string} profilePic - profilePic
+ * @property {string} email - email
+ * @property {PlayerBySubSessionPayments[]} payments - payments
+ *
+ */
+
+/**
+ * @typedef {object} ReturnGetPlayersBySubSessionID
+ * @property {string} message - return message
+ * @property {PlayerBySubSession[]} data - return data
+ */
+
+/**
+ *
+ * GET /sessions/view
+ * @summary Get Players By Sub Session ID
+ * @tags sessions
+ * @security BearerAuth
+ * @param {string} id.query.required - query id
+ * @return {ReturnGetPlayersBySubSessionID} 200 - Returns Players with Sub Session ID
+ */
 sessionRouter.get('/view', verifyAuthToken, controller.getPlayersBySubSession);
 
 export default sessionRouter;
