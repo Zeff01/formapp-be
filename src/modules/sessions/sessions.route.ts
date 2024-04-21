@@ -280,7 +280,7 @@ sessionRouter.patch(
  *  @tags sessions
  *  @param {DeleteSubSession} request.body.required
  *  @security BearerAuth
- *  @return {DeleteSubSession} 200 - Sub Session Deleted
+ *  @return {DeleteSubSession} 201 - Sub Session Deleted
  *
  */
 
