@@ -29,6 +29,16 @@ const controller = new SessionsController();
  * @property {string} createdBy - created by
  */
 
+/* id: string;
+    sessionType: $Enums.SesssionType;
+    coach: string;
+    noofTeams: number;
+    maxPlayers: number;
+    maxperTeam: number;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    sessionId: string;
+    status: $Enums.RecordStatus; 
 /**
  * Create Session Body
  * @typedef {object} CreateSession
@@ -252,6 +262,37 @@ sessionRouter.post(
   controller.createSession
 );
 
+/**
+ * @typedef {object} UpdateSubSession
+ * @property {string} id.required - id
+ * @property {"OPENPLAY" | "TRAINING" | "TOURNAMENT"} sessionType.required - sessionType
+ * @property {string} coach - coach
+ * @property {integer} noofTeams - noofTeams
+ * @property {integer} maxPlayers - maxPlayers
+ * @property {integer} maxperTeam - maxperTeam
+ * @property {string} createdAt - createdAt
+ * @property {string} updatedAt - updatedAt
+ * @property {string} sessionId - sessionId
+ * @property {"DELETED" | "ACTIVE"} status - status
+ * @property {string} createdBy - createdBy
+ *
+ */
+
+/**
+ * @typedef {object} ReturnsUpdateSubSession
+ * @property {string} message - message
+ * @property {UpdateSubSession} data - data
+ */
+
+/**
+ * PATCH /sessions/sub
+ * @summary Update Sub Session
+ * @tags sessions
+ * @param {UpdateSubSession} request.body.required
+ * @security BearerAuth
+ * @return {ReturnsUpdateSubSession} 201 - Sub Session Updated
+ */
+
 sessionRouter.patch(
   '/sub',
   verifyAuthToken,
@@ -298,12 +339,12 @@ sessionRouter.patch(
  * @typedef {object} GamePerSubId
  * @property {string} id - id  of game
  * @todo fix reference error of sessionType
-//  * @property {"OPENPLAY" | "TRAINING" | "TOURNAMENT"} sessionType - Type of session (OPENPLAY, TRAINING, TOURNAMENT)
+ * @property {"OPENPLAY" | "TRAINING" | "TOURNAMENT"} sessionType - Type of session (OPENPLAY, TRAINING, TOURNAMENT)
  * @property {string} coach - coach
  * @property {integer} noofTeams - no. of teams
  * @property {string} maxPlayers - max players
  * @todo fix reference error of status
-//  * @property {"DELETED" | "ACTIVE"} status - status
+ * @property {"DELETED" | "ACTIVE"} status - status
  * @property {string} createdAt - created at
  * @property {string} updatedAt - updated at
  * @property {string} sessionId - session id
