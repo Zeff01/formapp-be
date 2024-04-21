@@ -260,25 +260,22 @@ sessionRouter.patch(
 );
 
 /**
+ * Delete Sub Session Body
+ * @typedef {object} DeleteSubSessionBody
+ * @property {string} id.required - id
+ */
+
+/**
+ * Delete Sub Session
  * @typedef {object} DeleteSubSession
  * @property {string} id - id
- * @property {"OPENPLAY" | "TRAINING" | "TOURNAMENT"} sessionType - session type
- * @property {string} coach - coach
- * @property {number} noofTeams - no of teams
- * @property {number} maxPlayers - max players
- * @property {number} maxperTeam - max per team
- * @property {string} createdAt - created at
- * @property {string} updatedAt - updated at
- * @property {string} sessionId - session id
- * @property {"DELETED" | "ACTIVE"} status - status
- * @property {string} createdBy - created by
  */
 
 /**
  *  PATCH /sessions/sub/rm
  *  @summary Delete Sub Session
  *  @tags sessions
- *  @param {DeleteSubSession} request.body.required
+ *  @param {DeleteSubSessionBody} request.body.required
  *  @security BearerAuth
  *  @return {DeleteSubSession} 201 - Sub Session Deleted
  *
