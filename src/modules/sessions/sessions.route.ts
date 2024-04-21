@@ -326,6 +326,28 @@ sessionRouter.patch(
   controller.updateSubSession
 );
 
+/**
+ * Delete Sub Session Body
+ * @typedef {object} DeleteSubSessionBody
+ * @property {string} id.required - id
+ */
+
+/**
+ * Delete Sub Session
+ * @typedef {object} DeleteSubSession
+ * @property {string} id - id
+ */
+
+/**
+ *  PATCH /sessions/sub/rm
+ *  @summary Delete Sub Session
+ *  @tags sessions
+ *  @param {DeleteSubSessionBody} request.body.required
+ *  @security BearerAuth
+ *  @return {DeleteSubSession} 201 - Sub Session Deleted
+ *
+ */
+
 sessionRouter.patch(
   '/sub/rm',
   verifyAuthToken,
