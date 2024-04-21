@@ -1,8 +1,7 @@
 import SessionsService from '../../../../src/modules/sessions/sessions.service';
 import prisma from '../../../../src/lib/prisma';
-import { data } from './getPlayersBySubSession.data';
-import { HttpBadRequestError } from '../../../../src/lib/errors';
-// import XenditService from '../../../../src/modules/sessions/xendit.service';
+import { HttpUnAuthorizedError } from '../../../../src/lib/errors';
+import { mockedUsers } from './getPlayersBySubSession.data';
 
 jest.mock('../../../../src/lib/prisma', () => ({
   __esModule: true,
@@ -12,40 +11,30 @@ jest.mock('../../../../src/lib/prisma', () => ({
     },
   },
 }));
-
-describe('Get Players By SubSession ID', () => {
-  let sessionService: SessionsService;
-  // let xenditService: XenditService;
+describe('SessionsService', () => {
+  let sessionsService: SessionsService;
 
   beforeAll(() => {
-    sessionService = new SessionsService();
-    // xenditService = new XenditService();
+    sessionsService = new SessionsService();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should return players', async () => {
-    // TODO: to fix unauthorized error
 
-    (prisma.users.findMany as jest.Mock).mockResolvedValue(data.data);
-
-    const players = await sessionService.getPlayersBySubSession('mocked ID');
-
-    // expect(xenditService.getInvoices).toHaveBeenCalled();
-
-    expect(players).toEqual(data.data);
+  it('should throw HttpUnAuthorizedError if subSessionId is not provided', async () => {
+    await expect(sessionsService.getPlayersPerSubSession()).rejects.toThrow(
+      HttpUnAuthorizedError
+    );
   });
 
-  it('should throw an error if no query id', async () => {
-    try {
-      await sessionService.getPlayersBySubSession('');
-    } catch (e) {
-      expect(e).toBeInstanceOf(HttpBadRequestError);
-      expect(e.message).toEqual('Get Players');
-      expect(e.rawErrors).toContain('Sub Session Id is undefined');
-      expect(e.statusCode).toEqual(400);
-    }
+  it('should return an array of users when subSessionId is provided', async () => {
+    const subSessionId = 'mock-ID';
+
+    (prisma.users.findMany as jest.Mock).mockResolvedValue(mockedUsers);
+
+    const result = await sessionsService.getPlayersPerSubSession(subSessionId);
+    expect(result).toEqual(mockedUsers);
   });
 });
