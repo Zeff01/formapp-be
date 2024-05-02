@@ -5,9 +5,8 @@ import {
   DeleteUserDto,
   CreateFounderDto,
   CreateClubDto,
-  LoginFounderDto,
   UpdateUserDto,
-  JoinGameDto,
+  LoginDto,
 } from '@/dto/user.dto';
 import RequestValidator from '@/middlewares/request-validator';
 import { verifyAdmintAuthToken, verifyAuthToken } from '@/middlewares/auth';
@@ -158,17 +157,45 @@ users.patch(
  */
 
 /**
- * POST /users/login
- * @summary Login
+ * POST /users/founder/login
+ * @summary Founder Login
  * @tags users
  * @param {LoginFounderBody} request.body.required
  * @return {LoginFounder} 200 - User Successfully Login
  */
 
 users.post(
-  '/login',
-  RequestValidator.validate(LoginFounderDto),
-  controller.login
+  '/founder/login',
+  RequestValidator.validate(LoginDto),
+  controller.founderLogin
+);
+
+/**
+ * Login Staff Body
+ * @typedef {object} LoginStaffBody
+ * @property {string} email.required - Email address
+ * @property {string} password.required - Password
+ */
+
+/**
+ * Login Staff
+ * @typedef {object} LoginStaff
+ * @property {string} email - Email address
+ * @property {string} password - Password
+ */
+
+/**
+ * POST /users/staff/login
+ * @summary Staff Login
+ * @tags users
+ * @param {LoginStaffBody} request.body.required
+ * @return {LoginStaff} 200 - Staff Successfully Login
+ */
+
+users.post(
+  '/staff/login',
+  RequestValidator.validate(LoginDto),
+  controller.staffLogin
 );
 
 /**

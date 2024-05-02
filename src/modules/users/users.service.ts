@@ -11,8 +11,7 @@ import {
   CreateClubDto,
   CreateFounderDto,
   CreateUserDto,
-  PackageDto,
-  LoginFounderDto,
+  LoginDto,
 } from '@/dto/user.dto';
 import { HttpNotFoundError, HttpUnAuthorizedError } from '@/lib/errors';
 import { GeneratorProvider } from '@/lib/bcrypt';
@@ -47,7 +46,7 @@ export default class UserService {
     });
   }
 
-  public async login(data: LoginFounderDto) {
+  public async founderLogin(data: LoginDto) {
     try {
       const isExist = await prisma.users.findFirst({
         where: {
@@ -68,6 +67,10 @@ export default class UserService {
         throw new HttpNotFoundError('Invalid login');
       }
 
+      if (isExist.type !== UserTypeEnum.FOUNDER) {
+        throw new HttpNotFoundError('You are not a founder');
+      }
+
       const payload: JwtPayload = {
         id: isExist.id,
         email: isExist.email!,
@@ -80,6 +83,48 @@ export default class UserService {
       };
     } catch (error) {
       console.error(error);
+      throw error;
+    }
+  }
+
+  public async staffLogin(data: LoginDto) {
+    try {
+      const isExist = await prisma.users.findFirst({
+        where: {
+          email: data.email,
+        },
+      });
+
+      if (!isExist) {
+        throw new HttpNotFoundError('Invalid login');
+      }
+
+      if (isExist.type !== UserTypeEnum.STAFF) {
+        throw new HttpNotFoundError('You are not a staff');
+      }
+
+      const matchPassword = GeneratorProvider.validateHash(
+        data.password,
+        isExist.password!
+      );
+
+      if (!matchPassword) {
+        throw new HttpNotFoundError('Invalid login');
+      }
+
+      const payload: JwtPayload = {
+        id: isExist.id,
+        email: isExist.email!,
+        type: isExist.type,
+      };
+
+      const { password, ...user } = isExist;
+      console.log(JwtUtil.generateToken(payload));
+      return {
+        user,
+        token: JwtUtil.generateToken(payload),
+      };
+    } catch (error) {
       throw error;
     }
   }
@@ -212,7 +257,6 @@ export default class UserService {
   }
 
   public async getClub(clubName?: string, clubId?: string) {
-
     let where = {};
 
     if (clubName) {

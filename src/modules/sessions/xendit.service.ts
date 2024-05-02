@@ -5,14 +5,15 @@ import {
   IXenditPayoutDto,
   XCreateSubscriptionPlan,
 } from '@/dto/xendit.dto';
-import prisma from '@/lib/prisma';
 
 interface Transaction {
   amount: number;
 }
 export default class XenditService {
+  // private readonly API_DEV_URL = 'http://localhost:4000/api/v1/development';
   private readonly API_GATEWAY_URL = 'https://api.xendit.co';
-  private readonly API_DEV_URL = 'http://localhost:4000/api/v1/development';
+  private readonly API_DEV_URL =
+    'http://formapp-be.onrender.com/api/v1/production';
   private readonly CHANNEL_CODE = 'PH_GCASH';
   private readonly CURRENCY = 'PHP';
   private readonly TYPE = 'INDIVIDUAL';
